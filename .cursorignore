@@ -24,7 +24,6 @@ Build/
 
 # Unity cache and temporary files
 *.mdb
-*.opendb
 *.VC.db
 *.VC.VC.opendb
 *.suo
