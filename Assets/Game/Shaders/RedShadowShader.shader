@@ -39,7 +39,6 @@ Shader "Custom/RedShadowShader"
             #pragma multi_compile _ _SHADOWS_SOFT                // 软阴影支持
             #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS // 额外光源支持
             #pragma multi_compile_fragment _ _ADDITIONAL_LIGHT_SHADOWS           // 额外光源阴影
-            #pragma multi_compile_fog                            // 雾效支持
 
             // 包含URP的核心函数库
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"     // 核心函数
@@ -61,7 +60,6 @@ Shader "Custom/RedShadowShader"
                 float2 uv : TEXCOORD0;           // 纹理坐标
                 float3 positionWS : TEXCOORD1;   // 世界空间位置（用于计算阴影）
                 float3 normalWS : TEXCOORD2;     // 世界空间法线
-                float fogCoord : TEXCOORD3;      // 雾效坐标
             };
 
             // 声明纹理和采样器
@@ -93,9 +91,6 @@ Shader "Custom/RedShadowShader"
                 // 将法线从物体空间转换到世界空间
                 output.normalWS = TransformObjectToWorldNormal(input.normalOS);
                 
-                // 计算雾效因子
-                output.fogCoord = ComputeFogFactor(vertexInput.positionCS.z);
-                
                 return output;
             }
 
@@ -117,6 +112,7 @@ Shader "Custom/RedShadowShader"
                     Light mainLight = GetMainLight(shadowCoord);
                     // 阴影衰减值：1=无阴影（亮），0=完全阴影（暗）
                     shadowAttenuation = mainLight.shadowAttenuation;
+                    shadowAttenuation = step(0.9, shadowAttenuation);
                 #endif
                 
                 // 3. 以基础颜色作为起始颜色（Unlit，不受光照影响）
@@ -128,9 +124,6 @@ Shader "Custom/RedShadowShader"
                 // 在阴影区域混合红色，非阴影区域保持原色
                 half3 shadowTint = lerp(half3(1, 1, 1), _ShadowColor.rgb, shadowFactor * _ShadowIntensity);
                 color.rgb *= shadowTint;
-                
-                // 5. 应用雾效
-                color.rgb = MixFog(color.rgb, input.fogCoord);
                 
                 return color;
             }
