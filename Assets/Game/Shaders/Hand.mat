@@ -34,6 +34,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _Metallic: 0
+    - _OutlineWidth: 0.0051
     - _ShadowBlurRadius: 0.00219
     - _ShadowIntensity: 0.758
     - _ShadowSampleCount: 6.4
@@ -41,6 +42,7 @@ Material:
     - _Smoothness: 0.5
     m_Colors:
     - _BaseColor: {r: 1, g: 0.863335, b: 0.6839622, a: 1}
+    - _OutlineColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

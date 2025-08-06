@@ -11,6 +11,10 @@ Shader "Custom/ToonShader"
         _ShadowThreshold ("Shadow Threshold", Range(0, 1)) = 0.9 // 阴影阈值，控制阴影边缘锐度
         _ShadowBlurRadius ("Shadow Blur Radius", Range(0, 0.01)) = 0.003 // 阴影模糊半径
         _ShadowSampleCount ("Shadow Sample Count", Range(1, 32)) = 5 // 阴影采样次数（奇数）
+        
+        [Header(Outline Settings)]
+        _OutlineWidth ("Outline Width", Range(0, 0.1)) = 0.01 // 描边宽度
+        _OutlineColor ("Outline Color", Color) = (0, 0, 0, 1) // 描边颜色，默认黑色
     }
 
     // SubShader包含实际的渲染代码
@@ -22,6 +26,73 @@ Shader "Custom/ToonShader"
             "RenderType" = "Opaque"           // 不透明物体
             "RenderPipeline" = "UniversalPipeline" // 使用URP渲染管线
             "Queue" = "Geometry"             // 在几何体队列中渲染（最常用的队列）
+        }
+
+        // 描边Pass - 通过法线外扩绘制描边效果
+        // 这个Pass会先渲染，绘制放大的模型作为描边
+        Pass
+        {
+            Name "Outline"
+            Tags { "LightMode" = "SRPDefaultUnlit" }
+            
+            // 渲染状态设置
+            Cull Front      // 剔除前面（只渲染背面）
+            ZTest LEqual    // 深度测试
+            ZWrite On       // 写入深度
+            
+            HLSLPROGRAM
+            #pragma vertex OutlineVert
+            #pragma fragment OutlineFrag
+            
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+            
+            // 描边用的材质属性声明
+            CBUFFER_START(UnityPerMaterial)
+                half _OutlineWidth;      // 描边宽度
+                half4 _OutlineColor;     // 描边颜色
+            CBUFFER_END
+            
+            // 描边用的顶点输入结构
+            struct OutlineAttributes
+            {
+                float4 positionOS : POSITION;
+                float3 normalOS : NORMAL;
+            };
+            
+            // 描边用的顶点输出结构
+            struct OutlineVaryings
+            {
+                float4 positionCS : SV_POSITION;
+            };
+            
+            // 描边顶点着色器
+            OutlineVaryings OutlineVert(OutlineAttributes input)
+            {
+                OutlineVaryings output;
+                
+                // 将法线转换到世界空间并归一化
+                float3 normalWS = TransformObjectToWorldNormal(input.normalOS);
+                normalWS = normalize(normalWS);
+                
+                // 将顶点位置转换到世界空间
+                float3 positionWS = TransformObjectToWorld(input.positionOS.xyz);
+                
+                // 沿法线方向外扩顶点位置
+                positionWS += normalWS * _OutlineWidth;
+                
+                // 转换到裁剪空间
+                output.positionCS = TransformWorldToHClip(positionWS);
+                
+                return output;
+            }
+            
+            // 描边片元着色器 - 只需要输出描边颜色
+            half4 OutlineFrag(OutlineVaryings input) : SV_Target
+            {
+                return _OutlineColor;
+            }
+            
+            ENDHLSL
         }
 
         // 主要的渲染Pass，负责绘制物体的颜色
@@ -80,6 +151,8 @@ Shader "Custom/ToonShader"
                 half _ShadowThreshold;   // 阴影阈值
                 half _ShadowBlurRadius;  // 阴影模糊半径
                 half _ShadowSampleCount; // 阴影采样次数
+                half _OutlineWidth;      // 描边宽度
+                half4 _OutlineColor;     // 描边颜色
             CBUFFER_END
 
             // 计算模糊阴影的函数 - 通过多次采样获得平均值
