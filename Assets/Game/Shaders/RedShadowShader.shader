@@ -7,8 +7,10 @@ Shader "Custom/RedShadowShader"
     {
         _BaseMap ("Base Texture", 2D) = "white" {}        // 基础贴图
         _BaseColor ("Base Color", Color) = (1, 1, 1, 1)   // 基础颜色，默认白色
+        _Gradient ("Gradient", 2D) = "white" {}           // Toon渐变纹理，u=0面光，u=1背光
         _ShadowColor ("Shadow Color", Color) = (1, 0, 0, 1) // 阴影区域的颜色，默认红色
         _ShadowIntensity ("Shadow Intensity", Range(0, 1)) = 0.5 // 阴影效果强度，0-1范围
+        _ShadowThreshold ("Shadow Threshold", Range(0, 1)) = 0.9 // 阴影阈值，控制阴影边缘锐度
     }
 
     // SubShader包含实际的渲染代码
@@ -63,15 +65,19 @@ Shader "Custom/RedShadowShader"
             };
 
             // 声明纹理和采样器
-            TEXTURE2D(_BaseMap);        // 声明2D纹理
-            SAMPLER(sampler_BaseMap);   // 声明纹理采样器
+            TEXTURE2D(_BaseMap);        // 声明基础纹理
+            SAMPLER(sampler_BaseMap);   // 基础纹理采样器
+            TEXTURE2D(_Gradient);       // 声明Toon渐变纹理
+            SAMPLER(sampler_Gradient);  // 渐变纹理采样器
 
             // 常量缓冲区，包含Material的属性
             CBUFFER_START(UnityPerMaterial)
                 float4 _BaseMap_ST;      // 纹理的缩放和偏移 (Scale, Transform)
+                float4 _Gradient_ST;     // 渐变纹理的缩放和偏移
                 half4 _BaseColor;        // 基础颜色
                 half4 _ShadowColor;      // 阴影颜色
                 half _ShadowIntensity;   // 阴影强度
+                half _ShadowThreshold;   // 阴影阈值
             CBUFFER_END
 
             // 顶点着色器函数
@@ -101,24 +107,40 @@ Shader "Custom/RedShadowShader"
                 // 1. 采样基础纹理并与基础颜色相乘
                 half4 baseColor = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, input.uv) * _BaseColor;
                 
-                // 2. 计算阴影衰减值
-                half shadowAttenuation = 1.0;  // 默认无阴影（全亮）
-                
-                // 如果启用了主光源阴影，则计算阴影
+                // 2. 计算阴影坐标和获取主光源
+                float4 shadowCoord = float4(0, 0, 0, 1);
                 #if defined(_MAIN_LIGHT_SHADOWS) || defined(_MAIN_LIGHT_SHADOWS_CASCADE)
                     // 将世界空间位置转换为阴影贴图坐标
-                    float4 shadowCoord = TransformWorldToShadowCoord(input.positionWS);
-                    // 获取主光源信息（包含阴影衰减）
-                    Light mainLight = GetMainLight(shadowCoord);
-                    // 阴影衰减值：1=无阴影（亮），0=完全阴影（暗）
-                    shadowAttenuation = mainLight.shadowAttenuation;
-                    shadowAttenuation = step(0.9, shadowAttenuation);
+                    shadowCoord = TransformWorldToShadowCoord(input.positionWS);
                 #endif
                 
-                // 3. 以基础颜色作为起始颜色（Unlit，不受光照影响）
+                // 获取主光源信息（包含阴影衰减）
+                Light mainLight = GetMainLight(shadowCoord);
+                
+                // 3. 计算Toon渐变采样坐标
+                float3 lightDir = normalize(mainLight.direction);
+                float3 normalWS = normalize(input.normalWS);
+                
+                // 计算法线和光线的dot product，范围[-1, 1]
+                float NdotL = dot(normalWS, lightDir);
+                // 将范围转换为[0, 1]，0=背光，1=面光
+                float u = 0.5 - NdotL * 0.5;
+                
+                // 采样Toon渐变纹理，使用u作为x坐标，y坐标固定为0.5
+                half4 gradientColor = SAMPLE_TEXTURE2D(_Gradient, sampler_Gradient, float2(u, 0.5));
+                
+                // 基础颜色与渐变相乘
+                baseColor.rgb *= gradientColor.rgb;
+                
+                // 4. 计算阴影衰减值
+                // 阴影衰减值：1=无阴影（亮），0=完全阴影（暗）
+                half shadowAttenuation = mainLight.shadowAttenuation;
+                shadowAttenuation = step(_ShadowThreshold, shadowAttenuation);
+                
+                // 5. 以处理后的基础颜色作为起始颜色
                 half4 color = baseColor;
                 
-                // 4. 应用红色阴影效果
+                // 6. 应用红色阴影效果
                 // shadowFactor: 0=无阴影区域，1=完全阴影区域
                 half shadowFactor = 1.0 - shadowAttenuation;
                 // 在阴影区域混合红色，非阴影区域保持原色
