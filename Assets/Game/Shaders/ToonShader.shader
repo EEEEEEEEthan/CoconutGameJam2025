@@ -11,6 +11,8 @@ Shader "Custom/ToonShader"
         _ShadowThreshold ("Shadow Threshold", Range(0, 1)) = 0.9 // 阴影阈值，控制阴影边缘锐度
         _ShadowBlurRadius ("Shadow Blur Radius", Range(0, 0.01)) = 0.003 // 阴影模糊半径
         _ShadowSampleCount ("Shadow Sample Count", Range(1, 32)) = 5 // 阴影采样次数（奇数）
+        _DiagonalDensity ("Diagonal Line Density", Range(1, 100)) = 20 // 斜线密度，控制斜线间距
+        _DiagonalWidth ("Diagonal Line Width", Range(0.1, 5)) = 1 // 斜线宽度
         
         [Header(Outline Settings)]
         _OutlineWidth ("Outline Width", Range(0, 0.1)) = 0.01 // 描边宽度
@@ -133,6 +135,7 @@ Shader "Custom/ToonShader"
                 float2 uv : TEXCOORD0;           // 纹理坐标
                 float3 positionWS : TEXCOORD1;   // 世界空间位置（用于计算阴影）
                 float3 normalWS : TEXCOORD2;     // 世界空间法线
+                float4 screenPos : TEXCOORD3;    // 屏幕空间坐标（用于斜线图案）
             };
 
             // 声明纹理和采样器
@@ -151,6 +154,8 @@ Shader "Custom/ToonShader"
                 half _ShadowThreshold;   // 阴影阈值
                 half _ShadowBlurRadius;  // 阴影模糊半径
                 half _ShadowSampleCount; // 阴影采样次数
+                half _DiagonalDensity;   // 斜线密度
+                half _DiagonalWidth;     // 斜线宽度
                 half _OutlineWidth;      // 描边宽度
                 half4 _OutlineColor;     // 描边颜色
             CBUFFER_END
@@ -192,6 +197,25 @@ Shader "Custom/ToonShader"
                 return shadowSum / (sampleCount * sampleCount);
             }
 
+            // 生成屏幕空间斜线图案的函数
+            // screenPos: 屏幕空间坐标（像素坐标）
+            // 返回值: 1.0表示斜线区域，0.0表示空白区域
+            half GenerateDiagonalPattern(float2 screenPos)
+            {
+                // 计算左上到右下的斜线
+                // 使用 (x + y) 来生成对角线模式
+                float diagonal = screenPos.x + screenPos.y;
+                
+                // 根据密度调整斜线间距
+                diagonal *= _DiagonalDensity * 0.01; // 0.01是缩放因子，调整合适的密度范围
+                
+                // 使用fmod生成周期性图案
+                float pattern = fmod(diagonal, _DiagonalWidth + 1.0);
+                
+                // 当pattern小于_DiagonalWidth时，绘制斜线
+                return step(pattern, _DiagonalWidth);
+            }
+
             // 顶点着色器函数
             // 每个顶点都会执行一次，负责将顶点从物体空间变换到屏幕空间
             Varyings vert(Attributes input)
@@ -202,6 +226,9 @@ Shader "Custom/ToonShader"
                 VertexPositionInputs vertexInput = GetVertexPositionInputs(input.positionOS.xyz);
                 output.positionCS = vertexInput.positionCS;  // 裁剪空间位置（用于GPU光栅化）
                 output.positionWS = vertexInput.positionWS;  // 世界空间位置（用于阴影计算）
+                
+                // 计算屏幕空间坐标（用于斜线图案）
+                output.screenPos = ComputeScreenPos(output.positionCS);
                 
                 // 应用纹理的缩放和偏移变换
                 output.uv = TRANSFORM_TEX(input.uv, _BaseMap);
@@ -251,12 +278,24 @@ Shader "Custom/ToonShader"
                 // 5. 以处理后的基础颜色作为起始颜色
                 half4 color = baseColor;
                 
-                // 6. 应用红色阴影效果
+                // 6. 应用斜线阴影效果
                 // shadowFactor: 0=无阴影区域，1=完全阴影区域
                 half shadowFactor = 1.0 - shadowAttenuation;
-                // 在阴影区域混合红色，非阴影区域保持原色
-                half3 shadowTint = lerp(half3(1, 1, 1), _ShadowColor.rgb, shadowFactor * _ShadowIntensity);
-                color.rgb *= shadowTint;
+                
+                // 只在阴影区域应用斜线图案
+                if(shadowFactor > 0.01) // 避免在非阴影区域计算
+                {
+                    // 计算屏幕像素坐标
+                    float2 screenPixelPos = input.screenPos.xy / input.screenPos.w * _ScreenParams.xy;
+                    
+                    // 生成斜线图案
+                    half diagonalMask = GenerateDiagonalPattern(screenPixelPos);
+                    
+                    // 在斜线区域应用阴影颜色，其他区域保持原色
+                    // diagonalMask: 1.0=斜线区域，0.0=空白区域
+                    half3 shadowTint = lerp(half3(1, 1, 1), _ShadowColor.rgb, diagonalMask * shadowFactor * _ShadowIntensity);
+                    color.rgb *= shadowTint;
+                }
                 
                 return color;
             }
