@@ -1,6 +1,4 @@
-// 自定义的红色阴影Shader - Unlit版本
-// 这个shader不受光照影响，但会根据阴影给物体添加红色效果
-Shader "Custom/RedShadowShader"
+Shader "Custom/ToonShader"
 {
     // Properties是shader的可调节参数，会在Material Inspector中显示
     Properties
