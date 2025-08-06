@@ -1,5 +1,7 @@
 {
   "dependencies": {
+    "com.ethan.referencehelper": "https://github.com/EEEEEEEEthan/UnityReferenceHelper.git",
+    "com.ethan.tortoisegitmenu": "https://github.com/EEEEEEEEthan/UnityTortoiseGitMenu.git",
     "com.unity.ide.rider": "3.0.36",
     "com.unity.inputsystem": "1.7.0",
     "com.unity.render-pipelines.high-definition": "16.0.6",

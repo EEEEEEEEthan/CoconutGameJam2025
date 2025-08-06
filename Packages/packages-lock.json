@@ -1,5 +1,19 @@
 {
   "dependencies": {
+    "com.ethan.referencehelper": {
+      "version": "https://github.com/EEEEEEEEthan/UnityReferenceHelper.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "9147ec933d77d8d1df4215a221b751b496a8c2f2"
+    },
+    "com.ethan.tortoisegitmenu": {
+      "version": "https://github.com/EEEEEEEEthan/UnityTortoiseGitMenu.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "58fffe84a3679ca3ad872d6177c20a4cbae91214"
+    },
     "com.unity.burst": {
       "version": "1.8.13",
       "depth": 1,
