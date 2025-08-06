@@ -11,6 +11,8 @@ Shader "Custom/RedShadowShader"
         _ShadowColor ("Shadow Color", Color) = (1, 0, 0, 1) // 阴影区域的颜色，默认红色
         _ShadowIntensity ("Shadow Intensity", Range(0, 1)) = 0.5 // 阴影效果强度，0-1范围
         _ShadowThreshold ("Shadow Threshold", Range(0, 1)) = 0.9 // 阴影阈值，控制阴影边缘锐度
+        _ShadowBlurRadius ("Shadow Blur Radius", Range(0, 0.01)) = 0.003 // 阴影模糊半径
+        _ShadowSampleCount ("Shadow Sample Count", Range(1, 32)) = 5 // 阴影采样次数（奇数）
     }
 
     // SubShader包含实际的渲染代码
@@ -78,7 +80,46 @@ Shader "Custom/RedShadowShader"
                 half4 _ShadowColor;      // 阴影颜色
                 half _ShadowIntensity;   // 阴影强度
                 half _ShadowThreshold;   // 阴影阈值
+                half _ShadowBlurRadius;  // 阴影模糊半径
+                half _ShadowSampleCount; // 阴影采样次数
             CBUFFER_END
+
+            // 计算模糊阴影的函数 - 通过多次采样获得平均值
+            half CalculateBlurredShadow(float3 worldPos)
+            {
+                half shadowSum = 0;
+                int sampleCount = (int)_ShadowSampleCount;
+                
+                // 确保采样数是奇数，这样可以包含中心点
+                sampleCount = (sampleCount % 2 == 0) ? sampleCount + 1 : sampleCount;
+                
+                // 计算采样网格的半径
+                int halfSamples = sampleCount / 2;
+                
+                // 在XZ平面上进行网格采样（阴影通常在水平面上投射）
+                for(int x = -halfSamples; x <= halfSamples; x++)
+                {
+                    for(int z = -halfSamples; z <= halfSamples; z++)
+                    {
+                        // 计算采样偏移位置
+                        float3 samplePos = worldPos + float3(
+                            x * _ShadowBlurRadius, 
+                            0, 
+                            z * _ShadowBlurRadius
+                        );
+                        
+                        // 获取该位置的阴影坐标
+                        float4 shadowCoord = TransformWorldToShadowCoord(samplePos);
+                        
+                        // 采样阴影并累加
+                        Light sampleLight = GetMainLight(shadowCoord);
+                        shadowSum += sampleLight.shadowAttenuation;
+                    }
+                }
+                
+                // 返回平均值
+                return shadowSum / (sampleCount * sampleCount);
+            }
 
             // 顶点着色器函数
             // 每个顶点都会执行一次，负责将顶点从物体空间变换到屏幕空间
@@ -107,15 +148,8 @@ Shader "Custom/RedShadowShader"
                 // 1. 采样基础纹理并与基础颜色相乘
                 half4 baseColor = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, input.uv) * _BaseColor;
                 
-                // 2. 计算阴影坐标和获取主光源
-                float4 shadowCoord = float4(0, 0, 0, 1);
-                #if defined(_MAIN_LIGHT_SHADOWS) || defined(_MAIN_LIGHT_SHADOWS_CASCADE)
-                    // 将世界空间位置转换为阴影贴图坐标
-                    shadowCoord = TransformWorldToShadowCoord(input.positionWS);
-                #endif
-                
-                // 获取主光源信息（包含阴影衰减）
-                Light mainLight = GetMainLight(shadowCoord);
+                // 2. 获取主光源信息（不包含阴影，用于光照计算）
+                Light mainLight = GetMainLight();
                 
                 // 3. 计算Toon渐变采样坐标
                 float3 lightDir = normalize(mainLight.direction);
@@ -132,9 +166,15 @@ Shader "Custom/RedShadowShader"
                 // 基础颜色与渐变相乘
                 baseColor.rgb *= gradientColor.rgb;
                 
-                // 4. 计算阴影衰减值
-                // 阴影衰减值：1=无阴影（亮），0=完全阴影（暗）
-                half shadowAttenuation = mainLight.shadowAttenuation;
+                // 4. 计算模糊阴影衰减值
+                // 使用多次采样获得平滑的阴影效果
+                #if defined(_MAIN_LIGHT_SHADOWS) || defined(_MAIN_LIGHT_SHADOWS_CASCADE)
+                    half shadowAttenuation = CalculateBlurredShadow(input.positionWS);
+                #else
+                    half shadowAttenuation = 1.0; // 没有阴影时完全亮
+                #endif
+                
+                // 应用阈值处理
                 shadowAttenuation = step(_ShadowThreshold, shadowAttenuation);
                 
                 // 5. 以处理后的基础颜色作为起始颜色

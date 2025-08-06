@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: RedShadowMaterial
+  m_Name: Hand
   m_Shader: {fileID: 4800000, guid: a1b2c3d4e5f6789012345678901234ab, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -34,11 +34,13 @@ Material:
     m_Ints: []
     m_Floats:
     - _Metallic: 0
-    - _ShadowIntensity: 1
-    - _ShadowThreshold: 0.66
+    - _ShadowBlurRadius: 0.00219
+    - _ShadowIntensity: 0.758
+    - _ShadowSampleCount: 6.4
+    - _ShadowThreshold: 0.614
     - _Smoothness: 0.5
     m_Colors:
-    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
+    - _BaseColor: {r: 1, g: 0.863335, b: 0.6839622, a: 1}
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
