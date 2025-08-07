@@ -1,6 +1,8 @@
 Library
 Logs
+Obj
 Temp
 UserSettings
 *.sln
 *.csproj
+*.csproj.AssemblyReference.cache
