@@ -1,9 +1,7 @@
 {
-    "name": "Game.Gameplay",
-    "rootNamespace": "Game.Gameplay",
-    "references": [
-        "GUID:7408e97d33d2a7f4c9bf73ad1234ac58"
-    ],
+    "name": "Game.ResourceManagement",
+    "rootNamespace": "Game.ResourceManagement",
+    "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
