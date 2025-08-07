@@ -2,10 +2,12 @@ using System;
 using Game.Utilities;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 namespace Game.PaintEffect
 {
 	[ExecuteAlways]
 	[RequireComponent(typeof(RectTransform))]
+	[RequireComponent(typeof(RawImage))]
 	public class Viewport : MonoBehaviour
 	{
 #if UNITY_EDITOR
@@ -30,6 +32,7 @@ namespace Game.PaintEffect
 #endif
 		[SerializeField] Camera targetCamera;
 		[NonSerialized] RenderTexture renderTexture;
+		RawImage rawImage;
 		void Update()
 		{
 			if (!targetCamera)
@@ -56,6 +59,7 @@ namespace Game.PaintEffect
 				{
 					renderTexture = RenderTexture.GetTemporary(width, height);
 					targetCamera.targetTexture = renderTexture;
+					(rawImage ??= GetComponent<RawImage>()).texture = renderTexture;
 				}
 			}
 		}

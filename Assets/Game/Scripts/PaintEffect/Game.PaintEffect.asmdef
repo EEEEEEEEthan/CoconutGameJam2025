@@ -2,7 +2,8 @@
     "name": "Game.PaintEffect",
     "rootNamespace": "Game.PaintEffect",
     "references": [
-        "GUID:2f5e0e474cf86d24d91820cca8c2a1db"
+        "GUID:2f5e0e474cf86d24d91820cca8c2a1db",
+        "GUID:2e20789ba13b49b4e8b205754a2f0607"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
