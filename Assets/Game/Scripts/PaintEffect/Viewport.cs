@@ -63,5 +63,15 @@ namespace Game.PaintEffect
 				}
 			}
 		}
+		void OnDisable()
+		{
+			if (renderTexture)
+			{
+				RenderTexture.ReleaseTemporary(renderTexture);
+				renderTexture = null;
+			}
+			if (targetCamera) targetCamera.targetTexture = null;
+			if (rawImage) rawImage.texture = null;
+		}
 	}
 }
