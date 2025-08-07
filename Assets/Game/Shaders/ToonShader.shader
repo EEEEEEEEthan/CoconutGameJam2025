@@ -160,8 +160,27 @@ Shader "Custom/ToonShader"
                 half4 _OutlineColor;     // 描边颜色
             CBUFFER_END
 
+            // 构建与法线垂直的坐标系的辅助函数
+            void BuildTangentSpace(float3 normal, out float3 tangent, out float3 bitangent)
+            {
+                // 使用世界空间上方向作为参考向量
+                float3 up = float3(0, 1, 0);
+                
+                // 如果法线接近上方向，使用前方向作为参考
+                if (abs(dot(normal, up)) > 0.9)
+                {
+                    up = float3(0, 0, 1);
+                }
+                
+                // 计算切向量（与法线垂直）
+                tangent = normalize(cross(up, normal));
+                
+                // 计算副切向量（与法线和切向量都垂直）
+                bitangent = normalize(cross(normal, tangent));
+            }
+
             // 计算模糊阴影的函数 - 通过多次采样获得平均值
-            half CalculateBlurredShadow(float3 worldPos)
+            half CalculateBlurredShadow(float3 worldPos, float3 normal)
             {
                 half shadowSum = 0;
                 int sampleCount = (int)_ShadowSampleCount;
@@ -172,17 +191,19 @@ Shader "Custom/ToonShader"
                 // 计算采样网格的半径
                 int halfSamples = sampleCount / 2;
                 
-                // 在XZ平面上进行网格采样（阴影通常在水平面上投射）
+                // 构建与法线垂直的坐标系
+                float3 tangent, bitangent;
+                BuildTangentSpace(normal, tangent, bitangent);
+                
+                // 在与法线垂直的平面上进行网格采样
                 for(int x = -halfSamples; x <= halfSamples; x++)
                 {
                     for(int z = -halfSamples; z <= halfSamples; z++)
                     {
-                        // 计算采样偏移位置
-                        float3 samplePos = worldPos + float3(
-                            x * _ShadowBlurRadius, 
-                            0, 
-                            z * _ShadowBlurRadius
-                        );
+                        // 计算采样偏移位置（在切空间平面上）
+                        float3 samplePos = worldPos + 
+                            tangent * (x * _ShadowBlurRadius) + 
+                            bitangent * (z * _ShadowBlurRadius);
                         
                         // 获取该位置的阴影坐标
                         float4 shadowCoord = TransformWorldToShadowCoord(samplePos);
@@ -267,7 +288,7 @@ Shader "Custom/ToonShader"
                 // 4. 计算模糊阴影衰减值
                 // 使用多次采样获得平滑的阴影效果
                 #if defined(_MAIN_LIGHT_SHADOWS) || defined(_MAIN_LIGHT_SHADOWS_CASCADE)
-                    half shadowAttenuation = CalculateBlurredShadow(input.positionWS);
+                    half shadowAttenuation = CalculateBlurredShadow(input.positionWS, normalWS);
                 #else
                     half shadowAttenuation = 1.0; // 没有阴影时完全亮
                 #endif
