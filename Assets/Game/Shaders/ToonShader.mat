@@ -37,10 +37,10 @@ Material:
     - _DiagonalWidth: 1
     - _Metallic: 0
     - _OutlineWidth: 0.0125
-    - _ShadowBlurRadius: 0.00212
+    - _ShadowBlurRadius: 0.00046
     - _ShadowIntensity: 0.758
     - _ShadowSampleCount: 11.3
-    - _ShadowThreshold: 0.614
+    - _ShadowThreshold: 0.58
     - _Smoothness: 0.5
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}

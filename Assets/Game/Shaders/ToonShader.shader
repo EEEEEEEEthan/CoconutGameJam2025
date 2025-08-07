@@ -273,14 +273,14 @@ Shader "Custom/ToonShader"
                 #endif
                 
                 // 应用阈值处理
-                shadowAttenuation = step(_ShadowThreshold, shadowAttenuation);
+                shadowAttenuation = max(step(shadowAttenuation, _ShadowThreshold), step(_ShadowThreshold, u));
                 
                 // 5. 以处理后的基础颜色作为起始颜色
                 half4 color = baseColor;
                 
                 // 6. 应用斜线阴影效果
                 // shadowFactor: 0=无阴影区域，1=完全阴影区域
-                half shadowFactor = 1.0 - shadowAttenuation;
+                half shadowFactor = shadowAttenuation;
                 
                 // 只在阴影区域应用斜线图案
                 if(shadowFactor > 0.01) // 避免在非阴影区域计算
