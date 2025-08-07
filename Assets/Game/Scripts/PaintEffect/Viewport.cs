@@ -1,5 +1,6 @@
 using System;
 using Game.Utilities;
+using UnityEditor;
 using UnityEngine;
 namespace Game.PaintEffect
 {
@@ -7,6 +8,26 @@ namespace Game.PaintEffect
 	[RequireComponent(typeof(RectTransform))]
 	public class Viewport : MonoBehaviour
 	{
+#if UNITY_EDITOR
+		[CustomEditor(typeof(Viewport)), CanEditMultipleObjects,]
+		class Editor : UnityEditor.Editor
+		{
+			public override void OnInspectorGUI()
+			{
+				base.OnInspectorGUI();
+				// draw renderTexture
+				if (targets.Length == 1)
+				{
+					var target = (Viewport)this.target;
+					if (target.renderTexture != null)
+					{
+						var rect = GUILayoutUtility.GetRect(256, 256, GUILayout.ExpandWidth(false));
+						EditorGUI.DrawPreviewTexture(rect, target.renderTexture);
+					}
+				}
+			}
+		}
+#endif
 		[SerializeField] Camera targetCamera;
 		[NonSerialized] RenderTexture renderTexture;
 		void Update()
