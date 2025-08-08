@@ -66,5 +66,21 @@ namespace Game.Utilities
 			return result;
 		}
 		public static float ManhattanDistance(this Vector2 @this) => Mathf.Abs(@this.x) + Mathf.Abs(@this.y);
+		/// <summary>
+		///     Rotates the Vector2 clockwise by the specified angle (in degrees).
+		/// </summary>
+		/// <param name="this">The Vector2 to rotate.</param>
+		/// <param name="angleDegrees">The angle to rotate (in degrees).</param>
+		/// <returns>The rotated Vector2.</returns>
+		public static Vector2 RotateClockwise(this Vector2 @this, float angleDegrees)
+		{
+			var angleRadians = angleDegrees * Mathf.Deg2Rad;
+			var cos = Mathf.Cos(angleRadians);
+			var sin = Mathf.Sin(angleRadians);
+			var result = Vector2.zero;
+			result.x = @this.x * cos + @this.y * sin;
+			result.y = -@this.x * sin + @this.y * cos;
+			return result;
+		}
 	}
 }
