@@ -8,16 +8,16 @@ namespace Game.FingerRigging
 		[SerializeField] FingerMuscle muscle;
 		[SerializeField] Transform target;
 		[SerializeField] Transform hint;
+		[SerializeField] Transform handRoot;
 		void LateUpdate()
 		{
 			if (!target) return;
 			var targetDistance = target.position - transform.position;
 			muscle.Progress = targetDistance.magnitude / muscle.MaxLength;
 			var hintDistance = hint.position - transform.position;
-			var right = Vector3.Cross(hintDistance, targetDistance);
+			var right = handRoot.transform.right;
 			var lookDirection = Vector3.Cross(targetDistance, right);
-			var lookUp = hintDistance;
-			transform.LookAt(transform.position + lookDirection, lookUp);
+			transform.LookAt(transform.position + lookDirection, hintDistance);
 		}
 		void OnDrawGizmos()
 		{
