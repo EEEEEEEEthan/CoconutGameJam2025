@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 namespace Game.Utilities
 {
 	public static class Hermite
@@ -51,6 +52,7 @@ namespace Game.Utilities
 				v = 6 * a * p0 + 2 * b * v0 + 6 * c * p1 + 2 * d * v1;
 			}
 		}
+		[Serializable]
 		public struct HermiteTimeline3
 		{
 			public Vector3 p0, v0, p1, v1;
@@ -65,7 +67,7 @@ namespace Game.Utilities
 				var c = -2 * t3 + 3 * t2;
 				var d = t3 - t2;
 				p = a * p0 + b * v0 + c * p1 + d * v1;
-				v = (6 * t2 - 6 * t) * p0 + (3 * t2 - 4 * t + 1) * v0 + (-6 * t2 + 6 * t) * p1 + (3 * t2 - 2 * t) * v1;
+				v = 6 * a * p0 + 2 * b * v0 + 6 * c * p1 + 2 * d * v1;
 			}
 		}
 		public static void Evaluate(float p0, float v0, float p1, float v1, float t, out float p, out float v)
