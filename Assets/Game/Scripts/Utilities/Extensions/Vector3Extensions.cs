@@ -5,7 +5,7 @@ namespace Game.Utilities
 	{
 		public static Vector3Int FloorToInt(this Vector3 @this) => new(Mathf.FloorToInt(@this.x), Mathf.FloorToInt(@this.y), Mathf.FloorToInt(@this.z));
 		public static Vector3Int RoundToInt(this Vector3 @this) => new(Mathf.RoundToInt(@this.x), Mathf.RoundToInt(@this.y), Mathf.RoundToInt(@this.z));
-		public static Vector3 WithX(this Vector3 @this) => new(0, @this.y, @this.z);
+		public static Vector3 WithX(this Vector3 @this, float x) => new(x, @this.y, @this.z);
 		public static Vector3 WithY(this Vector3 @this, float y) => new(@this.x, y, @this.z);
 		public static Vector3 WithZ(this Vector3 @this, float z) => new(@this.x, @this.y, z);
 		public static Vector2 XY(this Vector3 @this) => new(@this.x, @this.y);
