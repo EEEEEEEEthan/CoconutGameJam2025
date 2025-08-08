@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 namespace Game.FingerRigging
 {
@@ -10,16 +11,20 @@ namespace Game.FingerRigging
 		void LateUpdate()
 		{
 			if (!target) return;
-			var distance = transform.position - target.position;
-			muscle.Progress = distance.magnitude / muscle.MaxLength;
-			var direction = muscle.Direction;
-			var targetDirection = target.position - transform.position;
-			// 旋转自己,使得targetDirection与direction平行
-			if (direction.magnitude > 0.001f && targetDirection.magnitude > 0.001f)
-			{
-				var rotation = Quaternion.FromToRotation(direction.normalized, targetDirection.normalized);
-				transform.rotation = rotation * transform.rotation;
-			}
+			var targetDistance = target.position - transform.position;
+			muscle.Progress = targetDistance.magnitude / muscle.MaxLength;
+			var hintDistance = hint.position - transform.position;
+			var right = Vector3.Cross(hintDistance, targetDistance);
+			var lookDirection = Vector3.Cross(targetDistance, right);
+			var lookUp = hintDistance;
+			transform.LookAt(transform.position + lookDirection, lookUp);
+		}
+		void OnDrawGizmos()
+		{
+			Gizmos.color = Color.cyan;
+			Gizmos.DrawLine(transform.position, hint.position);
+			Gizmos.color = Color.red;
+			Gizmos.DrawLine(transform.position, target.position);
 		}
 	}
 }

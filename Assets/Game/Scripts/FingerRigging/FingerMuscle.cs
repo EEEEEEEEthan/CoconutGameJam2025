@@ -1,3 +1,4 @@
+using System;
 using Game.Utilities;
 using UnityEngine;
 namespace Game.FingerRigging
@@ -44,6 +45,7 @@ namespace Game.FingerRigging
 			}
 		}
 #endif
+		[SerializeField] Finger finger;
 		[SerializeField] Transform metacarpophalangealJoint;
 		[SerializeField] Transform proximalInterphalangealJoint;
 		[SerializeField] Transform distalInterphalangealJoint;
@@ -52,6 +54,7 @@ namespace Game.FingerRigging
 		[SerializeField, HideInInspector,] float metacarpophalangeal2ProximalInterphalangeal;
 		[SerializeField, HideInInspector,] float proximalInterphalangeal2DistalInterphalangeal;
 		[SerializeField, HideInInspector,] float distalInterphalangeal2Tip;
+		[SerializeField] Transform handRoot;
 		internal float MaxLength => metacarpophalangeal2ProximalInterphalangeal + proximalInterphalangeal2DistalInterphalangeal + distalInterphalangeal2Tip;
 		internal Vector3 Direction => tip.position - metacarpophalangealJoint.position;
 		internal float Progress
@@ -98,14 +101,17 @@ namespace Game.FingerRigging
 			if (Application.isPlaying) return;
 			UpdateAngles();
 		}
+		void Update()
+		{
+			transform.LookAt(finger.transform.position, handRoot.transform.right);
+		}
 		void UpdateAngles()
 		{
 			GetAngles(progress, out var proximalInterphalangealDegrees, out var distalInterphalangealDegrees);
-			if (metacarpophalangealJoint)
-			{
-				proximalInterphalangealJoint.localEulerAngles = new(proximalInterphalangealDegrees, 0, 0);
-				distalInterphalangealJoint.localEulerAngles = new(distalInterphalangealDegrees, 0, 0);
-			}
+			proximalInterphalangealJoint.localEulerAngles = new(proximalInterphalangealDegrees, 0, 0);
+			distalInterphalangealJoint.localEulerAngles = new(distalInterphalangealDegrees, 0, 0);
+			var rootAngle = Vector3.Angle(metacarpophalangealJoint.up, tip.position - metacarpophalangealJoint.position);
+			metacarpophalangealJoint.localEulerAngles = new(rootAngle, 0, 0);
 		}
 		float GetProgress(float proximalInterphalangealDegrees, float distalInterphalangealDegrees)
 		{
