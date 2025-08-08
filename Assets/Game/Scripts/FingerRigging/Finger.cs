@@ -2,7 +2,7 @@ using UnityEngine;
 namespace Game.FingerRigging
 {
 	[ExecuteAlways]
-	public class Finger : MonoBehaviour
+	class Finger : MonoBehaviour
 	{
 		[SerializeField] FingerMuscle muscle;
 		[SerializeField] Transform target;

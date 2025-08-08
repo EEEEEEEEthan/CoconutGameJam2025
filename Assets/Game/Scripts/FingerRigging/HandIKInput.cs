@@ -1,23 +1,16 @@
 using ReferenceHelper;
 using UnityEngine;
-namespace Game.Gameplay
+namespace Game.FingerRigging
 {
 	public class HandIKInput : MonoBehaviour
 	{
-		public enum LegPoseCode
-		{
-			Idle,
-			LiftForward,
-			LiftUp,
-			LiftBackward,
-		}
 		[SerializeField, ObjectReference,] Hand hand;
 		[SerializeField, ObjectReference,] HandPositionUpdater handPositionUpdater;
 		[SerializeField] LegSmoothing leftLegSmoothing;
 		[SerializeField] LegSmoothing rightLegSmoothing;
 		[SerializeField, HideInInspector,] LegPoseCode leftLeg;
 		[SerializeField, HideInInspector,] LegPoseCode rightLeg;
-		LegPoseCode LeftLeg
+		public LegPoseCode LeftLeg
 		{
 			get => leftLeg;
 			set
@@ -35,7 +28,7 @@ namespace Game.Gameplay
 						break;
 					case LegPoseCode.LiftUp when hand.RaycastSource.LeftHitPoint.HasValue:
 						leftLeg = value;
-						leftLegSmoothing.Step(hand.RaycastSource.LeftHitPoint.Value + Vector3.up * 0.03f, 0.05f);
+						leftLegSmoothing.Step(hand.RaycastSource.LeftHitPoint.Value + Vector3.up * 0.04f, 0.05f);
 						break;
 					case LegPoseCode.LiftBackward when hand.RaycastSource.LeftBackwardHitPoint.HasValue:
 						leftLeg = value;
@@ -44,7 +37,7 @@ namespace Game.Gameplay
 				}
 			}
 		}
-		LegPoseCode RightLeg
+		public LegPoseCode RightLeg
 		{
 			get => rightLeg;
 			set
@@ -71,24 +64,8 @@ namespace Game.Gameplay
 				}
 			}
 		}
-		void Update()
-		{
-			if (Input.GetKey(KeyCode.E))
-				LeftLeg = LegPoseCode.LiftForward;
-			else if (Input.GetKey(KeyCode.W))
-				LeftLeg = LegPoseCode.LiftUp;
-			else if (Input.GetKey(KeyCode.Q))
-				LeftLeg = LegPoseCode.LiftBackward;
-			else
-				LeftLeg = LegPoseCode.Idle;
-			if (Input.GetKey(KeyCode.D))
-				RightLeg = LegPoseCode.LiftForward;
-			else if (Input.GetKey(KeyCode.S))
-				RightLeg = LegPoseCode.LiftUp;
-			else if (Input.GetKey(KeyCode.A))
-				RightLeg = LegPoseCode.LiftBackward;
-			else
-				RightLeg = LegPoseCode.Idle;
-		}
+		public void Crunch() => hand.JumpSmoothing.Crunch();
+		public void Stand() => hand.JumpSmoothing.Stand();
+		public void Jump(float speed) => hand.JumpSmoothing.Jump(speed);
 	}
 }

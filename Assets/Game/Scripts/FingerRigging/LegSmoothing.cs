@@ -1,9 +1,8 @@
 using System.Collections;
-using Game.FingerRigging;
 using UnityEngine;
-namespace Game.Gameplay
+namespace Game.FingerRigging
 {
-	public class LegSmoothing : MonoBehaviour
+	class LegSmoothing : MonoBehaviour
 	{
 		[SerializeField] float speed = 1;
 		[SerializeField] Finger otherFinger;
