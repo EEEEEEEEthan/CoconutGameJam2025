@@ -41,6 +41,12 @@ namespace Game.Gameplay
 			if (b) Gizmos.DrawSphere(b.position, 0.001f);
 			if (c) Gizmos.DrawSphere(c.position, 0.001f);
 			if (d) Gizmos.DrawSphere(d.position, 0.001f);
+			if (target)
+			{
+				Gizmos.color = Color.blue;
+				Gizmos.DrawSphere(target.position, 0.001f);
+				if (d) Gizmos.DrawLine(target.position, d.position);
+			}
 #if UNITY_EDITOR
 			if (a && b) UnityEditor.Handles.Label((a.position + b.position) * 0.5f, metacarpophalangeal2ProximalInterphalangeal.ToString("F2"));
 			if (b && c) UnityEditor.Handles.Label((b.position + c.position) * 0.5f, proximalInterphalangeal2DistalInterphalangeal.ToString("F3"));
@@ -52,6 +58,10 @@ namespace Game.Gameplay
 			metacarpophalangeal2ProximalInterphalangeal = Vector3.Distance(metacarpophalangealJoint.position, proximalInterphalangealJoint.position);
 			proximalInterphalangeal2DistalInterphalangeal = Vector3.Distance(proximalInterphalangealJoint.position, distalInterphalangealJoint.position);
 			distalInterphalangeal2Tip = Vector3.Distance(distalInterphalangealJoint.position, tip.position);
+		}
+		void Update()
+		{
+			
 		}
 	}
 }
