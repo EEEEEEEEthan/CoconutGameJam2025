@@ -3,21 +3,19 @@ using UnityEngine;
 namespace Game.Gameplay
 {
 	[ExecuteAlways]
-	public class FingerRigging : MonoBehaviour
+	public class Finger : MonoBehaviour
 	{
 #if UNITY_EDITOR
-		[UnityEditor.CustomEditor(typeof(FingerRigging))]
+		[UnityEditor.CustomEditor(typeof(Finger))]
 		class Editor : UnityEditor.Editor
 		{
 			public override void OnInspectorGUI()
 			{
 				base.OnInspectorGUI();
-				var target = (FingerRigging)this.target;
-				UnityEditor.EditorGUILayout.LabelField("distance",
+				var target = (Finger)this.target;
+				UnityEditor.EditorGUILayout.LabelField("true progress",
 					target
-						.GetDistance(
-							target.proximalInterphalangealJoint.localEulerAngles.x,
-							target.distalInterphalangealJoint.localEulerAngles.x)
+						.GetProgress(target.proximalInterphalangealJoint.localEulerAngles.x, target.distalInterphalangealJoint.localEulerAngles.x)
 						.ToString("F3"));
 				if (GUILayout.Button("Record Positions"))
 				{
@@ -56,12 +54,11 @@ namespace Game.Gameplay
 		public float MaxLength => metacarpophalangeal2ProximalInterphalangeal + proximalInterphalangeal2DistalInterphalangeal + distalInterphalangeal2Tip;
 		void Update()
 		{
-			var distance = progress * MaxLength;
-			GetAngles(distance, out var proximalInterphalangealDegrees, out var distalInterphalangealDegrees);
+			GetAngles(progress, out var proximalInterphalangealDegrees, out var distalInterphalangealDegrees);
 			if (metacarpophalangealJoint)
 			{
-				proximalInterphalangealJoint.localEulerAngles = new(-proximalInterphalangealDegrees, 0, 0);
-				distalInterphalangealJoint.localEulerAngles = new(-distalInterphalangealDegrees, 0, 0);
+				proximalInterphalangealJoint.localEulerAngles = new(proximalInterphalangealDegrees, 0, 0);
+				distalInterphalangealJoint.localEulerAngles = new(distalInterphalangealDegrees, 0, 0);
 			}
 		}
 		void OnDrawGizmos()
@@ -93,87 +90,40 @@ namespace Game.Gameplay
 			if (c && d) UnityEditor.Handles.Label((c.position + d.position) * 0.5f, distalInterphalangeal2Tip.ToString("F3"));
 #endif
 		}
-		float GetDistance(float proximalInterphalangealDegrees, float distalInterphalangealDegrees)
+		float GetProgress(float proximalInterphalangealDegrees, float distalInterphalangealDegrees)
 		{
 			var v0 = new Vector2(metacarpophalangeal2ProximalInterphalangeal, 0);
-			var v1 = new Vector2(proximalInterphalangeal2DistalInterphalangeal, 0).RotateClockwise(proximalInterphalangealDegrees);
-			var v2 = new Vector2(distalInterphalangeal2Tip, 0).RotateClockwise(proximalInterphalangealDegrees + distalInterphalangealDegrees);
+			var v1 = new Vector2(proximalInterphalangeal2DistalInterphalangeal, 0).RotateClockwise(-proximalInterphalangealDegrees);
+			var v2 = new Vector2(distalInterphalangeal2Tip, 0).RotateClockwise(-proximalInterphalangealDegrees - distalInterphalangealDegrees);
 			var p1 = v0;
 			var p2 = p1 + v1;
 			var p3 = p2 + v2;
-			if (p3.y > 0) return -p3.magnitude;
-			return p3.magnitude;
+			return p3.magnitude / MaxLength;
 		}
-		void GetAngles(float preferredDistance, out float proximalInterphalangealDegrees, out float distalInterphalangealDegrees)
+		void GetAngles(float preferredProgress, out float proximalInterphalangealDegrees, out float distalInterphalangealDegrees)
 		{
-			// 初始化角度
-			proximalInterphalangealDegrees = 0f;
-			distalInterphalangealDegrees = 0f;
-			
-			// 如果目标距离大于等于最大长度，不需要弯曲
-			if (preferredDistance >= MaxLength)
+			proximalInterphalangealDegrees = 0;
+			distalInterphalangealDegrees = 0;
+			var minProximalInterphalangealDegrees = 0f;
+			var minDistalInterphalangealDegrees = 0f;
+			var maxProximalInterphalangealDegrees = -100f;
+			var maxDistalInterphalangealDegrees = -50f;
+			for (var i = 0; i < 100; i++)
 			{
-				return;
-			}
-			
-			// 如果目标距离为负数或接近0，完全弯曲
-			if (preferredDistance <= 0.001f)
-			{
-				proximalInterphalangealDegrees = 90f;
-				distalInterphalangealDegrees = 90f;
-				return;
-			}
-			
-			// 使用数值方法求解最佳角度
-			float bestProximal = 0f;
-			float bestDistal = 0f;
-			float bestError = float.MaxValue;
-			
-			// 粗略搜索
-			for (int i = 0; i <= 18; i++) // 0-90度，每5度一个步长
-			{
-				float proximal = i * 5f;
-				for (int j = 0; j <= 18; j++)
+				proximalInterphalangealDegrees = (maxProximalInterphalangealDegrees + minProximalInterphalangealDegrees) * 0.5f;
+				distalInterphalangealDegrees = (maxDistalInterphalangealDegrees + minDistalInterphalangealDegrees) * 0.5f;
+				var progress = GetProgress(proximalInterphalangealDegrees, distalInterphalangealDegrees);
+				if (progress < preferredProgress)
 				{
-					float distal = j * 5f;
-					float currentDistance = GetDistance(proximal, distal);
-					float error = Mathf.Abs(currentDistance - preferredDistance);
-					
-					if (error < bestError)
-					{
-						bestError = error;
-						bestProximal = proximal;
-						bestDistal = distal;
-					}
+					maxProximalInterphalangealDegrees = proximalInterphalangealDegrees;
+					maxDistalInterphalangealDegrees = distalInterphalangealDegrees;
+				}
+				else
+				{
+					minProximalInterphalangealDegrees = proximalInterphalangealDegrees;
+					minDistalInterphalangealDegrees = distalInterphalangealDegrees;
 				}
 			}
-			
-			// 精细搜索 - 在最佳点周围进行更精确的搜索
-			float searchRange = 5f;
-			float step = 0.5f;
-			
-			for (float proximal = Mathf.Max(0, bestProximal - searchRange); 
-			     proximal <= Mathf.Min(90, bestProximal + searchRange); 
-			     proximal += step)
-			{
-				for (float distal = Mathf.Max(0, bestDistal - searchRange); 
-				     distal <= Mathf.Min(90, bestDistal + searchRange); 
-				     distal += step)
-				{
-					float currentDistance = GetDistance(proximal, distal);
-					float error = Mathf.Abs(currentDistance - preferredDistance);
-					
-					if (error < bestError)
-					{
-						bestError = error;
-						bestProximal = proximal;
-						bestDistal = distal;
-					}
-				}
-			}
-			
-			proximalInterphalangealDegrees = bestProximal;
-			distalInterphalangealDegrees = bestDistal;
 		}
 	}
 }
