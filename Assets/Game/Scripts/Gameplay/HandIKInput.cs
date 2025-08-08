@@ -35,7 +35,7 @@ namespace Game.Gameplay
 						break;
 					case LegPoseCode.LiftUp when hand.RaycastSource.LeftHitPoint.HasValue:
 						leftLeg = value;
-						leftLegSmoothing.Step(hand.RaycastSource.LeftHitPoint.Value + Vector3.up * 0.03f, 0.05f);
+						leftLegSmoothing.Step(hand.RaycastSource.LeftHitPoint.Value + Vector3.up * 0.04f, 0.05f);
 						break;
 					case LegPoseCode.LiftBackward when hand.RaycastSource.LeftBackwardHitPoint.HasValue:
 						leftLeg = value;
