@@ -32,6 +32,13 @@ namespace Game.Gameplay
 			if (direction.magnitude < minDistance) position = root.position + direction.normalized * minDistance;
 			target.position = position;
 			var rotation = Quaternion.Slerp(target.rotation, targetTransform.rotation, Time.deltaTime / smoothTime);
+			// 计算出rotation在mid空间下的eulerAngles
+			var localRotation = Quaternion.Inverse(mid.rotation) * rotation;
+			var eulerAngles = localRotation.eulerAngles;
+			// 对x轴进行clamp限制
+			eulerAngles.x = Mathf.Clamp(eulerAngles.x > 180 ? eulerAngles.x - 360 : eulerAngles.x, xAngleRange.x, xAngleRange.y);
+			// 转换回世界空间并应用到target
+			target.rotation = mid.rotation * Quaternion.Euler(eulerAngles);
 		}
 		void OnDrawGizmos()
 		{
