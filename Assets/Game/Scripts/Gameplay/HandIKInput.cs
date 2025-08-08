@@ -1,4 +1,3 @@
-using System;
 using ReferenceHelper;
 using UnityEngine;
 namespace Game.Gameplay
@@ -28,22 +27,47 @@ namespace Game.Gameplay
 				{
 					case LegPoseCode.Idle when hand.Left.Tip.position.GetTerrainHit().HasValue:
 						leftLeg = value;
-						leftLegSmoothing.SetStep(hand.Left.Tip.position.GetTerrainHit().Value, default);
+						leftLegSmoothing.Step(hand.Left.Tip.position.GetTerrainHit().Value, 0.05f);
 						break;
 					case LegPoseCode.LiftForward when hand.RaycastSource.LeftForwardHitPoint.HasValue:
 						leftLeg = value;
-						leftLegSmoothing.SetStep(hand.RaycastSource.LeftForwardHitPoint.Value, Vector3.down * 0.01f);
+						leftLegSmoothing.Step(hand.RaycastSource.LeftForwardHitPoint.Value, 0.05f);
 						break;
 					case LegPoseCode.LiftUp when hand.RaycastSource.LeftHitPoint.HasValue:
 						leftLeg = value;
-						leftLegSmoothing.SetStep(hand.RaycastSource.LeftHitPoint.Value + Vector3.up * 0.5f, Vector3.down * 0.01f);
+						leftLegSmoothing.Step(hand.RaycastSource.LeftHitPoint.Value, 0.05f);
 						break;
 					case LegPoseCode.LiftBackward when hand.RaycastSource.LeftBackwardHitPoint.HasValue:
 						leftLeg = value;
-						leftLegSmoothing.SetStep(hand.RaycastSource.LeftBackwardHitPoint.Value, Vector3.down * 0.01f);
+						leftLegSmoothing.Step(hand.RaycastSource.LeftBackwardHitPoint.Value, 0.05f);
 						break;
-					default:
-						throw new ArgumentOutOfRangeException(nameof(value), value, null);
+				}
+			}
+		}
+		LegPoseCode RightLeg
+		{
+			get => rightLeg;
+			set
+			{
+				if (rightLeg == value) return;
+				switch (value)
+				{
+					case LegPoseCode.Idle when hand.Right.Tip.position.GetTerrainHit().HasValue:
+						rightLeg = value;
+						rightLegSmoothing.Step(hand.Right.Tip.position.GetTerrainHit().Value, 0.05f);
+						break;
+					case LegPoseCode.LiftForward when hand.RaycastSource.RightForwardHitPoint.HasValue:
+						rightLeg = value;
+						rightLegSmoothing.Step(hand.RaycastSource.RightForwardHitPoint.Value, 0.05f);
+						break;
+					case LegPoseCode.LiftUp when hand.RaycastSource.RightHitPoint.HasValue:
+						rightLeg = value;
+						rightLegSmoothing.Step(hand.RaycastSource.RightHitPoint.Value, 0.05f);
+						break;
+					case LegPoseCode.LiftBackward when hand.RaycastSource.RightBackwardHitPoint.HasValue:
+						rightLeg = value;
+						rightLegSmoothing.Step(hand.RaycastSource.RightBackwardHitPoint.Value, 0.05f);
+						break;
 				}
 			}
 		}
@@ -57,6 +81,14 @@ namespace Game.Gameplay
 				LeftLeg = LegPoseCode.LiftBackward;
 			else
 				LeftLeg = LegPoseCode.Idle;
+			if( Input.GetKey(KeyCode.D))
+				RightLeg = LegPoseCode.LiftForward;
+			else if (Input.GetKey(KeyCode.S))
+				RightLeg = LegPoseCode.LiftUp;
+			else if (Input.GetKey(KeyCode.A))
+				RightLeg = LegPoseCode.LiftBackward;
+			else
+				RightLeg = LegPoseCode.Idle;
 		}
 	}
 }

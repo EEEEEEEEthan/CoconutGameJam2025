@@ -39,20 +39,15 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2541025785295573056}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 785d944cef7f4bbaada6441071cedbec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 1
-  timeline:
-    p0: {x: 0, y: 0, z: 0}
-    v0: {x: 0, y: 0, z: 0}
-    p1: {x: 0, y: 0, z: 0}
-    v1: {x: 0, y: 0, z: 0}
-    t0: 0
-    t1: 0
-  tangent: {x: 0, y: 0, z: 0}
+  otherFinger: {fileID: 7100922172808739757}
+  preferredPosition: {x: 0, y: 0, z: 0}
+  velocity: {x: 0, y: 0, z: 0}
 --- !u!1 &2866124834854062207
 GameObject:
   m_ObjectHideFlags: 0
@@ -154,20 +149,15 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4267696685394187313}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 785d944cef7f4bbaada6441071cedbec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 1
-  timeline:
-    p0: {x: 0, y: 0, z: 0}
-    v0: {x: 0, y: 0, z: 0}
-    p1: {x: 0, y: 0, z: 0}
-    v1: {x: 0, y: 0, z: 0}
-    t0: 0
-    t1: 0
-  tangent: {x: 0, y: 0, z: 0}
+  otherFinger: {fileID: 1962668834071013479}
+  preferredPosition: {x: 0, y: 0, z: 0}
+  velocity: {x: 0, y: 0, z: 0}
 --- !u!1 &4307604305913483315
 GameObject:
   m_ObjectHideFlags: 0
