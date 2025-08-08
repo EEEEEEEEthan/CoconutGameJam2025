@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 2259.801, g: 2399.3088, b: 3490.9888, a: 1}
+  m_IndirectSpecularColor: {r: 2259.801, g: 2399.301, b: 3490.9497, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -470,7 +470,7 @@ MonoBehaviour:
   proximalInterphalangealJoint: {fileID: 549224194}
   distalInterphalangealJoint: {fileID: 275749670}
   tip: {fileID: 334560066}
-  target: {fileID: 74218577}
+  targetDistance: 0
   metacarpophalangeal2ProximalInterphalangeal: 0.035890743
   proximalInterphalangeal2DistalInterphalangeal: 0.03242407
   distalInterphalangeal2Tip: 0.02386577
@@ -589,7 +589,7 @@ MonoBehaviour:
   proximalInterphalangealJoint: {fileID: 7910032399408131453}
   distalInterphalangealJoint: {fileID: 7910032399408131454}
   tip: {fileID: 968980730}
-  target: {fileID: 296117388}
+  targetDistance: 0.08856852
   metacarpophalangeal2ProximalInterphalangeal: 0.031180926
   proximalInterphalangeal2DistalInterphalangeal: 0.02509629
   distalInterphalangeal2Tip: 0.032291308
