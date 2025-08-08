@@ -83,7 +83,6 @@ namespace Game.FingerRigging
 			if (a && d)
 			{
 				var ray = new Ray(a.position, d.position - a.position);
-				Vector3.Distance(a.position, d.position);
 				var targetDistance = MaxLength * progress;
 				var preferredPosition = ray.GetPoint(targetDistance);
 				Gizmos.color = Color.blue;
