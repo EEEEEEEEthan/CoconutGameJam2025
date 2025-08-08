@@ -20,8 +20,8 @@ namespace Game.Gameplay
 			StopAllCoroutines();
 			StartCoroutine(SetStep(target, height));
 		}
-		/// <param name="target">目标坐标</param>
-		/// <param name="height">最高高度</param>
+		/// <param name="target">Target position</param>
+		/// <param name="height">Maximum height</param>
 		IEnumerator SetStep(Vector3 target, float height)
 		{
 			// 倒抛物线 从preferredPosition开始,到target结束,最高点y = otherFinger.Tip.position.y + height
