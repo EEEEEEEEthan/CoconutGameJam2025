@@ -14,7 +14,13 @@ namespace Game.Gameplay
 			get => yOffset;
 			set => yOffset = value;
 		}
-		void LateUpdate() =>
-			hand.HandRoot.position = ((hand.Left.Target.position + hand.Right.Target.position) * 0.5f + offset).WithY(Mathf.Min(hand.Left.Tip.position.y, hand.Right.Tip.position.y) + YOffset + offset.y);
+		void LateUpdate()
+		{
+			hand.HandRoot.position =
+				((hand.Left.Target.position + hand.Right.Target.position) * 0.5f + offset).WithY(
+					Mathf.Min(hand.Left.Tip.position.y, hand.Right.Tip.position.y) + YOffset + offset.y);
+			if(hand.HandYRoot)
+				hand.HandYRoot.position = hand.HandRoot.position + new Vector3(0, YOffset, 0);
+		}
 	}
 }

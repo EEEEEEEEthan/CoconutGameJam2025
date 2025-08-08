@@ -11,6 +11,7 @@ namespace Game.Gameplay
 		[SerializeField, HideInInspector,] bool jumping;
 		[SerializeField, HideInInspector,] bool crunching;
 		[SerializeField, HideInInspector,] Vector3 lastRaycastHitPoint;
+		[SerializeField, HideInInspector,] float smoothVelocity;
 		public bool Jumping => jumping;
 		void Update()
 		{
@@ -18,16 +19,18 @@ namespace Game.Gameplay
 			if (jumping)
 			{
 				y += velocity * Time.deltaTime;
-				velocity -= acceleration * Time.deltaTime;
+				var multiplier = velocity < 0 ? 0.1f : 1;
+				velocity -= acceleration * Time.deltaTime * multiplier;
 				if (velocity < 0 && y < lastRaycastHitPoint.y) jumping = false;
 			}
 			else
 			{
 				if (crunching)
-					y = -0.1f;
+					y = -0.01f;
 				else
 					y = 0;
 			}
+			hand.HandPositionUpdater.YOffset = Mathf.SmoothDamp(hand.HandPositionUpdater.YOffset, y, ref smoothVelocity, 0.01f);
 		}
 		public void Jump(float speed)
 		{

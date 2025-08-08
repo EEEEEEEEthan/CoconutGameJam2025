@@ -82,15 +82,10 @@ namespace Game.Gameplay
 				RightLeg = LegPoseCode.LiftBackward;
 			else
 				RightLeg = LegPoseCode.Idle;
+			if (Input.GetKeyDown(KeyCode.Space))
+				hand.JumpSmoothing.Crunch();
+			if (Input.GetKeyUp(KeyCode.Space))
+				hand.JumpSmoothing.Jump(0.1f);
 		}
-		// 蹲下
-		public void Crouch()
-		{
-			if (handPositionUpdater)
-				handPositionUpdater.YOffset = -0.1f;
-			else
-				Debug.LogWarning("HandPositionUpdater is not assigned.");
-		}
-		public void Jump() { }
 	}
 }
