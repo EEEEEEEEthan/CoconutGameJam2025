@@ -9,15 +9,11 @@ namespace Game.Gameplay
 		[SerializeField] Finger left;
 		[SerializeField] Finger right;
 		[SerializeField] Vector3 offset;
-		void Update()
+		public float YOffset
 		{
-			var maxHeight = Mathf.Min(left.TipDistance, right.TipDistance);
-			var sideLength = Mathf.Min(left.TipDistance, right.TipDistance);
-			var width = (left.Tip.position - right.Tip.position).magnitude;
-			var halfWidth = width * 0.5f;
-			var height = Mathf.Sqrt(sideLength * sideLength - halfWidth * halfWidth);
-			var down = Vector3.down * (maxHeight - height);
-			handRoot.position = (left.Target.position + right.Target.position) * 0.5f + offset;
+			get => offset.y;
+			set => offset.y = value;
 		}
+		void LateUpdate() => handRoot.position = (left.Target.position + right.Target.position) * 0.5f + offset;
 	}
 }
