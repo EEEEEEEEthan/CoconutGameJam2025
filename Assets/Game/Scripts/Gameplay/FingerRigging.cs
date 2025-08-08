@@ -1,3 +1,4 @@
+using Game.Utilities;
 using UnityEditor;
 using UnityEngine;
 namespace Game.Gameplay
@@ -51,6 +52,16 @@ namespace Game.Gameplay
 		void Update()
 		{
 			var distance = progress * MaxLength;
+		}
+		float GetDistance(float proximalInterphalangealDegrees, float distalInterphalangealDegrees)
+		{
+			var v0 = new Vector2(metacarpophalangeal2ProximalInterphalangeal, 0);
+			var v1 = new Vector2(proximalInterphalangeal2DistalInterphalangeal, 0).RotateClockwise(proximalInterphalangealDegrees);
+			var v2 = new Vector2(distalInterphalangeal2Tip, 0).RotateClockwise(proximalInterphalangealDegrees + distalInterphalangealDegrees);
+			var p1 = v0;
+			var p2 = p1 + v1;
+			var p3 = p2 + v2;
+			return p3.magnitude;
 		}
 		void OnDrawGizmos()
 		{
