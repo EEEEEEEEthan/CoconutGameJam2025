@@ -16,8 +16,8 @@ namespace Game.Gameplay
 			StopAllCoroutines();
 			StartCoroutine(SetStep(target, height));
 		}
-		/// <param name="target">目标坐标</param>
-		/// <param name="height">最高高度</param>
+		/// <param name="target">Target position</param>
+		/// <param name="height">Maximum height</param>
 		IEnumerator SetStep(Vector3 target, float height)
 		{
 			var startPos = preferredPosition;
