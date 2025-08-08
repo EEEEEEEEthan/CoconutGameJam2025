@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 namespace Game.FingerRigging
 {
@@ -9,6 +8,10 @@ namespace Game.FingerRigging
 		[SerializeField] Transform target;
 		[SerializeField] Transform hint;
 		[SerializeField] Transform handRoot;
+		public float MaxDistance => muscle.MaxLength;
+		public float TipDistance => (muscle.transform.position - target.position).magnitude;
+		public Transform Tip => muscle.transform;
+		public Transform Target => target;
 		void LateUpdate()
 		{
 			if (!target) return;
