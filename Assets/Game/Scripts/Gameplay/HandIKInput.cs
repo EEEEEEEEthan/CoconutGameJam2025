@@ -81,7 +81,7 @@ namespace Game.Gameplay
 				LeftLeg = LegPoseCode.LiftBackward;
 			else
 				LeftLeg = LegPoseCode.Idle;
-			if( Input.GetKey(KeyCode.D))
+			if (Input.GetKey(KeyCode.D))
 				RightLeg = LegPoseCode.LiftForward;
 			else if (Input.GetKey(KeyCode.S))
 				RightLeg = LegPoseCode.LiftUp;
