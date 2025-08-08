@@ -14,6 +14,14 @@ namespace Game.Gameplay
 			get => offset.y;
 			set => offset.y = value;
 		}
-		void LateUpdate() => handRoot.position = (left.Target.position + right.Target.position) * 0.5f + offset;
+		void LateUpdate()
+		{
+			if (handRoot == null || left == null || right == null || left.Target == null || right.Target == null)
+			{
+				// Optionally, log a warning here if desired
+				return;
+			}
+			handRoot.position = (left.Target.position + right.Target.position) * 0.5f + offset;
+		}
 	}
 }
