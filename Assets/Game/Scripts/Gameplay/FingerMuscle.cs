@@ -17,6 +17,7 @@ namespace Game.Gameplay
 					target
 						.GetProgress(target.proximalInterphalangealJoint.localEulerAngles.x, target.distalInterphalangealJoint.localEulerAngles.x)
 						.ToString("F3"));
+				UnityEditor.EditorGUILayout.LabelField("root angle", target.RootAngle.ToString("F3"));
 				if (GUILayout.Button("Record Positions"))
 				{
 					{
@@ -51,17 +52,19 @@ namespace Game.Gameplay
 		[SerializeField, HideInInspector,] float metacarpophalangeal2ProximalInterphalangeal;
 		[SerializeField, HideInInspector,] float proximalInterphalangeal2DistalInterphalangeal;
 		[SerializeField, HideInInspector,] float distalInterphalangeal2Tip;
-		public float MaxLength => metacarpophalangeal2ProximalInterphalangeal + proximalInterphalangeal2DistalInterphalangeal + distalInterphalangeal2Tip;
-		public float Progress
+		internal float MaxLength => metacarpophalangeal2ProximalInterphalangeal + proximalInterphalangeal2DistalInterphalangeal + distalInterphalangeal2Tip;
+		internal Vector3 Direction => tip.position - metacarpophalangealJoint.position;
+		internal float Progress
 		{
 			get => progress;
-			private set
+			set
 			{
 				if (progress == value) return;
 				progress = value;
 				UpdateAngles();
 			}
 		}
+		internal float RootAngle => Vector3.Angle(metacarpophalangealJoint.up, tip.position - metacarpophalangealJoint.position);
 		void OnDrawGizmos()
 		{
 			var a = metacarpophalangealJoint;
