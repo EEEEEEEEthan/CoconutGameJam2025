@@ -14,10 +14,10 @@ namespace Game.FingerRigging
 			if (!target) return;
 			var targetDistance = target.position - transform.position;
 			muscle.Progress = targetDistance.magnitude / muscle.MaxLength;
-			var hintDistance = hint.position - transform.position;
+			muscle.UpdateDirection();
 			var right = handRoot.transform.right;
 			var lookDirection = Vector3.Cross(targetDistance, right);
-			transform.LookAt(transform.position + lookDirection, hintDistance);
+			transform.LookAt(transform.position + lookDirection, targetDistance);
 		}
 		void OnDrawGizmos()
 		{
