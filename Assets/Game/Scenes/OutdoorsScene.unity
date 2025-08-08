@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 2259.801, g: 2399.301, b: 3490.9497, a: 1}
+  m_IndirectSpecularColor: {r: 2259.801, g: 2399.2932, b: 3490.9966, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -470,7 +470,7 @@ MonoBehaviour:
   proximalInterphalangealJoint: {fileID: 549224194}
   distalInterphalangealJoint: {fileID: 275749670}
   tip: {fileID: 334560066}
-  targetDistance: 0
+  progress: 0
   metacarpophalangeal2ProximalInterphalangeal: 0.035890743
   proximalInterphalangeal2DistalInterphalangeal: 0.03242407
   distalInterphalangeal2Tip: 0.02386577
@@ -589,7 +589,7 @@ MonoBehaviour:
   proximalInterphalangealJoint: {fileID: 7910032399408131453}
   distalInterphalangealJoint: {fileID: 7910032399408131454}
   tip: {fileID: 968980730}
-  targetDistance: 0.08856852
+  progress: 0
   metacarpophalangeal2ProximalInterphalangeal: 0.031180926
   proximalInterphalangeal2DistalInterphalangeal: 0.02509629
   distalInterphalangeal2Tip: 0.032291308
@@ -1162,12 +1162,12 @@ PrefabInstance:
     - target: {fileID: -6324838637534744440, guid: a8f24dded6790fe499607db878798633,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.99959767
       objectReference: {fileID: 0}
     - target: {fileID: -6324838637534744440, guid: a8f24dded6790fe499607db878798633,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0.02836377
       objectReference: {fileID: 0}
     - target: {fileID: -6324838637534744440, guid: a8f24dded6790fe499607db878798633,
         type: 3}
@@ -1287,12 +1287,12 @@ PrefabInstance:
     - target: {fileID: 8963858674870567042, guid: a8f24dded6790fe499607db878798633,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.9935021
       objectReference: {fileID: 0}
     - target: {fileID: 8963858674870567042, guid: a8f24dded6790fe499607db878798633,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0.113813855
       objectReference: {fileID: 0}
     - target: {fileID: 8963858674870567042, guid: a8f24dded6790fe499607db878798633,
         type: 3}
