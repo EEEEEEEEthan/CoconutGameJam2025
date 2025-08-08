@@ -3,16 +3,16 @@ using UnityEngine;
 namespace Game.Gameplay
 {
 	[ExecuteAlways]
-	public class Finger : MonoBehaviour
+	public class FingerMuscle : MonoBehaviour
 	{
 #if UNITY_EDITOR
-		[UnityEditor.CustomEditor(typeof(Finger))]
+		[UnityEditor.CustomEditor(typeof(FingerMuscle))]
 		class Editor : UnityEditor.Editor
 		{
 			public override void OnInspectorGUI()
 			{
 				base.OnInspectorGUI();
-				var target = (Finger)this.target;
+				var target = (FingerMuscle)this.target;
 				UnityEditor.EditorGUILayout.LabelField("true progress",
 					target
 						.GetProgress(target.proximalInterphalangealJoint.localEulerAngles.x, target.distalInterphalangealJoint.localEulerAngles.x)
@@ -52,13 +52,14 @@ namespace Game.Gameplay
 		[SerializeField, HideInInspector,] float proximalInterphalangeal2DistalInterphalangeal;
 		[SerializeField, HideInInspector,] float distalInterphalangeal2Tip;
 		public float MaxLength => metacarpophalangeal2ProximalInterphalangeal + proximalInterphalangeal2DistalInterphalangeal + distalInterphalangeal2Tip;
-		void Update()
+		public float Progress
 		{
-			GetAngles(progress, out var proximalInterphalangealDegrees, out var distalInterphalangealDegrees);
-			if (metacarpophalangealJoint)
+			get => progress;
+			private set
 			{
-				proximalInterphalangealJoint.localEulerAngles = new(proximalInterphalangealDegrees, 0, 0);
-				distalInterphalangealJoint.localEulerAngles = new(distalInterphalangealDegrees, 0, 0);
+				if (progress == value) return;
+				progress = value;
+				UpdateAngles();
 			}
 		}
 		void OnDrawGizmos()
@@ -89,6 +90,20 @@ namespace Game.Gameplay
 			if (b && c) UnityEditor.Handles.Label((b.position + c.position) * 0.5f, proximalInterphalangeal2DistalInterphalangeal.ToString("F3"));
 			if (c && d) UnityEditor.Handles.Label((c.position + d.position) * 0.5f, distalInterphalangeal2Tip.ToString("F3"));
 #endif
+		}
+		void OnValidate()
+		{
+			if (Application.isPlaying) return;
+			UpdateAngles();
+		}
+		void UpdateAngles()
+		{
+			GetAngles(progress, out var proximalInterphalangealDegrees, out var distalInterphalangealDegrees);
+			if (metacarpophalangealJoint)
+			{
+				proximalInterphalangealJoint.localEulerAngles = new(proximalInterphalangealDegrees, 0, 0);
+				distalInterphalangealJoint.localEulerAngles = new(distalInterphalangealDegrees, 0, 0);
+			}
 		}
 		float GetProgress(float proximalInterphalangealDegrees, float distalInterphalangealDegrees)
 		{
