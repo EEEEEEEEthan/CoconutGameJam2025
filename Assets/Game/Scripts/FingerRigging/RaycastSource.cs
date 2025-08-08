@@ -1,8 +1,8 @@
 using ReferenceHelper;
 using UnityEngine;
-namespace Game.Gameplay
+namespace Game.FingerRigging
 {
-	public class RaycastSource : MonoBehaviour
+	class RaycastSource : MonoBehaviour
 	{
 		[SerializeField, ObjectReference("LeftForward"),]
 		Transform leftForwardSource;

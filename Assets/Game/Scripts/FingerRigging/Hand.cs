@@ -1,9 +1,8 @@
-using Game.FingerRigging;
 using ReferenceHelper;
 using UnityEngine;
-namespace Game.Gameplay
+namespace Game.FingerRigging
 {
-	public class Hand : MonoBehaviour
+	class Hand : MonoBehaviour
 	{
 		[SerializeField] Transform handRoot;
 		[SerializeField] Transform handYRoot;

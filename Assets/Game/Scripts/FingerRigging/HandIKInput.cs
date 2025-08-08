@@ -1,6 +1,6 @@
 using ReferenceHelper;
 using UnityEngine;
-namespace Game.Gameplay
+namespace Game.FingerRigging
 {
 	public class HandIKInput : MonoBehaviour
 	{
@@ -64,28 +64,8 @@ namespace Game.Gameplay
 				}
 			}
 		}
-		void Update()
-		{
-			if (Input.GetKey(KeyCode.E))
-				LeftLeg = LegPoseCode.LiftForward;
-			else if (Input.GetKey(KeyCode.W))
-				LeftLeg = LegPoseCode.LiftUp;
-			else if (Input.GetKey(KeyCode.Q))
-				LeftLeg = LegPoseCode.LiftBackward;
-			else
-				LeftLeg = LegPoseCode.Idle;
-			if (Input.GetKey(KeyCode.D))
-				RightLeg = LegPoseCode.LiftForward;
-			else if (Input.GetKey(KeyCode.S))
-				RightLeg = LegPoseCode.LiftUp;
-			else if (Input.GetKey(KeyCode.A))
-				RightLeg = LegPoseCode.LiftBackward;
-			else
-				RightLeg = LegPoseCode.Idle;
-			if (Input.GetKeyDown(KeyCode.Space))
-				hand.JumpSmoothing.Crunch();
-			if (Input.GetKeyUp(KeyCode.Space))
-				hand.JumpSmoothing.Jump(0.1f);
-		}
+		public void Crunch() => hand.JumpSmoothing.Crunch();
+		public void Stand() => hand.JumpSmoothing.Stand();
+		public void Jump(float speed) => hand.JumpSmoothing.Jump(speed);
 	}
 }

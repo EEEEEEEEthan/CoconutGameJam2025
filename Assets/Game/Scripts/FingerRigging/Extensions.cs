@@ -1,7 +1,7 @@
 using UnityEngine;
-namespace Game.Gameplay
+namespace Game.FingerRigging
 {
-	public static class Extensions
+	static class Extensions
 	{
 		public static Vector3? GetTerrainHit(this Vector3 position, float up = 0)
 		{

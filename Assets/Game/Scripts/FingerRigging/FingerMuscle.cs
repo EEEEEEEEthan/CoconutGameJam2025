@@ -3,7 +3,7 @@ using UnityEngine;
 namespace Game.FingerRigging
 {
 	[ExecuteAlways]
-	public class FingerMuscle : MonoBehaviour
+	class FingerMuscle : MonoBehaviour
 	{
 #if UNITY_EDITOR
 		[UnityEditor.CustomEditor(typeof(FingerMuscle))]

@@ -1,10 +1,10 @@
 using Game.Utilities;
 using ReferenceHelper;
 using UnityEngine;
-namespace Game.Gameplay
+namespace Game.FingerRigging
 {
 	[ExecuteAlways]
-	public class HandPositionUpdater : MonoBehaviour
+	class HandPositionUpdater : MonoBehaviour
 	{
 		[SerializeField, ObjectReference,] Hand hand;
 		[SerializeField] Vector3 offset;

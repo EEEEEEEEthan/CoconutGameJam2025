@@ -1,8 +1,8 @@
 using ReferenceHelper;
 using UnityEngine;
-namespace Game.Gameplay
+namespace Game.FingerRigging
 {
-	public class JumpSmoothing : MonoBehaviour
+	class JumpSmoothing : MonoBehaviour
 	{
 		[SerializeField, ObjectReference,] Hand hand;
 		[SerializeField] float acceleration = 10f; // Acceleration when jumping

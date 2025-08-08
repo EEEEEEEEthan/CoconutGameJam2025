@@ -1,4 +1,4 @@
-namespace Game.Gameplay
+namespace Game.FingerRigging
 {
 	public enum LegPoseCode
 	{
