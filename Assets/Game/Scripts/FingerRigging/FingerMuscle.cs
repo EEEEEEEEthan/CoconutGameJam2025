@@ -1,6 +1,6 @@
 using Game.Utilities;
 using UnityEngine;
-namespace Game.Gameplay
+namespace Game.FingerRigging
 {
 	[ExecuteAlways]
 	public class FingerMuscle : MonoBehaviour
@@ -59,7 +59,6 @@ namespace Game.Gameplay
 			get => progress;
 			set
 			{
-				if (progress == value) return;
 				progress = value;
 				UpdateAngles();
 			}

@@ -1,0 +1,16 @@
+{
+    "name": "Game.FingerRigging",
+    "rootNamespace": "Game.FingerRigging",
+    "references": [
+        "GUID:2f5e0e474cf86d24d91820cca8c2a1db"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
