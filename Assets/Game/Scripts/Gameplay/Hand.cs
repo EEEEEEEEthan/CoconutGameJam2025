@@ -11,6 +11,5 @@ namespace Game.Gameplay
 		public Transform HandRoot => handRoot;
 		public Finger Left => left;
 		public Finger Right => right;
-
 	}
 }
