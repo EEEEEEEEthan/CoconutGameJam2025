@@ -1,5 +1,3 @@
-using System;
-using Game.Utilities;
 using UnityEditor;
 using UnityEngine;
 namespace Game.Gameplay
@@ -52,21 +50,7 @@ namespace Game.Gameplay
 		public float MaxLength => metacarpophalangeal2ProximalInterphalangeal + proximalInterphalangeal2DistalInterphalangeal + distalInterphalangeal2Tip;
 		void Update()
 		{
-		}
-		float GetDistance(float angleProgress)
-		{
-			var distalInterphalangealJointAngle = angleProgress.Remapped(0, 1, 0, -50);
-			var proximalInterphalangealJointAngle = angleProgress.Remapped(0, 1, 0, -100);
-			var v0 = new Vector2(metacarpophalangeal2ProximalInterphalangeal, 0);
-			var v1 = new Vector2(proximalInterphalangeal2DistalInterphalangeal, 0).RotateClockwise(proximalInterphalangealJointAngle);
-			var v2 = new Vector2(distalInterphalangeal2Tip, 0).RotateClockwise(distalInterphalangealJointAngle);
-			var p2 = v0 + v1;
-			var p3 = p2 + v2;
-			return p3.magnitude;
-		}
-		float GetAngleProgress(float distance)
-		{
-			
+			var distance = progress * MaxLength;
 		}
 		void OnDrawGizmos()
 		{
@@ -84,8 +68,8 @@ namespace Game.Gameplay
 			if (a && d)
 			{
 				var ray = new Ray(a.position, d.position - a.position);
-				var distance = Vector3.Distance(a.position, d.position);
-				var targetDistance = distance * progress;
+				Vector3.Distance(a.position, d.position);
+				var targetDistance = MaxLength * progress;
 				var preferredPosition = ray.GetPoint(targetDistance);
 				Gizmos.color = Color.blue;
 				Gizmos.DrawSphere(preferredPosition, 0.001f);
