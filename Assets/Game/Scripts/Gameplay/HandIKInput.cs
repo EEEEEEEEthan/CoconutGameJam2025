@@ -4,20 +4,13 @@ namespace Game.Gameplay
 {
 	public class HandIKInput : MonoBehaviour
 	{
-		public enum LegPoseCode
-		{
-			Idle,
-			LiftForward,
-			LiftUp,
-			LiftBackward,
-		}
 		[SerializeField, ObjectReference,] Hand hand;
 		[SerializeField, ObjectReference,] HandPositionUpdater handPositionUpdater;
 		[SerializeField] LegSmoothing leftLegSmoothing;
 		[SerializeField] LegSmoothing rightLegSmoothing;
 		[SerializeField, HideInInspector,] LegPoseCode leftLeg;
 		[SerializeField, HideInInspector,] LegPoseCode rightLeg;
-		LegPoseCode LeftLeg
+		public LegPoseCode LeftLeg
 		{
 			get => leftLeg;
 			set
@@ -44,7 +37,7 @@ namespace Game.Gameplay
 				}
 			}
 		}
-		LegPoseCode RightLeg
+		public LegPoseCode RightLeg
 		{
 			get => rightLeg;
 			set
@@ -90,5 +83,14 @@ namespace Game.Gameplay
 			else
 				RightLeg = LegPoseCode.Idle;
 		}
+		// 蹲下
+		public void Crouch()
+		{
+			if (handPositionUpdater)
+				handPositionUpdater.YOffset = -0.1f;
+			else
+				Debug.LogWarning("HandPositionUpdater is not assigned.");
+		}
+		public void Jump() { }
 	}
 }
