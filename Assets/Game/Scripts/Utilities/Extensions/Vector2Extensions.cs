@@ -67,11 +67,11 @@ namespace Game.Utilities
 		}
 		public static float ManhattanDistance(this Vector2 @this) => Mathf.Abs(@this.x) + Mathf.Abs(@this.y);
 		/// <summary>
-		///     将Vector2顺时针旋转指定角度（度）
+		///     Rotates the Vector2 clockwise by the specified angle (in degrees).
 		/// </summary>
-		/// <param name="this">要旋转的Vector2</param>
-		/// <param name="angleDegrees">旋转角度（度）</param>
-		/// <returns>旋转后的Vector2</returns>
+		/// <param name="this">The Vector2 to rotate.</param>
+		/// <param name="angleDegrees">The angle to rotate (in degrees).</param>
+		/// <returns>The rotated Vector2.</returns>
 		public static Vector2 RotateClockwise(this Vector2 @this, float angleDegrees)
 		{
 			var angleRadians = angleDegrees * Mathf.Deg2Rad;
