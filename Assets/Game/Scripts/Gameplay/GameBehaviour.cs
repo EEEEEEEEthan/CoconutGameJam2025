@@ -1,9 +1,10 @@
+using System;
 using UnityEngine;
 namespace Game.Gameplay
 {
 	public class GameBehaviour : MonoBehaviour
 	{
-		[SerializeField] GameRoot root;
-		public GameRoot Root => root ??= GetComponentInParent<GameRoot>();
+		[SerializeField, HideInInspector,] GameRoot gameRoot;
+		public GameRoot Root => gameRoot ??= GetComponentInParent<GameRoot>();
 	}
 }
