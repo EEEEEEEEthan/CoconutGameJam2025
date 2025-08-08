@@ -102,18 +102,35 @@ namespace Game.Gameplay
 		}
 		void GetAngles(float preferredProgress, out float proximalInterphalangealDegrees, out float distalInterphalangealDegrees)
 		{
+			const int maxIterations = 100;
+			const float tolerance = 0.001f;
 			proximalInterphalangealDegrees = 0;
 			distalInterphalangealDegrees = 0;
 			var minProximalInterphalangealDegrees = 0f;
 			var minDistalInterphalangealDegrees = 0f;
 			var maxProximalInterphalangealDegrees = -100f;
 			var maxDistalInterphalangealDegrees = -50f;
-			for (var i = 0; i < 100; i++)
+			if (preferredProgress >= 1)
+			{
+				proximalInterphalangealDegrees = minProximalInterphalangealDegrees;
+				distalInterphalangealDegrees = minDistalInterphalangealDegrees;
+				return;
+			}
+			var minProgress = GetProgress(maxProximalInterphalangealDegrees, maxDistalInterphalangealDegrees);
+			if (preferredProgress <= minProgress)
+			{
+				proximalInterphalangealDegrees = maxProximalInterphalangealDegrees;
+				distalInterphalangealDegrees = maxDistalInterphalangealDegrees;
+				return;
+			}
+			for (var i = 0; i < maxIterations; i++)
 			{
 				proximalInterphalangealDegrees = (maxProximalInterphalangealDegrees + minProximalInterphalangealDegrees) * 0.5f;
 				distalInterphalangealDegrees = (maxDistalInterphalangealDegrees + minDistalInterphalangealDegrees) * 0.5f;
 				var progress = GetProgress(proximalInterphalangealDegrees, distalInterphalangealDegrees);
-				if (progress < preferredProgress)
+				var delta = progress - preferredProgress;
+				if (Mathf.Abs(delta) <= tolerance) break;
+				if (delta < 0)
 				{
 					maxProximalInterphalangealDegrees = proximalInterphalangealDegrees;
 					maxDistalInterphalangealDegrees = distalInterphalangealDegrees;
