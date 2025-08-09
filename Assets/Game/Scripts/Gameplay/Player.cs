@@ -1,6 +1,9 @@
+using System;
 using Game.FingerRigging;
 using Game.Utilities;
+using Game.Utilities.UnityTools;
 using UnityEngine;
+using GUIDebug = Game.Utilities.GUIDebug;
 namespace Game.Gameplay
 {
 	public class Player : GameBehaviour
@@ -93,18 +96,35 @@ namespace Game.Gameplay
 			if (Input.GetKeyDown(KeyCode.Alpha1))
 			{
 				animator.SetTrigger(s_hi);
+				BlockIK(0.2f, 1, 0.5f);
 			}
 			if (Input.GetKeyDown(KeyCode.Alpha2))
 			{
 				animator.SetTrigger(s_surpirse);
+				BlockIK(0.2f, 1, 0.5f);
 			}
 			if (Input.GetKeyDown(KeyCode.Alpha3))
 			{
 				animator.SetTrigger(s_shy);
+				BlockIK(0.2f, 1.5f, 2f);
 			}
 			if (Input.GetKeyDown(KeyCode.Alpha4))
 			{
 				animator.SetTrigger(s_angry);
+				BlockIK(0.4f, 1.5f, 0.2f);
+			}
+		}
+		async void BlockIK(float fadeInSeconds, float keepSeconds, float fadeOutSeconds)
+		{
+			try
+			{
+				handIKInput.SetWeight(0, fadeInSeconds);
+				await MainThreadTimerManager.Await(keepSeconds);
+				handIKInput.SetWeight(1, fadeOutSeconds);
+			}
+			catch (Exception e)
+			{
+				Debug.LogException(e);
 			}
 		}
 	}

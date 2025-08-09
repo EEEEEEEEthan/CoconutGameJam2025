@@ -340,6 +340,7 @@ MonoBehaviour:
   proximalInterphalangeal2DistalInterphalangeal: 0.025096294
   distalInterphalangeal2Tip: 0.030481298
   handRoot: {fileID: 4480779024981632134}
+  hand: {fileID: 6506769248980130231}
 --- !u!135 &4350409923647009076
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -545,6 +546,7 @@ MonoBehaviour:
   proximalInterphalangeal2DistalInterphalangeal: 0.0324241
   distalInterphalangeal2Tip: 0.02258579
   handRoot: {fileID: 4480779024981632134}
+  hand: {fileID: 6506769248980130231}
 --- !u!135 &8481443199892596212
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -725,6 +727,7 @@ MonoBehaviour:
   handPositionUpdater: {fileID: 1825635491118288324}
   leftGroundDetect: {fileID: 8025927087252974879}
   rightGroundDetect: {fileID: 1118883095152402020}
+  input: {fileID: 1858106007382618880}
 --- !u!114 &1825635491118288324
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -758,6 +761,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6a2faf4479c00447b8748ba39429b94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weight: 1
   hand: {fileID: 6506769248980130231}
   handPositionUpdater: {fileID: 1825635491118288324}
   leftLegSmoothing: {fileID: 8377917380609114151}

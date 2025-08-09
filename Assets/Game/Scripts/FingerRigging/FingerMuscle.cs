@@ -1,4 +1,5 @@
 using Game.Utilities;
+using Game.Utilities.Pools;
 using UnityEngine;
 namespace Game.FingerRigging
 {
@@ -54,6 +55,7 @@ namespace Game.FingerRigging
 		[SerializeField, HideInInspector,] float proximalInterphalangeal2DistalInterphalangeal;
 		[SerializeField, HideInInspector,] float distalInterphalangeal2Tip;
 		[SerializeField] Transform handRoot;
+		[SerializeField] Hand hand;
 		Transform[] transforms;
 		internal float MaxLength => metacarpophalangeal2ProximalInterphalangeal + proximalInterphalangeal2DistalInterphalangeal + distalInterphalangeal2Tip;
 		internal Vector3 Direction => tip.position - metacarpophalangealJoint.position;
@@ -103,13 +105,22 @@ namespace Game.FingerRigging
 		internal void UpdateDirection() => transform.LookAt(finger.transform.position, handRoot.transform.right);
 		void UpdateAngles()
 		{
+			if (hand.Input.Weight <= 0) return;
 			transforms ??= metacarpophalangealJoint.GetComponentsInChildren<Transform>();
+			using var _ = ListPoolThreaded<Quaternion>.Rent(out var originalQuaternions);
+			for (var i = 0; i < transforms.Length; i++) originalQuaternions.Add(transforms[i].localRotation);
 			foreach (var transform in transforms) transform.localEulerAngles = default;
 			GetAngles(progress, out var proximalInterphalangealDegrees, out var distalInterphalangealDegrees);
 			proximalInterphalangealJoint.localEulerAngles = new(proximalInterphalangealDegrees, 0, 0);
 			distalInterphalangealJoint.localEulerAngles = new(distalInterphalangealDegrees, 0, 0);
 			var rootAngle = Vector3.Angle(metacarpophalangealJoint.up, tip.position - metacarpophalangealJoint.position);
 			metacarpophalangealJoint.localEulerAngles = new(rootAngle, 0, 0);
+			for (var i = 0; i < transforms.Length; ++i)
+			{
+				var originalQuaternion = originalQuaternions[i];
+				var transform = transforms[i];
+				transform.localRotation = Quaternion.Slerp(originalQuaternion, transform.localRotation, hand.Input.Weight);
+			}
 		}
 		float GetProgress(float proximalInterphalangealDegrees, float distalInterphalangealDegrees)
 		{

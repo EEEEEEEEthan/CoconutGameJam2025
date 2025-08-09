@@ -24,6 +24,13 @@ namespace Game.Utilities.Smoothing
 			try
 			{
 				var flag = ++operationFlag;
+				if (value == Value) return;
+				if (smoothTime <= 0)
+				{
+					Value = value;
+					OnValueChanged?.TryInvoke(Value);
+					return;
+				}
 				var startTime = UnityEngine.Time.time;
 				while (flag == operationFlag)
 				{
@@ -63,6 +70,13 @@ namespace Game.Utilities.Smoothing
 			try
 			{
 				var flag = ++operationFlag;
+				if (smoothTime <= 0)
+				{
+					Value = value;
+					OnValueChanged?.TryInvoke(Value);
+					velocity = 0f;
+					return;
+				}
 				while (flag == operationFlag)
 				{
 					Value = Mathf.SmoothDamp(Value, value, ref velocity, smoothTime);

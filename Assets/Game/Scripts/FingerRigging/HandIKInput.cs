@@ -7,7 +7,7 @@ namespace Game.FingerRigging
 {
 	public class HandIKInput : MonoBehaviour
 	{
-		[SerializeField] internal float weight;
+		[SerializeField, Range(0, 1),] float weight = 1;
 		[SerializeField, ObjectReference,] Hand hand;
 		[SerializeField, ObjectReference,] HandPositionUpdater handPositionUpdater;
 		[SerializeField] LegSmoothing leftLegSmoothing;
@@ -89,13 +89,14 @@ namespace Game.FingerRigging
 		{
 			leftLegSmoothing.transform.parent = transform.parent;
 			rightLegSmoothing.transform.parent = transform.parent;
+			weight = weightSmoothing.Value;
 		}
 		void OnDestroy()
 		{
 			leftLegSmoothing.Destroy();
 			rightLegSmoothing.Destroy();
 		}
-		public void SetWeight(float weight, float duration) { }
+		public void SetWeight(float weight, float duration) => weightSmoothing.Set(weight, duration);
 		public void Crunch(bool crunch) => hand.HandPositionUpdater.Crunch(crunch);
 		public void Jump(float speed, Action callback)
 		{
