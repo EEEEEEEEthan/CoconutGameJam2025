@@ -9,8 +9,10 @@ namespace Game.FingerRigging
 		[SerializeField] Finger left;
 		[SerializeField] Finger right;
 		[SerializeField] RaycastSource raycastSource;
-		[SerializeField, ObjectReference] HandPositionUpdater handPositionUpdater;
-		[SerializeField, ObjectReference] JumpSmoothing jumpSmoothing;
+		[SerializeField, ObjectReference,] HandPositionUpdater handPositionUpdater;
+		[SerializeField, ObjectReference,] JumpSmoothing jumpSmoothing;
+		[SerializeField] GroundDetect leftGroundDetect;
+		[SerializeField] GroundDetect rightGroundDetect;
 		public Transform HandRoot => handRoot;
 		public Transform HandYRoot => handYRoot;
 		public Finger Left => left;
@@ -18,5 +20,7 @@ namespace Game.FingerRigging
 		public RaycastSource RaycastSource => raycastSource;
 		public HandPositionUpdater HandPositionUpdater => handPositionUpdater;
 		public JumpSmoothing JumpSmoothing => jumpSmoothing;
+		public GroundDetect LeftGroundDetect => leftGroundDetect;
+		public GroundDetect RightGroundDetect => rightGroundDetect;
 	}
 }
