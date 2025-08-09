@@ -25,16 +25,18 @@ namespace Game.Gameplay
 			handIKInput.LeftGroundDetect.OnTriggerExited += collider => Debug.Log($"left trigger exited: {collider.name}");
 			handIKInput.RightGroundDetect.OnTriggerEntered += collider => Debug.Log($"right trigger entered: {collider.name}");
 			handIKInput.RightGroundDetect.OnTriggerExited += collider => Debug.Log($"right trigger exited: {collider.name}");
-			GameRoot.WaterGame.OnLevelCompleted += level =>
-			{
-				GUIDebug.CreateWindow($"You completed level {level}",
-					close =>
-					{
-						GUILayout.Label("You can listen to GameRoot.WaterGame.OnLevelCompleted event to handle level completion logic.", GUILayout.Width(400));
-						GUILayout.Label("Next level automatically opened. See WaterGame/WaterGameJudge");
-						if (GUILayout.Button("Got it")) close();
-					});
-			};
+			if (GameRoot.WaterGame)
+				GameRoot.WaterGame.OnLevelCompleted += level =>
+				{
+					GUIDebug.CreateWindow($"You completed level {level}",
+						close =>
+						{
+							GUILayout.Label("You can listen to GameRoot.WaterGame.OnLevelCompleted event to handle level completion logic.",
+								GUILayout.Width(400));
+							GUILayout.Label("Next level automatically opened. See WaterGame/WaterGameJudge");
+							if (GUILayout.Button("Got it")) close();
+						});
+				};
 		}
 		void Update()
 		{
