@@ -35,7 +35,7 @@ namespace Game.Utilities
 		{
 			var disposable = audioSourceThreadedPool.Rent(out source);
 			source.outputAudioMixerGroup = @this;
-			source.Reset();
+			source.volume = 1;
 			return disposable;
 		}
 		public static async void PlayAsync(this AudioMixerGroup @this, AudioClip clip)

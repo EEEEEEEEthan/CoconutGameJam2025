@@ -1,6 +1,9 @@
+using System;
 using Game.FingerRigging;
 using Game.Utilities;
+using Game.Utilities.UnityTools;
 using UnityEngine;
+using GUIDebug = Game.Utilities.GUIDebug;
 namespace Game.Gameplay
 {
 	public class Player : GameBehaviour
@@ -19,20 +22,18 @@ namespace Game.Gameplay
 		public HandIKInput HandIkInput => handIKInput;
 		void Awake()
 		{
-			handIKInput.LeftGroundDetect.OnTriggerEntered += collider => Debug.Log($"left trigger entered: {collider.name}");
-			handIKInput.LeftGroundDetect.OnTriggerExited += collider => Debug.Log($"left trigger exited: {collider.name}");
-			handIKInput.RightGroundDetect.OnTriggerEntered += collider => Debug.Log($"right trigger entered: {collider.name}");
-			handIKInput.RightGroundDetect.OnTriggerExited += collider => Debug.Log($"right trigger exited: {collider.name}");
-			GameRoot.WaterGame.OnLevelCompleted += level =>
-			{
-				GUIDebug.CreateWindow($"You completed level {level}",
-					close =>
-					{
-						GUILayout.Label("You can listen to GameRoot.WaterGame.OnLevelCompleted event to handle level completion logic.", GUILayout.Width(400));
-						GUILayout.Label("Next level automatically opened. See WaterGame/WaterGameJudge");
-						if (GUILayout.Button("Got it")) close();
-					});
-			};
+			if (GameRoot.WaterGame)
+				GameRoot.WaterGame.OnLevelCompleted += level =>
+				{
+					GUIDebug.CreateWindow($"You completed level {level}",
+						close =>
+						{
+							GUILayout.Label("You can listen to GameRoot.WaterGame.OnLevelCompleted event to handle level completion logic.",
+								GUILayout.Width(400));
+							GUILayout.Label("Next level automatically opened. See WaterGame/WaterGameJudge");
+							if (GUILayout.Button("Got it")) close();
+						});
+				};
 		}
 		void Update()
 		{
@@ -97,26 +98,43 @@ namespace Game.Gameplay
 			{
 				animator.SetTrigger(s_hi);
 				isInSpecialAnim = true;
+				BlockIK(0.2f, 1, 0.5f);
 			}
 			if (Input.GetKeyDown(KeyCode.Alpha2))
 			{
 				animator.SetTrigger(s_surpirse);
 				isInSpecialAnim = true;
+				BlockIK(0.2f, 1, 0.5f);
 			}
 			if (Input.GetKeyDown(KeyCode.Alpha3))
 			{
 				animator.SetTrigger(s_shy);
 				isInSpecialAnim = true;
+				BlockIK(0.2f, 1.5f, 2f);
 			}
 			if (Input.GetKeyDown(KeyCode.Alpha4))
 			{
 				animator.SetTrigger(s_angry);
 				isInSpecialAnim = true;
+				BlockIK(0.4f, 1.5f, 0.2f);
 			}
 		}
 		public void SetSpecialAnimEnd()
 		{
 			isInSpecialAnim = false;
+		}
+		async void BlockIK(float fadeInSeconds, float keepSeconds, float fadeOutSeconds)
+		{
+			try
+			{
+				handIKInput.SetWeight(0, fadeInSeconds);
+				await MainThreadTimerManager.Await(keepSeconds);
+				handIKInput.SetWeight(1, fadeOutSeconds);
+			}
+			catch (Exception e)
+			{
+				Debug.LogException(e);
+			}
 		}
 	}
 }

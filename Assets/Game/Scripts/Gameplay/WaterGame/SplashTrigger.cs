@@ -1,19 +1,36 @@
 using Game.ResourceManagement;
 using Game.Utilities;
+using Game.Utilities.Pools;
 using UnityEngine;
 namespace Game.Gameplay.WaterGame
 {
 	public class SplashTrigger : GameBehaviour
 	{
-		void OnTriggerEnter(Collider other)
+		static void HandleSplash(Collision other, bool isEnter)
 		{
-			var position = other.transform.position.WithY(transform.position.y);
-			Instantiate(ResourceTable.splashPrefab.Main, position, Quaternion.Euler(-90, 0, 0));
+			var velocity = other.relativeVelocity;
+			if (velocity == default)
+			{
+				if (other.collider.TryGetComponent<VelocityCalculator>(out var calculator))
+					velocity = calculator.Velocity;
+				else
+					return;
+			}
+			using (ListPoolThreaded<ContactPoint>.Rent(out var contactPoints))
+			{
+				other.GetContacts(contactPoints);
+				var speed = velocity.magnitude;
+				var direction = isEnter ? -velocity.normalized : velocity.normalized;
+				foreach (var point in contactPoints)
+				{
+					var gameObject = Instantiate(ResourceTable.splashPrefab.Main, point.point - direction * 0.01f, Quaternion.LookRotation(direction));
+					var particleSystem = gameObject.GetComponent<ParticleSystem>();
+					var emission = particleSystem.emission;
+					emission.rateOverTime = speed.Remapped(0, 0.5f, 100, 1000).Clamped(100, 1000);
+				}
+			}
 		}
-		void OnTriggerExit(Collider other)
-		{
-			var position = other.transform.position.WithY(transform.position.y);
-			Instantiate(ResourceTable.splashPrefab.Main, position, Quaternion.Euler(-90, 0, 0));
-		}
+		void OnCollisionEnter(Collision other) => HandleSplash(other, true);
+		void OnCollisionExit(Collision other) => HandleSplash(other, false);
 	}
 }
