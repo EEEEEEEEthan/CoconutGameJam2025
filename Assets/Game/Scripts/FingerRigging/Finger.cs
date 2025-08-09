@@ -10,6 +10,7 @@ namespace Game.FingerRigging
 		[SerializeField] Transform handRoot;
 		public float MaxDistance => muscle.MaxLength;
 		public float TipDistance => (muscle.transform.position - target.position).magnitude;
+		public float Progress => muscle.Progress;
 		public Transform Tip => muscle.transform;
 		public Transform Target => target;
 		void LateUpdate()
