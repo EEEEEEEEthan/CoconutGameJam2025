@@ -2,7 +2,7 @@ using Game.FingerRigging;
 using UnityEngine;
 namespace Game.Gameplay
 {
-	public class Player: MonoBehaviour
+	public class Player : GameBehaviour
 	{
 		[SerializeField] HandIKInput handIKInput;
 		void Update()
@@ -23,10 +23,8 @@ namespace Game.Gameplay
 				handIKInput.RightLeg = LegPoseCode.LiftBackward;
 			else
 				handIKInput.RightLeg = LegPoseCode.Idle;
-			if (Input.GetKeyDown(KeyCode.Space))
-				handIKInput.Crunch();
-			if (Input.GetKeyUp(KeyCode.Space))
-				handIKInput.Jump(0.1f);
+			if (Input.GetKeyDown(KeyCode.Space)) handIKInput.Crunch();
+			if (Input.GetKeyUp(KeyCode.Space)) handIKInput.Jump(0.1f);
 		}
 	}
 }
