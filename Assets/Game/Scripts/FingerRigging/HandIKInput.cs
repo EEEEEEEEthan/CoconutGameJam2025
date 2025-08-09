@@ -1,3 +1,4 @@
+using System;
 using Game.Utilities;
 using ReferenceHelper;
 using UnityEngine;
@@ -11,8 +12,12 @@ namespace Game.FingerRigging
 		[SerializeField] LegSmoothing rightLegSmoothing;
 		[SerializeField, HideInInspector,] LegPoseCode leftLeg;
 		[SerializeField, HideInInspector,] LegPoseCode rightLeg;
+		[SerializeField] Collider leftCollider;
+		[SerializeField] Collider rightCollider;
 		public GroundDetect LeftGroundDetect => hand.LeftGroundDetect;
 		public GroundDetect RightGroundDetect => hand.RightGroundDetect;
+		public bool Jumping => hand.HandPositionUpdater.Jumping;
+		public bool Crunching => hand.HandPositionUpdater.Crunching;
 		public LegPoseCode LeftLeg
 		{
 			get => leftLeg;
@@ -37,6 +42,7 @@ namespace Game.FingerRigging
 						break;
 				}
 				leftLeg = value;
+				OnLeftLegChanged?.TryInvoke();
 			}
 		}
 		public LegPoseCode RightLeg
@@ -63,7 +69,16 @@ namespace Game.FingerRigging
 						break;
 				}
 				rightLeg = value;
+				OnRightLegChanged?.TryInvoke();
 			}
+		}
+		public event Action OnLeftLegChanged;
+		public event Action OnRightLegChanged;
+		public event Action OnJump;
+		public event Action OnLanded
+		{
+			add => hand.HandPositionUpdater.OnLanded += value;
+			remove => hand.HandPositionUpdater.OnLanded -= value;
 		}
 		void Awake()
 		{
@@ -76,6 +91,11 @@ namespace Game.FingerRigging
 			rightLegSmoothing.Destroy();
 		}
 		public void Crunch(bool crunch) => hand.HandPositionUpdater.Crunch(crunch);
-		public void Jump(float speed) => hand.HandPositionUpdater.Jump(speed);
+		public void Jump(float speed, Action callback)
+		{
+			if (Jumping) return;
+			hand.HandPositionUpdater.Jump(speed, callback);
+			OnJump?.TryInvoke();
+		}
 	}
 }
