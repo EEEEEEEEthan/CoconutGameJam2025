@@ -6,9 +6,13 @@ namespace Game.FingerRigging
 	{
 		[SerializeField] float speed = 1;
 		[SerializeField] Finger otherFinger;
-		[SerializeField] Vector3 preferredPosition;
-		[SerializeField] Vector3 velocity;
-		void Awake() => Step(transform.position, 0.01f);
+		[SerializeField, HideInInspector,] Vector3 preferredPosition;
+		[SerializeField, HideInInspector,] Vector3 velocity;
+		void Awake()
+		{
+			preferredPosition = transform.position;
+			velocity = default;
+		}
 		void Update() => transform.position = Vector3.SmoothDamp(transform.position, preferredPosition, ref velocity, 0.1f);
 		public void Step(Vector3 target, float height)
 		{
