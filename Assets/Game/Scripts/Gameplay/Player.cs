@@ -73,7 +73,7 @@ namespace Game.Gameplay
 			if (Input.GetKeyUp(KeyCode.Space))
 			{
 				handIKInput.Crunch(false);
-				handIKInput.Jump(4);
+				handIKInput.Jump(1);
 			}
 		}
 	}
