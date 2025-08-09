@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 2259.84, g: 2399.2932, b: 3491.0356, a: 1}
+  m_IndirectSpecularColor: {r: 2259.8323, g: 2399.2854, b: 3491.024, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -929,6 +929,7 @@ GameObject:
   - component: {fileID: 1990352622}
   - component: {fileID: 1990352621}
   - component: {fileID: 1990352620}
+  - component: {fileID: 1990352624}
   m_Layer: 4
   m_Name: Water
   m_TagString: Untagged
@@ -1017,13 +1018,27 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1990352619}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.7276, y: -0.004, z: 0.0239}
   m_LocalScale: {x: 0.5, y: 0.01, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 2135327886}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1990352624
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1990352619}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4182e3eec046f214793276d45ebdf201, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  splashParticle: {fileID: 2008292395564346661, guid: 5e32de7ad8c958545bf5188d419e3cf6,
+    type: 3}
 --- !u!1 &2013410473
 GameObject:
   m_ObjectHideFlags: 1
@@ -1216,6 +1231,7 @@ Transform:
   - {fileID: 432432461}
   - {fileID: 890886230}
   - {fileID: 2047783956}
+  - {fileID: 1990352623}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2135327887
@@ -1230,12 +1246,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3571e7839c5225e48a973c3aefef180c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 174921305544573682}
 --- !u!4 &174921305544573681 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6190928797500159636, guid: d3f078975b7693a499b11b16b254ee89,
     type: 3}
   m_PrefabInstance: {fileID: 1496530206534054981}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &174921305544573682 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8321010921258803449, guid: d3f078975b7693a499b11b16b254ee89,
+    type: 3}
+  m_PrefabInstance: {fileID: 1496530206534054981}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da9d6ae9cb3040c6a84ee5576a6c31dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1496530206534054981
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1450,4 +1479,3 @@ SceneRoots:
   m_Roots:
   - {fileID: 2013410475}
   - {fileID: 2135327886}
-  - {fileID: 1990352623}

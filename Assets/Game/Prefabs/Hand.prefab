@@ -778,7 +778,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da9d6ae9cb3040c6a84ee5576a6c31dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
   handIKInput: {fileID: 1858106007382618880}
   animator: {fileID: 2469827012165198104}
 --- !u!1001 &2347161783440485067

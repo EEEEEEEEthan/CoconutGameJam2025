@@ -5,12 +5,13 @@ namespace Game.Gameplay
 {
 	public class Player : GameBehaviour
 	{
-		[SerializeField] HandIKInput handIKInput;
-		[SerializeField] Animator animator;
 		static readonly int s_walkLeft = Animator.StringToHash("WalkLeft");
 		static readonly int s_walkRight = Animator.StringToHash("WalkRight");
 		static readonly int s_standLeft = Animator.StringToHash("StandLeft");
 		static readonly int s_standRight = Animator.StringToHash("StandRight");
+		[SerializeField] HandIKInput handIKInput;
+		[SerializeField] Animator animator;
+		public HandIKInput HandIkInput => handIKInput;
 		void Awake()
 		{
 			handIKInput.LeftGroundDetect.OnTriggerEntered += collider => Debug.Log($"left trigger entered: {collider.name}");
