@@ -1,3 +1,4 @@
+using System;
 using Game.Utilities;
 using Game.Utilities.Pools;
 using UnityEngine;
@@ -56,7 +57,7 @@ namespace Game.FingerRigging
 		[SerializeField, HideInInspector,] float distalInterphalangeal2Tip;
 		[SerializeField] Transform handRoot;
 		[SerializeField] Hand hand;
-		Transform[] transforms;
+		[NonSerialized] Transform[] transforms;
 		internal float MaxLength => metacarpophalangeal2ProximalInterphalangeal + proximalInterphalangeal2DistalInterphalangeal + distalInterphalangeal2Tip;
 		internal Vector3 Direction => tip.position - metacarpophalangealJoint.position;
 		internal float RootAngle => Vector3.Angle(metacarpophalangealJoint.up, tip.position - metacarpophalangealJoint.position);
