@@ -12,6 +12,8 @@ namespace Game.FingerRigging
 		[SerializeField, ObjectReference,] HandPositionUpdater handPositionUpdater;
 		[SerializeField] GroundDetect leftGroundDetect;
 		[SerializeField] GroundDetect rightGroundDetect;
+		[SerializeField] HandIKInput input;
+		public HandIKInput Input => input;
 		public Transform HandRoot => handRoot;
 		public Transform HandYRoot => handYRoot;
 		public Finger Left => left;

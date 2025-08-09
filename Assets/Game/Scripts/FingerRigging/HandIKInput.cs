@@ -1,5 +1,6 @@
 using System;
 using Game.Utilities;
+using Game.Utilities.Smoothing;
 using ReferenceHelper;
 using UnityEngine;
 namespace Game.FingerRigging
@@ -14,6 +15,7 @@ namespace Game.FingerRigging
 		[SerializeField, HideInInspector,] LegPoseCode rightLeg;
 		[SerializeField] Collider leftCollider;
 		[SerializeField] Collider rightCollider;
+		readonly LinearSmoothing weight;
 		public GroundDetect LeftGroundDetect => hand.LeftGroundDetect;
 		public GroundDetect RightGroundDetect => hand.RightGroundDetect;
 		public bool Jumping => hand.HandPositionUpdater.Jumping;
@@ -72,6 +74,7 @@ namespace Game.FingerRigging
 				OnRightLegChanged?.TryInvoke();
 			}
 		}
+		internal float Weight { get; private set; }
 		public event Action OnLeftLegChanged;
 		public event Action OnRightLegChanged;
 		public event Action OnJump;
@@ -80,6 +83,7 @@ namespace Game.FingerRigging
 			add => hand.HandPositionUpdater.OnLanded += value;
 			remove => hand.HandPositionUpdater.OnLanded -= value;
 		}
+		HandIKInput() => weight = new(0.1f, v => Weight = v);
 		void Awake()
 		{
 			leftLegSmoothing.transform.parent = transform.parent;
@@ -90,6 +94,7 @@ namespace Game.FingerRigging
 			leftLegSmoothing.Destroy();
 			rightLegSmoothing.Destroy();
 		}
+		public void SetWeight(float weight, float duration) { }
 		public void Crunch(bool crunch) => hand.HandPositionUpdater.Crunch(crunch);
 		public void Jump(float speed, Action callback)
 		{

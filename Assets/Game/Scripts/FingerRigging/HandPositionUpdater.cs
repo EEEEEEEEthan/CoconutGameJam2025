@@ -23,6 +23,7 @@ namespace Game.FingerRigging
 		void Awake() => jumping = false;
 		void LateUpdate()
 		{
+			if (hand.Input.Weight < 1) return;
 			if (!jumping)
 			{
 				preferredPosition = (hand.Left.Target.position + hand.Right.Target.position) * 0.5f + offset;
