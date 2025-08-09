@@ -17,12 +17,24 @@ namespace Game.FingerRigging
 		[SerializeField] Collider leftCollider;
 		[SerializeField] Collider rightCollider;
 		readonly LinearSmoothing weightSmoothing;
-		public float Weight => weight;
-		public GroundDetect LeftGroundDetect => hand.LeftGroundDetect;
-		public GroundDetect RightGroundDetect => hand.RightGroundDetect;
-		public bool Jumping => hand.HandPositionUpdater.Jumping;
-		public bool Crunching => hand.HandPositionUpdater.Crunching;
-		public LegPoseCode LeftLeg
+        /// <summary>获取当前IK权重值</summary>
+        /// <value>IK权重，范围0-1，0表示完全不使用IK，1表示完全由IK控制</value>
+        public float Weight => weight;
+        /// <summary>获取左手的地面检测组件</summary>
+        /// <value>左手地面检测组件实例</value>
+        public GroundDetect LeftGroundDetect => hand.LeftGroundDetect;
+        /// <summary>获取右手的地面检测组件</summary>
+        /// <value>右手地面检测组件实例</value>
+        public GroundDetect RightGroundDetect => hand.RightGroundDetect;
+        /// <summary>获取当前是否处于跳跃状态</summary>
+        /// <value>true表示正在跳跃，false表示未跳跃</value>
+        public bool Jumping => hand.HandPositionUpdater.Jumping;
+        /// <summary>获取当前是否处于蹲伏状态</summary>
+        /// <value>true表示正在蹲伏，false表示未蹲伏</value>
+        public bool Crunching => hand.HandPositionUpdater.Crunching;
+        /// <summary>获取或设置左腿的姿态代码</summary>
+        /// <value>左腿当前的姿态状态</value>
+        public LegPoseCode LeftLeg
 		{
 			get => leftLeg;
 			set
@@ -49,7 +61,9 @@ namespace Game.FingerRigging
 				OnLeftLegChanged?.TryInvoke();
 			}
 		}
-		public LegPoseCode RightLeg
+        /// <summary>获取或设置右腿的姿态代码</summary>
+        /// <value>右腿当前的姿态状态</value>
+        public LegPoseCode RightLeg
 		{
 			get => rightLeg;
 			set
@@ -76,9 +90,13 @@ namespace Game.FingerRigging
 				OnRightLegChanged?.TryInvoke();
 			}
 		}
+		/// <summary>左腿姿态改变时触发的事件</summary>
 		public event Action OnLeftLegChanged;
+		/// <summary>右腿姿态改变时触发的事件</summary>
 		public event Action OnRightLegChanged;
+		/// <summary>跳跃开始时触发的事件</summary>
 		public event Action OnJump;
+		/// <summary>着陆时触发的事件</summary>
 		public event Action OnLanded
 		{
 			add => hand.HandPositionUpdater.OnLanded += value;
@@ -96,9 +114,19 @@ namespace Game.FingerRigging
 			leftLegSmoothing.Destroy();
 			rightLegSmoothing.Destroy();
 		}
-		public void SetWeight(float weight, float duration) => weightSmoothing.Set(weight, duration);
-		public void Crunch(bool crunch) => hand.HandPositionUpdater.Crunch(crunch);
-		public void Jump(float speed, Action callback)
+        /// <summary>
+        ///     设置ik权重
+        /// </summary>
+        /// <param name="weight">0-完全不用ik 1-ik完全控制</param>
+        /// <param name="duration">切换ik权重的过渡时间(秒)</param>
+        public void SetWeight(float weight, float duration) => weightSmoothing.Set(weight, duration);
+        /// <summary>设置蹲伏状态</summary>
+        /// <param name="crunch">true表示开始蹲伏，false表示结束蹲伏</param>
+        public void Crunch(bool crunch) => hand.HandPositionUpdater.Crunch(crunch);
+        /// <summary>执行跳跃动作</summary>
+        /// <param name="speed">跳跃速度</param>
+        /// <param name="callback">跳跃完成后的回调函数</param>
+        public void Jump(float speed, Action callback)
 		{
 			if (Jumping) return;
 			hand.HandPositionUpdater.Jump(speed, callback);
