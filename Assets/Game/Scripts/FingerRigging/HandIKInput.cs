@@ -21,23 +21,22 @@ namespace Game.FingerRigging
 				if (leftLeg == value) return;
 				switch (value)
 				{
-					case LegPoseCode.Idle when hand.Left.Tip.position.GetTerrainHit().HasValue:
-						leftLeg = value;
-						leftLegSmoothing.Step(hand.Left.Tip.position.GetTerrainHit().Value, 0.05f);
+					case LegPoseCode.Idle:
+						if (leftLeg == LegPoseCode.LiftUp)
+							if (hand.Left.Tip.position.GetTerrainHit().HasValue)
+								leftLegSmoothing.Step(hand.Left.Tip.position.GetTerrainHit().Value, 0.05f);
 						break;
 					case LegPoseCode.LiftForward when hand.RaycastSource.LeftForwardHitPoint.HasValue:
-						leftLeg = value;
 						leftLegSmoothing.Step(hand.RaycastSource.LeftForwardHitPoint.Value, 0.05f);
 						break;
 					case LegPoseCode.LiftUp when hand.RaycastSource.LeftHitPoint.HasValue:
-						leftLeg = value;
 						leftLegSmoothing.Step(hand.RaycastSource.LeftHitPoint.Value + Vector3.up * 0.04f, 0.05f);
 						break;
 					case LegPoseCode.LiftBackward when hand.RaycastSource.LeftBackwardHitPoint.HasValue:
-						leftLeg = value;
 						leftLegSmoothing.Step(hand.RaycastSource.LeftBackwardHitPoint.Value, 0.05f);
 						break;
 				}
+				leftLeg = value;
 			}
 		}
 		public LegPoseCode RightLeg
@@ -48,23 +47,22 @@ namespace Game.FingerRigging
 				if (rightLeg == value) return;
 				switch (value)
 				{
-					case LegPoseCode.Idle when hand.Right.Tip.position.GetTerrainHit().HasValue:
-						rightLeg = value;
-						rightLegSmoothing.Step(hand.Right.Tip.position.GetTerrainHit().Value, 0.05f);
+					case LegPoseCode.Idle:
+						if (rightLeg == LegPoseCode.LiftUp)
+							if (hand.Right.Tip.position.GetTerrainHit().HasValue)
+								rightLegSmoothing.Step(hand.Right.Tip.position.GetTerrainHit().Value, 0.05f);
 						break;
 					case LegPoseCode.LiftForward when hand.RaycastSource.RightForwardHitPoint.HasValue:
-						rightLeg = value;
 						rightLegSmoothing.Step(hand.RaycastSource.RightForwardHitPoint.Value, 0.05f);
 						break;
 					case LegPoseCode.LiftUp when hand.RaycastSource.RightHitPoint.HasValue:
-						rightLeg = value;
 						rightLegSmoothing.Step(hand.RaycastSource.RightHitPoint.Value + Vector3.up * 0.03f, 0.05f);
 						break;
 					case LegPoseCode.LiftBackward when hand.RaycastSource.RightBackwardHitPoint.HasValue:
-						rightLeg = value;
 						rightLegSmoothing.Step(hand.RaycastSource.RightBackwardHitPoint.Value, 0.05f);
 						break;
 				}
+				rightLeg = value;
 			}
 		}
 		void Awake()
@@ -77,8 +75,7 @@ namespace Game.FingerRigging
 			leftLegSmoothing.Destroy();
 			rightLegSmoothing.Destroy();
 		}
-		public void Crunch() => hand.JumpSmoothing.Crunch();
-		public void Stand() => hand.JumpSmoothing.Stand();
-		public void Jump(float speed) => hand.JumpSmoothing.Jump(speed);
+		public void Crunch(bool crunch) => hand.HandPositionUpdater.Crunch(crunch);
+		public void Jump(float speed) => hand.HandPositionUpdater.Jump(speed);
 	}
 }

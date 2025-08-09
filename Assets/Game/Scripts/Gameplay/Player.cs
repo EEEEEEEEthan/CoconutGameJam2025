@@ -1,4 +1,5 @@
 using Game.FingerRigging;
+using Game.Utilities;
 using UnityEngine;
 namespace Game.Gameplay
 {
@@ -19,6 +20,7 @@ namespace Game.Gameplay
 		}
 		void Update()
 		{
+			handIKInput.transform.position = handIKInput.transform.position.WithZ(0);
 			if (Input.GetKey(KeyCode.E))
 			{
 				handIKInput.LeftLeg = LegPoseCode.LiftForward;
@@ -67,8 +69,12 @@ namespace Game.Gameplay
 				animator.SetBool(s_walkRight, false);
 				animator.SetBool(s_standRight, false);
 			}
-			if (Input.GetKeyDown(KeyCode.Space)) handIKInput.Crunch();
-			if (Input.GetKeyUp(KeyCode.Space)) handIKInput.Jump(0.1f);
+			if (Input.GetKeyDown(KeyCode.Space)) handIKInput.Crunch(true);
+			if (Input.GetKeyUp(KeyCode.Space))
+			{
+				handIKInput.Crunch(false);
+				handIKInput.Jump(4);
+			}
 		}
 	}
 }
