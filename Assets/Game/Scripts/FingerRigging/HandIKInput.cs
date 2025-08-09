@@ -11,8 +11,12 @@ namespace Game.FingerRigging
 		[SerializeField] LegSmoothing rightLegSmoothing;
 		[SerializeField, HideInInspector,] LegPoseCode leftLeg;
 		[SerializeField, HideInInspector,] LegPoseCode rightLeg;
+		[SerializeField] Collider leftCollider;
+		[SerializeField] Collider rightCollider;
 		public GroundDetect LeftGroundDetect => hand.LeftGroundDetect;
 		public GroundDetect RightGroundDetect => hand.RightGroundDetect;
+		public Collider LeftCollider => leftCollider;
+		public Collider RightCollider => rightCollider;
 		public LegPoseCode LeftLeg
 		{
 			get => leftLeg;
