@@ -32,11 +32,12 @@ namespace Game.Utilities.Smoothing
 					return;
 				}
 				var startTime = UnityEngine.Time.time;
+				var startValue = Value;
 				while (flag == operationFlag)
 				{
 					var elapsed = UnityEngine.Time.time - startTime;
 					var progress = Mathf.Clamp01(elapsed / smoothTime);
-					Value = Mathf.Lerp(Value, value, progress);
+					Value = Mathf.Lerp(startValue, value, progress);
 					if (progress >= 1)
 					{
 						Value = value;
