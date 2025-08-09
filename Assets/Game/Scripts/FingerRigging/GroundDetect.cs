@@ -10,6 +10,7 @@ namespace Game.FingerRigging
 	{
 		readonly HashSet<Collider> colliders = new();
 		public IReadOnlyCollection<Collider> Colliders => colliders;
+		public bool Any => colliders.Count > 0;
 		public event Action<Collider> OnTriggerEntered;
 		public event Action<Collider> OnTriggerExited;
 		void Update()
@@ -23,10 +24,6 @@ namespace Game.FingerRigging
 				if (colliders.Remove(collider))
 					OnTriggerExited?.TryInvoke(collider);
 		}
-		private bool ShouldIgnoreCollider(Collider other)
-		{
-			return other.gameObject.layer == gameObject.layer;
-		}
 		void OnTriggerEnter(Collider other)
 		{
 			if (ShouldIgnoreCollider(other)) return;
@@ -37,5 +34,6 @@ namespace Game.FingerRigging
 			if (ShouldIgnoreCollider(other)) return;
 			if (colliders.Remove(other)) OnTriggerExited?.TryInvoke(other);
 		}
+		bool ShouldIgnoreCollider(Collider other) => other.gameObject.layer == gameObject.layer;
 	}
 }

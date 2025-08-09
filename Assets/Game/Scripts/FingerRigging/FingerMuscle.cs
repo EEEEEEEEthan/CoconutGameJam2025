@@ -123,8 +123,8 @@ namespace Game.FingerRigging
 		}
 		void GetAngles(float preferredProgress, out float proximalInterphalangealDegrees, out float distalInterphalangealDegrees)
 		{
-			const int maxIterations = 100;
-			const float tolerance = 0.001f;
+			const int maxIterations = 256;
+			const float tolerance = 0.0001f;
 			proximalInterphalangealDegrees = 0;
 			distalInterphalangealDegrees = 0;
 			var minProximalInterphalangealDegrees = 0f;
