@@ -83,7 +83,7 @@ namespace Game.FingerRigging
 			add => hand.HandPositionUpdater.OnLanded += value;
 			remove => hand.HandPositionUpdater.OnLanded -= value;
 		}
-		HandIKInput() => weight = new(0.1f, v => Weight = v);
+		HandIKInput() => weight = new(1, v => Weight = v);
 		void Awake()
 		{
 			leftLegSmoothing.transform.parent = transform.parent;
