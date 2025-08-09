@@ -1,3 +1,4 @@
+using System;
 using Game.Utilities;
 using ReferenceHelper;
 using UnityEngine;
@@ -41,6 +42,7 @@ namespace Game.FingerRigging
 						break;
 				}
 				leftLeg = value;
+				OnLeftLegChanged?.TryInvoke();
 			}
 		}
 		public LegPoseCode RightLeg
@@ -67,8 +69,11 @@ namespace Game.FingerRigging
 						break;
 				}
 				rightLeg = value;
+				OnRightLegChanged?.TryInvoke();
 			}
 		}
+		public event Action OnLeftLegChanged;
+		public event Action OnRightLegChanged;
 		void Awake()
 		{
 			leftLegSmoothing.transform.parent = transform.parent;
