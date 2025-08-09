@@ -1,4 +1,5 @@
 using Game.FingerRigging;
+using Game.Utilities;
 using UnityEngine;
 namespace Game.Gameplay
 {
@@ -19,6 +20,7 @@ namespace Game.Gameplay
 		}
 		void Update()
 		{
+			handIKInput.transform.position = handIKInput.transform.position.WithZ(0);
 			if (Input.GetKey(KeyCode.E))
 			{
 				handIKInput.LeftLeg = LegPoseCode.LiftForward;
