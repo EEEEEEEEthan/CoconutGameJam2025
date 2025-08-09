@@ -16,6 +16,7 @@ namespace Game.Gameplay
 		static readonly int s_surpirse = Animator.StringToHash("Surprise");
 		static readonly int s_shy = Animator.StringToHash("Shy");
 		static readonly int s_angry = Animator.StringToHash("Angry");
+		bool isInSpecialAnim = false;
 		[SerializeField] HandIKInput handIKInput;
 		[SerializeField] Animator animator;
 		public HandIKInput HandIkInput => handIKInput;
@@ -37,6 +38,7 @@ namespace Game.Gameplay
 		void Update()
 		{
 			handIKInput.transform.position = handIKInput.transform.position.WithZ(0);
+
 			if (Input.GetKey(KeyCode.Q))
 			{
 				handIKInput.LeftLeg = LegPoseCode.LiftForward;
@@ -91,26 +93,35 @@ namespace Game.Gameplay
 				handIKInput.Crunch(false);
 				handIKInput.Jump(1, () => Debug.Log("Landed!"));
 			}
+			if (isInSpecialAnim) return;
 			if (Input.GetKeyDown(KeyCode.Alpha1))
 			{
 				animator.SetTrigger(s_hi);
+				isInSpecialAnim = true;
 				BlockIK(0.2f, 1, 0.5f);
 			}
 			if (Input.GetKeyDown(KeyCode.Alpha2))
 			{
 				animator.SetTrigger(s_surpirse);
+				isInSpecialAnim = true;
 				BlockIK(0.2f, 1, 0.5f);
 			}
 			if (Input.GetKeyDown(KeyCode.Alpha3))
 			{
 				animator.SetTrigger(s_shy);
+				isInSpecialAnim = true;
 				BlockIK(0.2f, 1.5f, 2f);
 			}
 			if (Input.GetKeyDown(KeyCode.Alpha4))
 			{
 				animator.SetTrigger(s_angry);
+				isInSpecialAnim = true;
 				BlockIK(0.4f, 1.5f, 0.2f);
 			}
+		}
+		public void SetSpecialAnimEnd()
+		{
+			isInSpecialAnim = false;
 		}
 		async void BlockIK(float fadeInSeconds, float keepSeconds, float fadeOutSeconds)
 		{

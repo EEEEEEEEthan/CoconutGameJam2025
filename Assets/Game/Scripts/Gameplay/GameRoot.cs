@@ -6,12 +6,14 @@ namespace Game.Gameplay
 	{
 		[SerializeField] Player player;
 		[SerializeField] WaterGameJudge waterGame;
-		public Player Player => player;
+		public Player Player => player ??= GetComponentInChildren<Player>();
 		public WaterGameJudge WaterGame => waterGame;
 	}
 	public class GameBehaviour : MonoBehaviour
 	{
 		GameRoot gameRoot;
+		
 		public GameRoot GameRoot => gameRoot ??= GetComponentInParent<GameRoot>();
+		
 	}
 }
