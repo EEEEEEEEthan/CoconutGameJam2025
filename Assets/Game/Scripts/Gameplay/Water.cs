@@ -1,10 +1,9 @@
-using Game.Utilities;
+using Game.ResourceManagement;
 using UnityEngine;
 namespace Game.Gameplay
 {
 	public class Water : GameBehaviour
 	{
-		[SerializeField] ParticleSystem splashParticle;
 		void OnTriggerEnter(Collider other)
 		{
 			var playerHandIkInput = GameRoot.Player.HandIkInput;
@@ -14,7 +13,7 @@ namespace Game.Gameplay
 			{
 				return;
 			}
-			Instantiate(splashParticle, other.transform.position.WithZ(0), Quaternion.Euler(-90, 0, 0));
+			Instantiate(ResourceTable.splashPrefab.Main, other.transform.position + new Vector3(0, -0.02f, 0), Quaternion.Euler(-90, 0, 0));
 		}
 	}
 }

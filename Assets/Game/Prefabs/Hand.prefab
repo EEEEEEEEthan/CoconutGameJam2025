@@ -359,7 +359,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.0001
+  m_Radius: 0.00001
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &1118883095152402020
 MonoBehaviour:
@@ -564,7 +564,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.0001
+  m_Radius: 0.00001
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &8025927087252974879
 MonoBehaviour:
@@ -738,7 +738,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hand: {fileID: 6506769248980130231}
-  groundFix: 0
+  groundFix: 1
   gravity: 6
   offset: {x: -0.01, y: 0, z: 0.01}
   preferredPosition: {x: 0, y: 0, z: 0}
