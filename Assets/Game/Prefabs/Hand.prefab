@@ -457,7 +457,7 @@ Transform:
   m_GameObject: {fileID: 6465202624867146109}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.000073, z: -0.000629}
+  m_LocalPosition: {x: 0.000014, y: -0.000024, z: -0.000629}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -740,7 +740,7 @@ MonoBehaviour:
   hand: {fileID: 6506769248980130231}
   groundFix: 1
   gravity: 9
-  offset: {x: 0.004, y: -0.005, z: 0.01}
+  offset: {x: -0.01, y: -0.005, z: 0.01}
   preferredPosition: {x: 0, y: 0, z: 0}
   smoothVelocity: {x: 0, y: 0, z: 0}
   jumpVelocity: 0
