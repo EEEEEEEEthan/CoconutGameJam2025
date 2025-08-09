@@ -3,7 +3,6 @@ using ReferenceHelper;
 using UnityEngine;
 namespace Game.FingerRigging
 {
-	[ExecuteAlways]
 	class HandPositionUpdater : MonoBehaviour
 	{
 		[SerializeField, ObjectReference,] Hand hand;

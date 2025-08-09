@@ -1,3 +1,4 @@
+using Game.Utilities;
 using ReferenceHelper;
 using UnityEngine;
 namespace Game.FingerRigging
@@ -65,6 +66,16 @@ namespace Game.FingerRigging
 						break;
 				}
 			}
+		}
+		void Awake()
+		{
+			leftLegSmoothing.transform.parent = transform.parent;
+			rightLegSmoothing.transform.parent = transform.parent;
+		}
+		void OnDestroy()
+		{
+			leftLegSmoothing.Destroy();
+			rightLegSmoothing.Destroy();
 		}
 		public void Crunch() => hand.JumpSmoothing.Crunch();
 		public void Stand() => hand.JumpSmoothing.Stand();
