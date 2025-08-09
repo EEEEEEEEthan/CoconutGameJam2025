@@ -6,6 +6,13 @@ namespace Game.Gameplay
 	{
 		[SerializeField] HandIKInput handIKInput;
 		[SerializeField] Animator animator;
+		void Awake()
+		{
+			handIKInput.LeftGroundDetect.OnTriggerEntered += collider => Debug.Log($"left trigger entered: {collider.name}");
+			handIKInput.LeftGroundDetect.OnTriggerExited += collider => Debug.Log($"left trigger exited: {collider.name}");
+			handIKInput.RightGroundDetect.OnTriggerEntered += collider => Debug.Log($"right trigger entered: {collider.name}");
+			handIKInput.RightGroundDetect.OnTriggerExited += collider => Debug.Log($"right trigger exited: {collider.name}");
+		}
 		void Update()
 		{
 			if (Input.GetKey(KeyCode.E))
