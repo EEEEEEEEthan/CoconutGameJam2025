@@ -292,7 +292,10 @@ GameObject:
   m_Component:
   - component: {fileID: 82077152508663960}
   - component: {fileID: 7222118120968430920}
-  m_Layer: 0
+  - component: {fileID: 4350409923647009076}
+  - component: {fileID: 1118883095152402020}
+  - component: {fileID: 5323967199922677057}
+  m_Layer: 3
   m_Name: FingerRigging
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -332,11 +335,71 @@ MonoBehaviour:
   proximalInterphalangealJoint: {fileID: 5567485228270575496}
   distalInterphalangealJoint: {fileID: 6062042942252959146}
   tip: {fileID: 82077152508663960}
-  progress: 0.9190318
+  progress: 0.9193974
   metacarpophalangeal2ProximalInterphalangeal: 0.0311809
   proximalInterphalangeal2DistalInterphalangeal: 0.025096275
   distalInterphalangeal2Tip: 0.032291282
   handRoot: {fileID: 4480779024981632134}
+--- !u!135 &4350409923647009076
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6282966269156676486}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.0001
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1118883095152402020
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6282966269156676486}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47a7495e1677fcd43bd3387678fd7382, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!54 &5323967199922677057
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6282966269156676486}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 2
 --- !u!1 &6465202624867146109
 GameObject:
   m_ObjectHideFlags: 0
@@ -403,7 +466,10 @@ GameObject:
   m_Component:
   - component: {fileID: 1911847918144998528}
   - component: {fileID: 8447650612223026618}
-  m_Layer: 0
+  - component: {fileID: 8481443199892596212}
+  - component: {fileID: 8025927087252974879}
+  - component: {fileID: 4610443327188030278}
+  m_Layer: 3
   m_Name: FingerRigging
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -443,11 +509,71 @@ MonoBehaviour:
   proximalInterphalangealJoint: {fileID: 6698205922048698953}
   distalInterphalangealJoint: {fileID: 624702863419169347}
   tip: {fileID: 1911847918144998528}
-  progress: 0.86729205
+  progress: 0.8676445
   metacarpophalangeal2ProximalInterphalangeal: 0.035890765
   proximalInterphalangeal2DistalInterphalangeal: 0.032424103
   distalInterphalangeal2Tip: 0.023865782
   handRoot: {fileID: 4480779024981632134}
+--- !u!135 &8481443199892596212
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6507359043955568065}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.0001
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &8025927087252974879
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6507359043955568065}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47a7495e1677fcd43bd3387678fd7382, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!54 &4610443327188030278
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6507359043955568065}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 2
 --- !u!1 &7375416753376615784
 GameObject:
   m_ObjectHideFlags: 0
@@ -567,6 +693,8 @@ MonoBehaviour:
   raycastSource: {fileID: 5060552945543595270}
   handPositionUpdater: {fileID: 1825635491118288324}
   jumpSmoothing: {fileID: 2143877727317584580}
+  leftGroundDetect: {fileID: 8025927087252974879}
+  rightGroundDetect: {fileID: 1118883095152402020}
 --- !u!114 &1825635491118288324
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -706,22 +834,22 @@ PrefabInstance:
     - target: {fileID: -7426139554570961866, guid: a8f24dded6790fe499607db878798633,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9626035
+      value: 0.9626086
       objectReference: {fileID: 0}
     - target: {fileID: -7426139554570961866, guid: a8f24dded6790fe499607db878798633,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.2298728
+      value: -0.22985442
       objectReference: {fileID: 0}
     - target: {fileID: -7426139554570961866, guid: a8f24dded6790fe499607db878798633,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.1422997
+      value: 0.14229636
       objectReference: {fileID: 0}
     - target: {fileID: -7426139554570961866, guid: a8f24dded6790fe499607db878798633,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.017431587
+      value: 0.017418075
       objectReference: {fileID: 0}
     - target: {fileID: -7426139554570961866, guid: a8f24dded6790fe499607db878798633,
         type: 3}
@@ -791,7 +919,7 @@ PrefabInstance:
     - target: {fileID: -6247945034147084998, guid: a8f24dded6790fe499607db878798633,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.007675155
+      value: -0.007642447
       objectReference: {fileID: 0}
     - target: {fileID: -6247945034147084998, guid: a8f24dded6790fe499607db878798633,
         type: 3}
@@ -831,22 +959,22 @@ PrefabInstance:
     - target: {fileID: -5105434243057661196, guid: a8f24dded6790fe499607db878798633,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9459223
+      value: 0.9459282
       objectReference: {fileID: 0}
     - target: {fileID: -5105434243057661196, guid: a8f24dded6790fe499607db878798633,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.22681889
+      value: -0.22679415
       objectReference: {fileID: 0}
     - target: {fileID: -5105434243057661196, guid: a8f24dded6790fe499607db878798633,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.21925183
+      value: 0.21924756
       objectReference: {fileID: 0}
     - target: {fileID: -5105434243057661196, guid: a8f24dded6790fe499607db878798633,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.07558385
+      value: -0.075595446
       objectReference: {fileID: 0}
     - target: {fileID: -5105434243057661196, guid: a8f24dded6790fe499607db878798633,
         type: 3}
@@ -936,12 +1064,12 @@ PrefabInstance:
     - target: {fileID: -1310154527976262333, guid: a8f24dded6790fe499607db878798633,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9501678
+      value: 0.9512249
       objectReference: {fileID: 0}
     - target: {fileID: -1310154527976262333, guid: a8f24dded6790fe499607db878798633,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.311739
+      value: -0.30849823
       objectReference: {fileID: 0}
     - target: {fileID: -1310154527976262333, guid: a8f24dded6790fe499607db878798633,
         type: 3}
@@ -966,12 +1094,12 @@ PrefabInstance:
     - target: {fileID: 421240397829666006, guid: a8f24dded6790fe499607db878798633,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.96502477
+      value: 0.96578056
       objectReference: {fileID: 0}
     - target: {fileID: 421240397829666006, guid: a8f24dded6790fe499607db878798633,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.26215887
+      value: 0.25936067
       objectReference: {fileID: 0}
     - target: {fileID: 421240397829666006, guid: a8f24dded6790fe499607db878798633,
         type: 3}
@@ -1031,12 +1159,12 @@ PrefabInstance:
     - target: {fileID: 1269304694638407303, guid: a8f24dded6790fe499607db878798633,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.95159006
+      value: 0.9515901
       objectReference: {fileID: 0}
     - target: {fileID: 1269304694638407303, guid: a8f24dded6790fe499607db878798633,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.3073701
+      value: 0.30736995
       objectReference: {fileID: 0}
     - target: {fileID: 1269304694638407303, guid: a8f24dded6790fe499607db878798633,
         type: 3}
@@ -1088,12 +1216,12 @@ PrefabInstance:
     - target: {fileID: 8408916241060818785, guid: a8f24dded6790fe499607db878798633,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.98746336
+      value: 0.987731
       objectReference: {fileID: 0}
     - target: {fileID: 8408916241060818785, guid: a8f24dded6790fe499607db878798633,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.15784839
+      value: -0.15616511
       objectReference: {fileID: 0}
     - target: {fileID: 8408916241060818785, guid: a8f24dded6790fe499607db878798633,
         type: 3}
