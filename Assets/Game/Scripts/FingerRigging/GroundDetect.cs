@@ -23,14 +23,18 @@ namespace Game.FingerRigging
 				if (colliders.Remove(collider))
 					OnTriggerExited?.TryInvoke(collider);
 		}
+		private bool ShouldIgnoreCollider(Collider other)
+		{
+			return other.gameObject.layer == gameObject.layer;
+		}
 		void OnTriggerEnter(Collider other)
 		{
-			if (other.gameObject.layer == gameObject.layer) return;
+			if (ShouldIgnoreCollider(other)) return;
 			if (colliders.Add(other)) OnTriggerEntered?.TryInvoke(other);
 		}
 		void OnTriggerExit(Collider other)
 		{
-			if (other.gameObject.layer == gameObject.layer) return;
+			if (ShouldIgnoreCollider(other)) return;
 			if (colliders.Remove(other)) OnTriggerExited?.TryInvoke(other);
 		}
 	}
