@@ -5,6 +5,7 @@ namespace Game.Gameplay
 	public class Player : GameBehaviour
 	{
 		[SerializeField] HandIKInput handIKInput;
+		[SerializeField] Animator animator;
 		void Update()
 		{
 			if (Input.GetKey(KeyCode.E))
