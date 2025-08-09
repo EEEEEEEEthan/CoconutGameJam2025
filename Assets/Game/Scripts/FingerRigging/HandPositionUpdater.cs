@@ -83,7 +83,7 @@ namespace Game.FingerRigging
 			hit = default;
 			if (hand.Left.Progress < 0.8f) return false;
 			var ray = new Ray(hand.Left.Tip.position + Vector3.up, Vector3.down);
-			if (!Physics.Raycast(ray, out hit, 10, ~(int)LayerMaskCode.Detector)) return false;
+			if (!Physics.Raycast(ray, out hit, 10, (int)LayerMaskCode.Stand)) return false;
 			offset = Mathf.Min(hit.point.y - hand.Left.Tip.position.y, 0);
 			return true;
 		}
@@ -93,7 +93,7 @@ namespace Game.FingerRigging
 			hit = default;
 			if (hand.Right.Progress < 0.8f) return false;
 			var ray = new Ray(hand.Right.Tip.position + Vector3.up, Vector3.down);
-			if (!Physics.Raycast(ray, out hit, 10, ~(int)LayerMaskCode.Detector)) return false;
+			if (!Physics.Raycast(ray, out hit, 10, (int)LayerMaskCode.Stand)) return false;
 			offset = Mathf.Min(hit.point.y - hand.Right.Tip.position.y, 0);
 			return true;
 		}

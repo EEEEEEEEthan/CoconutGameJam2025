@@ -1,3 +1,4 @@
+using System;
 namespace Game.ResourceManagement
 {
 	public enum LayerCode
@@ -35,6 +36,7 @@ namespace Game.ResourceManagement
 		UserLayer30 = 30,
 		UserLayer31 = 31,
 	}
+	[Flags]
 	public enum LayerMaskCode
 	{
 		Default = 1 << LayerCode.Default,
@@ -69,5 +71,7 @@ namespace Game.ResourceManagement
 		UserLayer29 = 1 << LayerCode.UserLayer29,
 		UserLayer30 = 1 << LayerCode.UserLayer30,
 		UserLayer31 = 1 << LayerCode.UserLayer31,
+		IgnoreStand = IgnoreRaycast | Detector | Water | TransparentFX | UI | Terrain,
+		Stand = ~IgnoreStand,
 	}
 }
