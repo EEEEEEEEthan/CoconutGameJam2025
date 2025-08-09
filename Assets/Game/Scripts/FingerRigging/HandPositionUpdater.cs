@@ -1,4 +1,6 @@
+using System;
 using Game.ResourceManagement;
+using Game.Utilities;
 using ReferenceHelper;
 using UnityEngine;
 namespace Game.FingerRigging
@@ -14,6 +16,10 @@ namespace Game.FingerRigging
 		[SerializeField, HideInInspector,] float jumpVelocity;
 		[SerializeField, HideInInspector,] bool crunching;
 		[SerializeField, HideInInspector,] bool jumping;
+		Action tempOnLanded;
+		public bool Jumping => jumping;
+		public bool Crunching => crunching;
+		public event Action OnLanded;
 		void Awake() => jumping = false;
 		void LateUpdate()
 		{
@@ -60,19 +66,24 @@ namespace Game.FingerRigging
 					{
 						jumping = false;
 						jumpVelocity = 0;
+						var copy = tempOnLanded;
+						tempOnLanded = null;
+						copy?.TryInvoke();
+						OnLanded?.TryInvoke();
 					}
 				}
 			}
 			var truePreferred = crunching ? preferredPosition + Vector3.down * 0.01f : preferredPosition;
 			hand.HandRoot.position = Vector3.SmoothDamp(hand.HandRoot.position, truePreferred, ref smoothVelocity, 0.1f);
 		}
-		public void Jump(float speed)
+		public void Jump(float speed, Action callback)
 		{
 			if (jumping)
 			{
 				Debug.LogError("Already jumping, cannot jump again!");
 				return;
 			}
+			tempOnLanded = callback;
 			jumping = true;
 			jumpVelocity = speed;
 		}
@@ -83,7 +94,7 @@ namespace Game.FingerRigging
 			hit = default;
 			if (hand.Left.Progress < 0.8f) return false;
 			var ray = new Ray(hand.Left.Tip.position + Vector3.up, Vector3.down);
-			if (!Physics.Raycast(ray, out hit, 10, (int)LayerMaskCode.Terrain)) return false;
+			if (!Physics.Raycast(ray, out hit, 10, (int)LayerMaskCode.Stand)) return false;
 			offset = Mathf.Min(hit.point.y - hand.Left.Tip.position.y, 0);
 			return true;
 		}
@@ -93,7 +104,7 @@ namespace Game.FingerRigging
 			hit = default;
 			if (hand.Right.Progress < 0.8f) return false;
 			var ray = new Ray(hand.Right.Tip.position + Vector3.up, Vector3.down);
-			if (!Physics.Raycast(ray, out hit, 10, (int)LayerMaskCode.Terrain)) return false;
+			if (!Physics.Raycast(ray, out hit, 10, (int)LayerMaskCode.Stand)) return false;
 			offset = Mathf.Min(hit.point.y - hand.Right.Tip.position.y, 0);
 			return true;
 		}

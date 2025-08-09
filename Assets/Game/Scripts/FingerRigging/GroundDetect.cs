@@ -9,6 +9,8 @@ namespace Game.FingerRigging
 	public class GroundDetect : MonoBehaviour
 	{
 		readonly HashSet<Collider> colliders = new();
+		new Collider collider;
+		public Collider Collider => collider ??= GetComponent<Collider>();
 		public IReadOnlyCollection<Collider> Colliders => colliders;
 		public bool Any => colliders.Count > 0;
 		public event Action<Collider> OnTriggerEntered;
