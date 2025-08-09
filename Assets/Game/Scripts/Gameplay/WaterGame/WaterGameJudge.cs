@@ -23,7 +23,7 @@ namespace Game.Gameplay.WaterGame
 		void OnDisable() => actions.Clear();
 		void OnTriggerEnter(Collider other)
 		{
-			if (other != GameRoot.Player.HandIkInput.LeftGroundDetect.Collider) return;
+			if (other != GameRoot.Player.HandIkInput.LeftCollider) return;
 			enabled = true;
 			GameRoot.Player.HandIkInput.OnLeftLegChanged += onAnyInput;
 			GameRoot.Player.HandIkInput.OnRightLegChanged += onAnyInput;
@@ -32,7 +32,7 @@ namespace Game.Gameplay.WaterGame
 		}
 		void OnTriggerExit(Collider other)
 		{
-			if (other != GameRoot.Player.HandIkInput.LeftGroundDetect.Collider) return;
+			if (other != GameRoot.Player.HandIkInput.RightCollider) return;
 			enabled = false;
 			GameRoot.Player.HandIkInput.OnLeftLegChanged -= onAnyInput;
 			GameRoot.Player.HandIkInput.OnRightLegChanged -= onAnyInput;

@@ -293,10 +293,9 @@ GameObject:
   - component: {fileID: 82077152508663960}
   - component: {fileID: 7222118120968430920}
   - component: {fileID: 4350409923647009076}
-  - component: {fileID: 1118883095152402020}
   - component: {fileID: 5323967199922677057}
   m_Layer: 3
-  m_Name: FingerRigging
+  m_Name: LeftFingerRigging
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -311,7 +310,7 @@ Transform:
   m_GameObject: {fileID: 6282966269156676486}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.0000649, z: 0}
+  m_LocalPosition: {x: 0, y: 0.00004, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -335,10 +334,10 @@ MonoBehaviour:
   proximalInterphalangealJoint: {fileID: 5567485228270575496}
   distalInterphalangealJoint: {fileID: 6062042942252959146}
   tip: {fileID: 82077152508663960}
-  progress: 0.93428415
-  metacarpophalangeal2ProximalInterphalangeal: 0.031180905
-  proximalInterphalangeal2DistalInterphalangeal: 0.025096294
-  distalInterphalangeal2Tip: 0.030481298
+  progress: 0.9618904
+  metacarpophalangeal2ProximalInterphalangeal: 0.031180935
+  proximalInterphalangeal2DistalInterphalangeal: 0.025096256
+  distalInterphalangeal2Tip: 0.027991338
   handRoot: {fileID: 4480779024981632134}
   hand: {fileID: 6506769248980130231}
 --- !u!135 &4350409923647009076
@@ -356,24 +355,12 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.00001
+  m_Radius: 0.00003
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1118883095152402020
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6282966269156676486}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 47a7495e1677fcd43bd3387678fd7382, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!54 &5323967199922677057
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -499,10 +486,9 @@ GameObject:
   - component: {fileID: 1911847918144998528}
   - component: {fileID: 8447650612223026618}
   - component: {fileID: 8481443199892596212}
-  - component: {fileID: 8025927087252974879}
   - component: {fileID: 4610443327188030278}
   m_Layer: 3
-  m_Name: FingerRigging
+  m_Name: RightFingerRigging
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -517,7 +503,7 @@ Transform:
   m_GameObject: {fileID: 6507359043955568065}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.0000328, z: 0}
+  m_LocalPosition: {x: 0, y: -0.00005, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -541,10 +527,10 @@ MonoBehaviour:
   proximalInterphalangealJoint: {fileID: 6698205922048698953}
   distalInterphalangealJoint: {fileID: 624702863419169347}
   tip: {fileID: 1911847918144998528}
-  progress: 0.88425016
-  metacarpophalangeal2ProximalInterphalangeal: 0.03589075
-  proximalInterphalangeal2DistalInterphalangeal: 0.0324241
-  distalInterphalangeal2Tip: 0.02258579
+  progress: 0.9013048
+  metacarpophalangeal2ProximalInterphalangeal: 0.035890747
+  proximalInterphalangeal2DistalInterphalangeal: 0.032424092
+  distalInterphalangeal2Tip: 0.02086577
   handRoot: {fileID: 4480779024981632134}
   hand: {fileID: 6506769248980130231}
 --- !u!135 &8481443199892596212
@@ -562,24 +548,12 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.00001
+  m_Radius: 0.00003
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &8025927087252974879
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6507359043955568065}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 47a7495e1677fcd43bd3387678fd7382, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!54 &4610443327188030278
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -725,8 +699,6 @@ MonoBehaviour:
   right: {fileID: 7100922172808739757}
   raycastSource: {fileID: 5060552945543595270}
   handPositionUpdater: {fileID: 1825635491118288324}
-  leftGroundDetect: {fileID: 8025927087252974879}
-  rightGroundDetect: {fileID: 1118883095152402020}
   input: {fileID: 1858106007382618880}
 --- !u!114 &1825635491118288324
 MonoBehaviour:
@@ -743,7 +715,7 @@ MonoBehaviour:
   hand: {fileID: 6506769248980130231}
   groundFix: 0
   gravity: 6
-  offset: {x: -0.01, y: 0, z: 0.01}
+  offset: {x: -0.01, y: -0.001, z: 0.01}
   preferredPosition: {x: 0, y: 0, z: 0}
   smoothVelocity: {x: 0, y: 0, z: 0}
   jumpVelocity: 0
@@ -920,12 +892,12 @@ PrefabInstance:
     - target: {fileID: -6324838637534744440, guid: a8f24dded6790fe499607db878798633,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9806854
+      value: 0.9834161
       objectReference: {fileID: 0}
     - target: {fileID: -6324838637534744440, guid: a8f24dded6790fe499607db878798633,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.19559179
+      value: -0.18136401
       objectReference: {fileID: 0}
     - target: {fileID: -6324838637534744440, guid: a8f24dded6790fe499607db878798633,
         type: 3}
@@ -1100,12 +1072,12 @@ PrefabInstance:
     - target: {fileID: -1310154527976262333, guid: a8f24dded6790fe499607db878798633,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9598828
+      value: 0.97675496
       objectReference: {fileID: 0}
     - target: {fileID: -1310154527976262333, guid: a8f24dded6790fe499607db878798633,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.2804017
+      value: -0.2143591
       objectReference: {fileID: 0}
     - target: {fileID: -1310154527976262333, guid: a8f24dded6790fe499607db878798633,
         type: 3}
@@ -1130,12 +1102,12 @@ PrefabInstance:
     - target: {fileID: 421240397829666006, guid: a8f24dded6790fe499607db878798633,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9729072
+      value: 0.985167
       objectReference: {fileID: 0}
     - target: {fileID: 421240397829666006, guid: a8f24dded6790fe499607db878798633,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.23119602
+      value: 0.17159848
       objectReference: {fileID: 0}
     - target: {fileID: 421240397829666006, guid: a8f24dded6790fe499607db878798633,
         type: 3}
@@ -1195,12 +1167,12 @@ PrefabInstance:
     - target: {fileID: 1269304694638407303, guid: a8f24dded6790fe499607db878798633,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9586278
+      value: 0.9659988
       objectReference: {fileID: 0}
     - target: {fileID: 1269304694638407303, guid: a8f24dded6790fe499607db878798633,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.28466243
+      value: 0.25854644
       objectReference: {fileID: 0}
     - target: {fileID: 1269304694638407303, guid: a8f24dded6790fe499607db878798633,
         type: 3}
@@ -1252,12 +1224,12 @@ PrefabInstance:
     - target: {fileID: 8408916241060818785, guid: a8f24dded6790fe499607db878798633,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9899199
+      value: 0.99417174
       objectReference: {fileID: 0}
     - target: {fileID: 8408916241060818785, guid: a8f24dded6790fe499607db878798633,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.14162847
+      value: -0.107807875
       objectReference: {fileID: 0}
     - target: {fileID: 8408916241060818785, guid: a8f24dded6790fe499607db878798633,
         type: 3}
@@ -1282,12 +1254,12 @@ PrefabInstance:
     - target: {fileID: 8963858674870567042, guid: a8f24dded6790fe499607db878798633,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9234877
+      value: 0.93421423
       objectReference: {fileID: 0}
     - target: {fileID: 8963858674870567042, guid: a8f24dded6790fe499607db878798633,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.38362804
+      value: -0.35671255
       objectReference: {fileID: 0}
     - target: {fileID: 8963858674870567042, guid: a8f24dded6790fe499607db878798633,
         type: 3}

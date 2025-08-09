@@ -21,10 +21,6 @@ namespace Game.Gameplay
 		public HandIKInput HandIkInput => handIKInput;
 		void Awake()
 		{
-			handIKInput.LeftGroundDetect.OnTriggerEntered += collider => Debug.Log($"left trigger entered: {collider.name}");
-			handIKInput.LeftGroundDetect.OnTriggerExited += collider => Debug.Log($"left trigger exited: {collider.name}");
-			handIKInput.RightGroundDetect.OnTriggerEntered += collider => Debug.Log($"right trigger entered: {collider.name}");
-			handIKInput.RightGroundDetect.OnTriggerExited += collider => Debug.Log($"right trigger exited: {collider.name}");
 			if (GameRoot.WaterGame)
 				GameRoot.WaterGame.OnLevelCompleted += level =>
 				{
