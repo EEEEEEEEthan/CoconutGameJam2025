@@ -7,6 +7,7 @@ namespace Game.FingerRigging
 {
 	public class HandIKInput : MonoBehaviour
 	{
+		[SerializeField] internal float weight;
 		[SerializeField, ObjectReference,] Hand hand;
 		[SerializeField, ObjectReference,] HandPositionUpdater handPositionUpdater;
 		[SerializeField] LegSmoothing leftLegSmoothing;
@@ -15,7 +16,8 @@ namespace Game.FingerRigging
 		[SerializeField, HideInInspector,] LegPoseCode rightLeg;
 		[SerializeField] Collider leftCollider;
 		[SerializeField] Collider rightCollider;
-		readonly LinearSmoothing weight;
+		readonly LinearSmoothing weightSmoothing;
+		public float Weight => weight;
 		public GroundDetect LeftGroundDetect => hand.LeftGroundDetect;
 		public GroundDetect RightGroundDetect => hand.RightGroundDetect;
 		public bool Jumping => hand.HandPositionUpdater.Jumping;
@@ -74,7 +76,6 @@ namespace Game.FingerRigging
 				OnRightLegChanged?.TryInvoke();
 			}
 		}
-		internal float Weight { get; private set; }
 		public event Action OnLeftLegChanged;
 		public event Action OnRightLegChanged;
 		public event Action OnJump;
@@ -83,7 +84,7 @@ namespace Game.FingerRigging
 			add => hand.HandPositionUpdater.OnLanded += value;
 			remove => hand.HandPositionUpdater.OnLanded -= value;
 		}
-		HandIKInput() => weight = new(1, v => Weight = v);
+		HandIKInput() => weightSmoothing = new(1, v => weight = v);
 		void Awake()
 		{
 			leftLegSmoothing.transform.parent = transform.parent;
