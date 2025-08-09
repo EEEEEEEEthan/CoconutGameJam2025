@@ -1,9 +1,16 @@
+using Game.ResourceManagement;
 using ReferenceHelper;
 using UnityEngine;
 namespace Game.FingerRigging
 {
 	class RaycastSource : MonoBehaviour
 	{
+		static Vector3? GetHitPoint(Transform source)
+		{
+			var ray = new Ray(source.position, Vector3.down);
+			if (Physics.Raycast(ray, out var hit, float.MaxValue, (int)LayerMaskCode.Stand)) return hit.point;
+			return null;
+		}
 		[SerializeField, ObjectReference("LeftForward"),]
 		Transform leftForwardSource;
 		[SerializeField, ObjectReference("Left"),]
@@ -61,12 +68,6 @@ namespace Game.FingerRigging
 				Gizmos.DrawLine(transform.position, CenterHitPoint.Value);
 				Gizmos.DrawSphere(CenterHitPoint.Value, 0.005f);
 			}
-		}
-		Vector3? GetHitPoint(Transform source)
-		{
-			var ray = new Ray(source.position, Vector3.down);
-			if (Physics.Raycast(ray, out var hit)) return hit.point;
-			return null;
 		}
 	}
 }

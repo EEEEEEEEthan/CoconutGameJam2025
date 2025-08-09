@@ -1,10 +1,13 @@
+using Game.Gameplay.WaterGame;
 using UnityEngine;
 namespace Game.Gameplay
 {
 	public class GameRoot : MonoBehaviour
 	{
-		Player player;
+		[SerializeField] Player player;
+		[SerializeField] WaterGameJudge waterGame;
 		public Player Player => player ??= GetComponentInChildren<Player>();
+		public WaterGameJudge WaterGame => waterGame;
 	}
 	public class GameBehaviour : MonoBehaviour
 	{

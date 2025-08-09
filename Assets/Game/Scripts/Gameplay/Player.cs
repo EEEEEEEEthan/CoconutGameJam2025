@@ -5,8 +5,6 @@ namespace Game.Gameplay
 {
 	public class Player : GameBehaviour
 	{
-		[SerializeField] HandIKInput handIKInput;
-		[SerializeField] Animator animator;
 		static readonly int s_walkLeft = Animator.StringToHash("WalkLeft");
 		static readonly int s_walkRight = Animator.StringToHash("WalkRight");
 		static readonly int s_standLeft = Animator.StringToHash("StandLeft");
@@ -16,12 +14,25 @@ namespace Game.Gameplay
 		static readonly int s_shy = Animator.StringToHash("Shy");
 		static readonly int s_angry = Animator.StringToHash("Angry");
 		bool isInSpecialAnim = false;
+		[SerializeField] HandIKInput handIKInput;
+		[SerializeField] Animator animator;
+		public HandIKInput HandIkInput => handIKInput;
 		void Awake()
 		{
 			handIKInput.LeftGroundDetect.OnTriggerEntered += collider => Debug.Log($"left trigger entered: {collider.name}");
 			handIKInput.LeftGroundDetect.OnTriggerExited += collider => Debug.Log($"left trigger exited: {collider.name}");
 			handIKInput.RightGroundDetect.OnTriggerEntered += collider => Debug.Log($"right trigger entered: {collider.name}");
 			handIKInput.RightGroundDetect.OnTriggerExited += collider => Debug.Log($"right trigger exited: {collider.name}");
+			GameRoot.WaterGame.OnLevelCompleted += level =>
+			{
+				GUIDebug.CreateWindow($"You completed level {level}",
+					close =>
+					{
+						GUILayout.Label("You can listen to GameRoot.WaterGame.OnLevelCompleted event to handle level completion logic.", GUILayout.Width(400));
+						GUILayout.Label("Next level automatically opened. See WaterGame/WaterGameJudge");
+						if (GUILayout.Button("Got it")) close();
+					});
+			};
 		}
 		void Update()
 		{
@@ -79,7 +90,7 @@ namespace Game.Gameplay
 			if (Input.GetKeyUp(KeyCode.Space))
 			{
 				handIKInput.Crunch(false);
-				handIKInput.Jump(1);
+				handIKInput.Jump(1, () => Debug.Log("Landed!"));
 			}
 			if (isInSpecialAnim) return;
 			if (Input.GetKeyDown(KeyCode.Alpha1))
