@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using System;
 using System.IO;
 using System.Text.RegularExpressions;
@@ -19,7 +20,7 @@ namespace Game.ResourceManagement
 			if (char.IsUpper(fieldName[0])) fieldName = char.ToLowerInvariant(fieldName[0]) + fieldName[1..];
 			return fieldName;
 		}
-		[MenuItem("*Game*/Resource Management/Generate Resource Table", priority = 100)]
+		[MenuItem("*Game*/ResGenerate Resource Table", priority = 100)]
 		static void Generate()
 		{
 			var fields = typeof(ResourceTable).GetFields((System.Reflection.BindingFlags)0xffff);
@@ -74,3 +75,4 @@ namespace Game.ResourceManagement
 		}
 	}
 }
+#endif

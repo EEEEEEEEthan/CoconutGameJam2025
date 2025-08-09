@@ -1,3 +1,4 @@
+using Game.ResourceManagement;
 using ReferenceHelper;
 using UnityEngine;
 namespace Game.FingerRigging
@@ -13,41 +14,27 @@ namespace Game.FingerRigging
 		[SerializeField, HideInInspector,] float jumpVelocity;
 		[SerializeField, HideInInspector,] bool crunching;
 		[SerializeField, HideInInspector,] bool jumping;
-		float? LeftOffset
-		{
-			get
-			{
-				if (hand.Left.Progress < 0.9f) return null;
-				var hit = hand.Left.Tip.position.GetTerrainHit(1);
-				if (hit.HasValue) return Mathf.Min(hit.Value.y - hand.Left.Tip.position.y, 0);
-				return null;
-			}
-		}
-		float? RightOffset
-		{
-			get
-			{
-				if (hand.Right.Progress < 0.9f) return null;
-				var hit = hand.Right.Tip.position.GetTerrainHit(1);
-				if (hit.HasValue) return Mathf.Min(hit.Value.y - hand.Right.Tip.position.y, 0);
-				return null;
-			}
-		}
+		void Awake() => jumping = false;
 		void LateUpdate()
 		{
-			preferredPosition = (hand.Left.Tip.position + hand.Right.Tip.position) * 0.5f + offset;
-			preferredPosition.y = Mathf.Min(hand.Left.Tip.position.y, hand.Right.Tip.position.y) + offset.y;
+			if (!jumping)
+			{
+				preferredPosition = (hand.Left.Target.position + hand.Right.Target.position) * 0.5f + offset;
+				preferredPosition.y = Mathf.Min(hand.Left.Target.position.y, hand.Right.Target.position.y) + offset.y;
+			}
 			if (groundFix && jumpVelocity <= 0)
 			{
 				var backupPos = hand.HandRoot.position;
 				hand.HandRoot.position = preferredPosition;
 				float groundFix;
-				if (LeftOffset.HasValue && RightOffset.HasValue)
-					groundFix = Mathf.Max(LeftOffset.Value, RightOffset.Value);
-				else if (LeftOffset.HasValue)
-					groundFix = LeftOffset.Value;
-				else if (RightOffset.HasValue)
-					groundFix = RightOffset.Value;
+				var leftOffsetDetected = GetLeftOffset(out var leftOffset, out _);
+				var rightOffsetDetected = GetRightOffset(out var rightOffset, out _);
+				if (leftOffsetDetected && rightOffsetDetected)
+					groundFix = Mathf.Max(leftOffset, rightOffset);
+				else if (leftOffsetDetected)
+					groundFix = leftOffset;
+				else if (rightOffsetDetected)
+					groundFix = rightOffset;
 				else
 					groundFix = 0;
 				hand.HandRoot.position = backupPos;
@@ -64,10 +51,10 @@ namespace Game.FingerRigging
 				{
 					var pos = hand.RaycastSource.CenterHitPoint.Value;
 					var handPos = hand.HandRoot.position;
-					if (handPos.y > pos.y && handPos.y - pos.y > 0.01f)
+					if (handPos.y > pos.y && handPos.y - pos.y > 0.001f)
 					{
 						jumpVelocity -= Time.deltaTime * Mathf.Abs(gravity);
-						preferredPosition.y += jumpVelocity * Time.deltaTime * 2;
+						preferredPosition.y += jumpVelocity * Time.deltaTime * 0.5f;
 					}
 					else if (jumpVelocity <= 0)
 					{
@@ -78,11 +65,6 @@ namespace Game.FingerRigging
 			}
 			var truePreferred = crunching ? preferredPosition + Vector3.down * 0.01f : preferredPosition;
 			hand.HandRoot.position = Vector3.SmoothDamp(hand.HandRoot.position, truePreferred, ref smoothVelocity, 0.1f);
-		}
-		void OnDrawGizmos()
-		{
-			Gizmos.color = Color.green;
-			Gizmos.DrawSphere(preferredPosition, 0.02f);
 		}
 		public void Jump(float speed)
 		{
@@ -95,5 +77,25 @@ namespace Game.FingerRigging
 			jumpVelocity = speed;
 		}
 		public void Crunch(bool crunch) => crunching = crunch;
+		bool GetLeftOffset(out float offset, out RaycastHit hit)
+		{
+			offset = 0;
+			hit = default;
+			if (hand.Left.Progress < 0.8f) return false;
+			var ray = new Ray(hand.Left.Tip.position + Vector3.up, Vector3.down);
+			if (!Physics.Raycast(ray, out hit, 10, (int)LayerMaskCode.Terrain)) return false;
+			offset = Mathf.Min(hit.point.y - hand.Left.Tip.position.y, 0);
+			return true;
+		}
+		bool GetRightOffset(out float offset, out RaycastHit hit)
+		{
+			offset = 0;
+			hit = default;
+			if (hand.Right.Progress < 0.8f) return false;
+			var ray = new Ray(hand.Right.Tip.position + Vector3.up, Vector3.down);
+			if (!Physics.Raycast(ray, out hit, 10, (int)LayerMaskCode.Terrain)) return false;
+			offset = Mathf.Min(hit.point.y - hand.Right.Tip.position.y, 0);
+			return true;
+		}
 	}
 }

@@ -738,14 +738,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hand: {fileID: 6506769248980130231}
-  groundFix: 1
-  gravity: 9
-  offset: {x: -0.01, y: -0.005, z: 0.01}
+  groundFix: 0
+  gravity: 6
+  offset: {x: -0.01, y: 0, z: 0.01}
   preferredPosition: {x: 0, y: 0, z: 0}
   smoothVelocity: {x: 0, y: 0, z: 0}
   jumpVelocity: 0
   crunching: 0
   jumping: 0
+  debugger: {fileID: 0}
 --- !u!114 &1858106007382618880
 MonoBehaviour:
   m_ObjectHideFlags: 0
