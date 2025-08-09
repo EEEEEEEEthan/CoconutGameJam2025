@@ -75,8 +75,7 @@ namespace Game.FingerRigging
 			leftLegSmoothing.Destroy();
 			rightLegSmoothing.Destroy();
 		}
-		public void Crunch() => hand.JumpSmoothing.Crunch();
-		public void Stand() => hand.JumpSmoothing.Stand();
-		public void Jump(float speed) => hand.JumpSmoothing.Jump(speed);
+		public void Crunch(bool crunch) => hand.HandPositionUpdater.Crunch(crunch);
+		public void Jump(float speed) => hand.HandPositionUpdater.Jump(speed);
 	}
 }

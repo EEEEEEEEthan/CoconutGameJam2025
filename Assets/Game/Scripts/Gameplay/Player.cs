@@ -69,8 +69,12 @@ namespace Game.Gameplay
 				animator.SetBool(s_walkRight, false);
 				animator.SetBool(s_standRight, false);
 			}
-			if (Input.GetKeyDown(KeyCode.Space)) handIKInput.Crunch();
-			if (Input.GetKeyUp(KeyCode.Space)) handIKInput.Jump(0.1f);
+			if (Input.GetKeyDown(KeyCode.Space)) handIKInput.Crunch(true);
+			if (Input.GetKeyUp(KeyCode.Space))
+			{
+				handIKInput.Crunch(false);
+				handIKInput.Jump(4);
+			}
 		}
 	}
 }
