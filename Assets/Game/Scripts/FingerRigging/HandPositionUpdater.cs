@@ -67,7 +67,7 @@ namespace Game.FingerRigging
 					if (handPos.y > pos.y && handPos.y - pos.y > 0.01f)
 					{
 						jumpVelocity -= Time.deltaTime * Mathf.Abs(gravity);
-						preferredPosition.y += jumpVelocity * Time.deltaTime;
+						preferredPosition.y += jumpVelocity * Time.deltaTime * 2;
 					}
 					else if (jumpVelocity <= 0)
 					{

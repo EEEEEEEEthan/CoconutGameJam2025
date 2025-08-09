@@ -335,7 +335,7 @@ MonoBehaviour:
   proximalInterphalangealJoint: {fileID: 5567485228270575496}
   distalInterphalangealJoint: {fileID: 6062042942252959146}
   tip: {fileID: 82077152508663960}
-  progress: 0.9910384
+  progress: 0.91519135
   metacarpophalangeal2ProximalInterphalangeal: 0.0311809
   proximalInterphalangeal2DistalInterphalangeal: 0.025096275
   distalInterphalangeal2Tip: 0.032291282
@@ -679,7 +679,6 @@ GameObject:
   - component: {fileID: 6506769248980130231}
   - component: {fileID: 1825635491118288324}
   - component: {fileID: 1858106007382618880}
-  - component: {fileID: 2143877727317584580}
   - component: {fileID: 8321010921258803449}
   m_Layer: 0
   m_Name: Hand
@@ -724,7 +723,6 @@ MonoBehaviour:
   right: {fileID: 7100922172808739757}
   raycastSource: {fileID: 5060552945543595270}
   handPositionUpdater: {fileID: 1825635491118288324}
-  jumpSmoothing: {fileID: 2143877727317584580}
   leftGroundDetect: {fileID: 8025927087252974879}
   rightGroundDetect: {fileID: 1118883095152402020}
 --- !u!114 &1825635491118288324
@@ -740,9 +738,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hand: {fileID: 6506769248980130231}
+  groundFix: 1
+  gravity: 9
   offset: {x: 0.004, y: -0.005, z: 0.01}
-  yOffset: 0
-  velocity: 0
+  preferredPosition: {x: 0, y: 0, z: 0}
+  smoothVelocity: {x: 0, y: 0, z: 0}
+  jumpVelocity: 0
+  crunching: 0
+  jumping: 0
 --- !u!114 &1858106007382618880
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -761,26 +764,6 @@ MonoBehaviour:
   rightLegSmoothing: {fileID: 8575320930558789758}
   leftLeg: 0
   rightLeg: 0
---- !u!114 &2143877727317584580
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8087390058894415056}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a752bec86c346e0bd66ec0aada45999, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hand: {fileID: 6506769248980130231}
-  acceleration: 0.32
-  velocity: 0
-  y: 0
-  jumping: 0
-  crunching: 0
-  lastRaycastHitPoint: {x: 0, y: 0, z: 0}
-  smoothVelocity: 0
 --- !u!114 &8321010921258803449
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -881,22 +864,22 @@ PrefabInstance:
     - target: {fileID: -7426139554570961866, guid: a8f24dded6790fe499607db878798633,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9847171
+      value: 0.984717
       objectReference: {fileID: 0}
     - target: {fileID: -7426139554570961866, guid: a8f24dded6790fe499607db878798633,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.10792005
+      value: -0.10792003
       objectReference: {fileID: 0}
     - target: {fileID: -7426139554570961866, guid: a8f24dded6790fe499607db878798633,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.13669185
+      value: 0.13669191
       objectReference: {fileID: 0}
     - target: {fileID: -7426139554570961866, guid: a8f24dded6790fe499607db878798633,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.0009899301
+      value: 0.0009899142
       objectReference: {fileID: 0}
     - target: {fileID: -7426139554570961866, guid: a8f24dded6790fe499607db878798633,
         type: 3}
@@ -1011,17 +994,17 @@ PrefabInstance:
     - target: {fileID: -5105434243057661196, guid: a8f24dded6790fe499607db878798633,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.10892357
+      value: -0.10892354
       objectReference: {fileID: 0}
     - target: {fileID: -5105434243057661196, guid: a8f24dded6790fe499607db878798633,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.20475346
+      value: 0.2047535
       objectReference: {fileID: 0}
     - target: {fileID: -5105434243057661196, guid: a8f24dded6790fe499607db878798633,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.1010887
+      value: -0.10108871
       objectReference: {fileID: 0}
     - target: {fileID: -5105434243057661196, guid: a8f24dded6790fe499607db878798633,
         type: 3}
@@ -1111,12 +1094,12 @@ PrefabInstance:
     - target: {fileID: -1310154527976262333, guid: a8f24dded6790fe499607db878798633,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.99460006
+      value: 0.9482912
       objectReference: {fileID: 0}
     - target: {fileID: -1310154527976262333, guid: a8f24dded6790fe499607db878798633,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.1037826
+      value: -0.31740165
       objectReference: {fileID: 0}
     - target: {fileID: -1310154527976262333, guid: a8f24dded6790fe499607db878798633,
         type: 3}
@@ -1141,12 +1124,12 @@ PrefabInstance:
     - target: {fileID: 421240397829666006, guid: a8f24dded6790fe499607db878798633,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.99627084
+      value: 0.9636814
       objectReference: {fileID: 0}
     - target: {fileID: 421240397829666006, guid: a8f24dded6790fe499607db878798633,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.086281165
+      value: 0.2670547
       objectReference: {fileID: 0}
     - target: {fileID: 421240397829666006, guid: a8f24dded6790fe499607db878798633,
         type: 3}
@@ -1211,7 +1194,7 @@ PrefabInstance:
     - target: {fileID: 1269304694638407303, guid: a8f24dded6790fe499607db878798633,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.30307406
+      value: 0.3030742
       objectReference: {fileID: 0}
     - target: {fileID: 1269304694638407303, guid: a8f24dded6790fe499607db878798633,
         type: 3}
@@ -1263,12 +1246,12 @@ PrefabInstance:
     - target: {fileID: 8408916241060818785, guid: a8f24dded6790fe499607db878798633,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9986491
+      value: 0.9869881
       objectReference: {fileID: 0}
     - target: {fileID: 8408916241060818785, guid: a8f24dded6790fe499607db878798633,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.051961496
+      value: -0.16079304
       objectReference: {fileID: 0}
     - target: {fileID: 8408916241060818785, guid: a8f24dded6790fe499607db878798633,
         type: 3}
