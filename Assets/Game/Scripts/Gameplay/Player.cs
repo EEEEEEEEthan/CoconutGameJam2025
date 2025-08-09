@@ -18,6 +18,10 @@ namespace Game.Gameplay
 			handIKInput.LeftGroundDetect.OnTriggerExited += collider => Debug.Log($"left trigger exited: {collider.name}");
 			handIKInput.RightGroundDetect.OnTriggerEntered += collider => Debug.Log($"right trigger entered: {collider.name}");
 			handIKInput.RightGroundDetect.OnTriggerExited += collider => Debug.Log($"right trigger exited: {collider.name}");
+			GameRoot.WaterGame.OnLevelCompleted += (level) =>
+			{
+				Debug.LogError("asdf");
+			};
 		}
 		void Update()
 		{
