@@ -27,7 +27,8 @@ namespace Game.FingerRigging
 			if (!jumping)
 			{
 				preferredPosition = (hand.Left.Target.position + hand.Right.Target.position) * 0.5f + offset;
-				preferredPosition.y = Mathf.Min(hand.Left.Target.position.y, hand.Right.Target.position.y) + offset.y;
+				preferredPosition.y =
+					Mathf.Min(hand.Left.Target.position.y, hand.Right.Target.position.y, hand.Left.Target.position.y, hand.Right.Target.position.y) + offset.y;
 			}
 			if (groundFix && jumpVelocity <= 0)
 			{
