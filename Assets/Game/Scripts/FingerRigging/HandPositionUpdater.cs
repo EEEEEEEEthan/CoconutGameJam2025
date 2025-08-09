@@ -5,6 +5,7 @@ namespace Game.FingerRigging
 	class HandPositionUpdater : MonoBehaviour
 	{
 		[SerializeField, ObjectReference,] Hand hand;
+		[SerializeField] bool groundFix = true;
 		[SerializeField] Vector3 offset;
 		[SerializeField, HideInInspector,] float yOffset;
 		[SerializeField, HideInInspector,] Vector3 preferredPosition;
@@ -36,13 +37,16 @@ namespace Game.FingerRigging
 		}
 		void LateUpdate()
 		{
-			var position = (hand.Left.Tip.position + hand.Right.Tip.position) * 0.5f + offset;
-			position.y = Mathf.Min(hand.Left.Tip.position.y, hand.Right.Tip.position.y) + YOffset + offset.y;
-			var backupPos = hand.HandRoot.position;
-			hand.HandRoot.position = position;
-			var groundFix = Mathf.Max(LeftOffset, RightOffset);
-			hand.HandRoot.position = backupPos;
-			preferredPosition = position + new Vector3(0, groundFix, 0);
+			preferredPosition = (hand.Left.Tip.position + hand.Right.Tip.position) * 0.5f + offset;
+			preferredPosition.y = Mathf.Min(hand.Left.Tip.position.y, hand.Right.Tip.position.y) + YOffset + offset.y;
+			if (groundFix)
+			{
+				var backupPos = hand.HandRoot.position;
+				hand.HandRoot.position = preferredPosition;
+				var groundFix = Mathf.Max(LeftOffset, RightOffset);
+				hand.HandRoot.position = backupPos;
+				preferredPosition += new Vector3(0, groundFix, 0);
+			}
 			if (hand.HandYRoot) hand.HandYRoot.position = hand.HandRoot.position + new Vector3(0, YOffset, 0);
 			hand.HandRoot.position = Vector3.SmoothDamp(hand.HandRoot.position, preferredPosition, ref velocity, 0.1f);
 		}
