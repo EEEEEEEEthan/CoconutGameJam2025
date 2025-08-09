@@ -15,6 +15,7 @@ namespace Game.Gameplay
 		static readonly int s_surpirse = Animator.StringToHash("Surprise");
 		static readonly int s_shy = Animator.StringToHash("Shy");
 		static readonly int s_angry = Animator.StringToHash("Angry");
+		bool isInSpecialAnim = false;
 		void Awake()
 		{
 			handIKInput.LeftGroundDetect.OnTriggerEntered += collider => Debug.Log($"left trigger entered: {collider.name}");
@@ -25,6 +26,7 @@ namespace Game.Gameplay
 		void Update()
 		{
 			handIKInput.transform.position = handIKInput.transform.position.WithZ(0);
+
 			if (Input.GetKey(KeyCode.Q))
 			{
 				handIKInput.LeftLeg = LegPoseCode.LiftForward;
@@ -79,22 +81,31 @@ namespace Game.Gameplay
 				handIKInput.Crunch(false);
 				handIKInput.Jump(1);
 			}
+			if (isInSpecialAnim) return;
 			if (Input.GetKeyDown(KeyCode.Alpha1))
 			{
 				animator.SetTrigger(s_hi);
+				isInSpecialAnim = true;
 			}
 			if (Input.GetKeyDown(KeyCode.Alpha2))
 			{
 				animator.SetTrigger(s_surpirse);
+				isInSpecialAnim = true;
 			}
 			if (Input.GetKeyDown(KeyCode.Alpha3))
 			{
 				animator.SetTrigger(s_shy);
+				isInSpecialAnim = true;
 			}
 			if (Input.GetKeyDown(KeyCode.Alpha4))
 			{
 				animator.SetTrigger(s_angry);
+				isInSpecialAnim = true;
 			}
+		}
+		public void SetSpecialAnimEnd()
+		{
+			isInSpecialAnim = false;
 		}
 	}
 }
