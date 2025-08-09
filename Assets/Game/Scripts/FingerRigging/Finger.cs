@@ -8,6 +8,7 @@ namespace Game.FingerRigging
 		[SerializeField] Transform target;
 		[SerializeField] Transform hint;
 		[SerializeField] Transform handRoot;
+		[SerializeField] Hand hand;
 		public float MaxDistance => muscle.MaxLength;
 		public float TipDistance => (muscle.transform.position - target.position).magnitude;
 		public float Progress => muscle.Progress;
@@ -21,7 +22,9 @@ namespace Game.FingerRigging
 			muscle.UpdateDirection();
 			var right = handRoot.transform.right;
 			var lookDirection = Vector3.Cross(targetDistance, right);
+			var oldRotation = transform.localRotation;
 			transform.LookAt(transform.position + lookDirection, targetDistance);
+			transform.localRotation = Quaternion.Slerp(oldRotation, transform.localRotation, hand.Input.Weight);
 		}
 		void OnDrawGizmos()
 		{

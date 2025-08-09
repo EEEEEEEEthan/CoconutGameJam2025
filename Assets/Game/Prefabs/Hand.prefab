@@ -1370,6 +1370,7 @@ MonoBehaviour:
   target: {fileID: 315746582417804827}
   hint: {fileID: 3274928794221942146}
   handRoot: {fileID: 4480779024981632134}
+  hand: {fileID: 6506769248980130231}
 --- !u!4 &624702863419169347 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -6324838637534744440, guid: a8f24dded6790fe499607db878798633,
@@ -1404,6 +1405,7 @@ MonoBehaviour:
   target: {fileID: 2624823604568855529}
   hint: {fileID: 1302966953027330277}
   handRoot: {fileID: 4480779024981632134}
+  hand: {fileID: 6506769248980130231}
 --- !u!4 &2687031442289581597 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 421240397829666006, guid: a8f24dded6790fe499607db878798633,
