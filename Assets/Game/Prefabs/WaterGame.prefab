@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1881209967078417017}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.7276, y: 0.0030000005, z: 0.0239}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -33,61 +33,6 @@ Transform:
   - {fileID: 2781243495841690061}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &3235235830659506656
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4544898955058091846}
-  - component: {fileID: 1027102234142669891}
-  m_Layer: 2
-  m_Name: Level2
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &4544898955058091846
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3235235830659506656}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 2421343551856641179}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1027102234142669891
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3235235830659506656}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fb7fa149acbf43d4849d4262f690cd6f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  requiredActionSequence:
-  - startTime: 0
-    endTime: 0
-    left: 2
-    right: 0
-    jumping: 1
-  - startTime: 0
-    endTime: 0
-    left: 2
-    right: 0
-    jumping: 0
 --- !u!1 &3852541554655606556
 GameObject:
   m_ObjectHideFlags: 0
@@ -118,9 +63,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0.029000001, z: 0}
   m_LocalScale: {x: 0.5, y: 0.10000001, z: 0.5}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 3790807283207311380}
-  - {fileID: 4544898955058091846}
+  m_Children: []
   m_Father: {fileID: 711255356497412691}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &3259555800789226327
@@ -156,62 +99,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07bcb329a2f14c04690aed6ef1b547aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  levels:
+  - {fileID: 11400000, guid: e795ad94bb1113043bd22a2df38b93a5, type: 2}
+  - {fileID: 11400000, guid: 92aab1eadf926904aa5e371ddb37decb, type: 2}
   actions: []
---- !u!1 &4956075329702671909
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 3790807283207311380}
-  - component: {fileID: 5734330444299552993}
-  m_Layer: 2
-  m_Name: Level1
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &3790807283207311380
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4956075329702671909}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 2421343551856641179}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5734330444299552993
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4956075329702671909}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fb7fa149acbf43d4849d4262f690cd6f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  requiredActionSequence:
-  - startTime: 0
-    endTime: 0
-    left: 0
-    right: 2
-    jumping: 0
-  - startTime: 0
-    endTime: 0
-    left: 0
-    right: 2
-    jumping: 1
 --- !u!1 &7809588742672348024
 GameObject:
   m_ObjectHideFlags: 0

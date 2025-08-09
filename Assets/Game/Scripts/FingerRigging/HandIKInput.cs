@@ -75,6 +75,11 @@ namespace Game.FingerRigging
 		public event Action OnLeftLegChanged;
 		public event Action OnRightLegChanged;
 		public event Action OnJump;
+		public event Action OnLanded
+		{
+			add => hand.HandPositionUpdater.OnLanded += value;
+			remove => hand.HandPositionUpdater.OnLanded -= value;
+		}
 		void Awake()
 		{
 			leftLegSmoothing.transform.parent = transform.parent;
@@ -86,10 +91,10 @@ namespace Game.FingerRigging
 			rightLegSmoothing.Destroy();
 		}
 		public void Crunch(bool crunch) => hand.HandPositionUpdater.Crunch(crunch);
-		public void Jump(float speed)
+		public void Jump(float speed, Action callback)
 		{
 			if (Jumping) return;
-			hand.HandPositionUpdater.Jump(speed);
+			hand.HandPositionUpdater.Jump(speed, callback);
 			OnJump?.TryInvoke();
 		}
 	}

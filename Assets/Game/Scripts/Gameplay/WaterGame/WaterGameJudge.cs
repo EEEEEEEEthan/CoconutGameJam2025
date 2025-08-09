@@ -6,28 +6,20 @@ namespace Game.Gameplay.WaterGame
 {
 	public class WaterGameJudge : GameBehaviour
 	{
-		[SerializeField] List<ActionData> actions = new();
+		[SerializeField] List<WaterGameLevel> levels = new();
+		[SerializeField, HideInInspector,] List<ActionData> actions = new();
 		readonly Action onAnyInput;
+		readonly Action onJump;
 		public event Action<WaterGameLevel> OnLevelCompleted;
-		WaterGameJudge() =>
+		WaterGameJudge()
+		{
 			onAnyInput = () =>
 			{
-				if (actions.Count > 0)
-				{
-					var last = actions[^1];
-					last.endTime = Time.time;
-					actions[^1] = last;
-				}
-				var action = new ActionData
-				{
-					startTime = Time.time,
-					left = GameRoot.Player.HandIkInput.LeftLeg,
-					right = GameRoot.Player.HandIkInput.RightLeg,
-					jumping = GameRoot.Player.HandIkInput.Jumping,
-				};
-				actions.Add(action);
-				Check();
+				if (GameRoot.Player.HandIkInput.Jumping) return;
+				RecordAction();
 			};
+			onJump = RecordAction;
+		}
 		void OnDisable() => actions.Clear();
 		void OnTriggerEnter(Collider other)
 		{
@@ -35,7 +27,8 @@ namespace Game.Gameplay.WaterGame
 			enabled = true;
 			GameRoot.Player.HandIkInput.OnLeftLegChanged += onAnyInput;
 			GameRoot.Player.HandIkInput.OnRightLegChanged += onAnyInput;
-			GameRoot.Player.HandIkInput.OnJump += onAnyInput;
+			GameRoot.Player.HandIkInput.OnJump += onJump;
+			GameRoot.Player.HandIkInput.OnLanded += onAnyInput;
 		}
 		void OnTriggerExit(Collider other)
 		{
@@ -43,19 +36,38 @@ namespace Game.Gameplay.WaterGame
 			enabled = false;
 			GameRoot.Player.HandIkInput.OnLeftLegChanged -= onAnyInput;
 			GameRoot.Player.HandIkInput.OnRightLegChanged -= onAnyInput;
-			GameRoot.Player.HandIkInput.OnJump -= onAnyInput;
+			GameRoot.Player.HandIkInput.OnJump -= onJump;
+			GameRoot.Player.HandIkInput.OnLanded -= onAnyInput;
+		}
+		void RecordAction()
+		{
+			if (actions.Count > 0)
+			{
+				var last = actions[^1];
+				last.endTime = Time.time;
+				actions[^1] = last;
+			}
+			var action = new ActionData
+			{
+				startTime = Time.time,
+				left = GameRoot.Player.HandIkInput.LeftLeg,
+				right = GameRoot.Player.HandIkInput.RightLeg,
+				jumping = GameRoot.Player.HandIkInput.Jumping,
+			};
+			actions.Add(action);
+			Check();
 		}
 		void Check()
 		{
-			var level = GetComponentInChildren<WaterGameLevel>();
-			if (level == null) return;
+			if (levels.Count <= 0) return;
+			var level = levels[0];
 			var i = 0;
 			var j = 0;
 			while (true)
 			{
 				if (i >= level.RequiredActionSequence.Count)
 				{
-					level.gameObject.SetActive(false);
+					levels.RemoveAt(0);
 					Debug.Log($"Water game level completed: {level.name}", level);
 					OnLevelCompleted?.TryInvoke(level);
 					return;

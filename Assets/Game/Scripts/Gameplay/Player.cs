@@ -84,7 +84,7 @@ namespace Game.Gameplay
 			if (Input.GetKeyUp(KeyCode.Space))
 			{
 				handIKInput.Crunch(false);
-				handIKInput.Jump(1);
+				handIKInput.Jump(1, () => Debug.Log("Landed!"));
 			}
 		}
 	}
