@@ -738,7 +738,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hand: {fileID: 6506769248980130231}
-  groundFix: 1
+  groundFix: 0
   gravity: 6
   offset: {x: -0.01, y: 0, z: 0.01}
   preferredPosition: {x: 0, y: 0, z: 0}

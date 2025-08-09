@@ -1,14 +1,14 @@
 using Game.ResourceManagement;
 using UnityEngine;
-namespace Game.Gameplay
+namespace Game.Gameplay.WaterGame
 {
-	public class Water : GameBehaviour
+	public class SplashTrigger : GameBehaviour
 	{
 		void OnTriggerEnter(Collider other)
 		{
 			var playerHandIkInput = GameRoot.Player.HandIkInput;
-			if (other == playerHandIkInput.LeftCollider) { }
-			else if (other == playerHandIkInput.RightCollider) { }
+			if (other == playerHandIkInput.LeftGroundDetect.Collider) { }
+			else if (other == playerHandIkInput.RightGroundDetect.Collider) { }
 			else
 			{
 				return;

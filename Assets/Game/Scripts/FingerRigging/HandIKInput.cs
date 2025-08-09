@@ -16,8 +16,8 @@ namespace Game.FingerRigging
 		[SerializeField] Collider rightCollider;
 		public GroundDetect LeftGroundDetect => hand.LeftGroundDetect;
 		public GroundDetect RightGroundDetect => hand.RightGroundDetect;
-		public Collider LeftCollider => leftCollider;
-		public Collider RightCollider => rightCollider;
+		public bool Jumping => hand.HandPositionUpdater.Jumping;
+		public bool Crunching => hand.HandPositionUpdater.Crunching;
 		public LegPoseCode LeftLeg
 		{
 			get => leftLeg;
@@ -74,6 +74,7 @@ namespace Game.FingerRigging
 		}
 		public event Action OnLeftLegChanged;
 		public event Action OnRightLegChanged;
+		public event Action OnJump;
 		void Awake()
 		{
 			leftLegSmoothing.transform.parent = transform.parent;
@@ -85,6 +86,11 @@ namespace Game.FingerRigging
 			rightLegSmoothing.Destroy();
 		}
 		public void Crunch(bool crunch) => hand.HandPositionUpdater.Crunch(crunch);
-		public void Jump(float speed) => hand.HandPositionUpdater.Jump(speed);
+		public void Jump(float speed)
+		{
+			if (Jumping) return;
+			hand.HandPositionUpdater.Jump(speed);
+			OnJump?.TryInvoke();
+		}
 	}
 }

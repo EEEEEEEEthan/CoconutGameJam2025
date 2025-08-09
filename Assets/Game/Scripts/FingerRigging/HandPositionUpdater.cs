@@ -14,6 +14,8 @@ namespace Game.FingerRigging
 		[SerializeField, HideInInspector,] float jumpVelocity;
 		[SerializeField, HideInInspector,] bool crunching;
 		[SerializeField, HideInInspector,] bool jumping;
+		public bool Jumping => jumping;
+		public bool Crunching => crunching;
 		void Awake() => jumping = false;
 		void LateUpdate()
 		{
