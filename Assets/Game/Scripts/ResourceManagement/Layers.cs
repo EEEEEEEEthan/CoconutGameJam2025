@@ -1,4 +1,4 @@
-namespace Game.EngineDefinitions
+namespace Game.ResourceManagement
 {
 	public enum LayerCode
 	{
