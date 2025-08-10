@@ -1,5 +1,4 @@
 using System;
-using System.Numerics;
 using Game.ResourceManagement;
 using Game.Utilities;
 using ReferenceHelper;
@@ -30,11 +29,23 @@ namespace Game.FingerRigging
 			{
 				preferredPosition = (hand.Left.Target.position + hand.Right.Target.position) * 0.5f + offset;
 				preferredPosition.y = Mathf.Min(hand.Left.Target.position.y, hand.Right.Target.position.y) + offset.y;
-				var minDistance = Mathf.Min(
-					Vector3.Distance(preferredPosition, hand.Left.Target.position),
-					Vector3.Distance(preferredPosition, hand.Right.Target.position));
-				var down = minDistance.Remapped(0, 0.06f, 0, 0.01f);
-				preferredPosition += Vector3.down * down;
+				var minDistance = float.MaxValue;
+				var legLength = 0f;
+				var leftDistance = Vector3.Distance(hand.Left.Tip.position, hand.Left.Target.position);
+				if(leftDistance < hand.Left.MaxDistance)
+				{
+					minDistance = leftDistance;
+					legLength = hand.Left.MaxDistance;
+				}
+				var rightDistance = Vector3.Distance(hand.Right.Tip.position, hand.Right.Target.position);
+				if (rightDistance < hand.Right.MaxDistance && rightDistance < minDistance)
+				{
+					minDistance = rightDistance;
+					legLength = hand.Right.MaxDistance;
+				}
+				var height = Mathf.Sqrt(legLength * legLength - minDistance * minDistance);
+				var down = legLength - height;
+				preferredPosition += Vector3.down * (down * 15);  // 不知道为什么是15, 反正15效果最好
 			}
 			if (groundFix && jumpVelocity <= 0)
 			{
