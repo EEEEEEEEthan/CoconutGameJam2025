@@ -2,6 +2,11 @@
     "name": "Game.Gameplay",
     "rootNamespace": "Game.Gameplay",
     "references": [
+        "GUID:4307f53044263cf4b835bd812fc161a4",
+        "GUID:df380645f10b7bc4b97d4f5eb6303d95",
+        "GUID:69257879134bba646869b21467b3338d",
+        "GUID:a075b55b404a34748ac14ea9b6039911",
+        "GUID:457756d89b35d2941b3e7b37b4ece6f1",
         "GUID:2e20789ba13b49b4e8b205754a2f0607",
         "GUID:2f5e0e474cf86d24d91820cca8c2a1db",
         "GUID:7408e97d33d2a7f4c9bf73ad1234ac58",
