@@ -6,7 +6,9 @@ namespace Game.Gameplay.WaterGame
 {
 	public class SplashTrigger : GameBehaviour
 	{
-		static void HandleSplash(Collision other, bool isEnter)
+		void OnCollisionEnter(Collision other) => HandleSplash(other, true);
+		void OnCollisionExit(Collision other) => HandleSplash(other, false);
+		void HandleSplash(Collision other, bool isEnter)
 		{
 			var velocity = other.relativeVelocity;
 			if (velocity == default)
@@ -19,8 +21,17 @@ namespace Game.Gameplay.WaterGame
 			using (ListPoolThreaded<ContactPoint>.Rent(out var contactPoints))
 			{
 				other.GetContacts(contactPoints);
-				var speed = velocity.magnitude;
 				var direction = isEnter ? -velocity.normalized : velocity.normalized;
+				var speed = velocity.magnitude;
+				if (contactPoints.Count <= 0)
+				{
+					var point = other.collider.ClosestPoint(other.transform.position.WithY(transform.position.y));
+					var gameObject = Instantiate(ResourceTable.splashPrefab.Main, point - direction * 0.01f, Quaternion.LookRotation(direction));
+					var particleSystem = gameObject.GetComponent<ParticleSystem>();
+					var emission = particleSystem.emission;
+					emission.rateOverTime = speed.Remapped(0, 0.5f, 100, 1000).Clamped(100, 1000);
+					return;
+				}
 				foreach (var point in contactPoints)
 				{
 					var gameObject = Instantiate(ResourceTable.splashPrefab.Main, point.point - direction * 0.01f, Quaternion.LookRotation(direction));
@@ -30,7 +41,5 @@ namespace Game.Gameplay.WaterGame
 				}
 			}
 		}
-		void OnCollisionEnter(Collision other) => HandleSplash(other, true);
-		void OnCollisionExit(Collision other) => HandleSplash(other, false);
 	}
 }
