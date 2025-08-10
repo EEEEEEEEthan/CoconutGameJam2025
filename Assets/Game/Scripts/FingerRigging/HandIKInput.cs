@@ -84,10 +84,19 @@ namespace Game.FingerRigging
 			hand.HandPositionUpdater.Jump(speed, callback);
 			OnJump?.TryInvoke();
 		}
+		/// <summary>将ik状态同步为动画状态</summary>
 		public void SyncAnimationToIK()
 		{
-			SetIdlePosition(hand.Left, true);
-			SetIdlePosition(hand.Right, true);
+			SetIdlePosition(hand.Left, true, false);
+			SetIdlePosition(hand.Right, true, false);
+			leftLeg = LegPoseCode.Idle;
+			rightLeg = LegPoseCode.Idle;
+		}
+		/// <summary>将ik状态重置为站立的状态</summary>
+		public void ResetMotion()
+		{
+			SetIdlePosition(hand.Left, true, true);
+			SetIdlePosition(hand.Right, true, true);
 			leftLeg = LegPoseCode.Idle;
 			rightLeg = LegPoseCode.Idle;
 		}
@@ -105,7 +114,7 @@ namespace Game.FingerRigging
 			switch (newPose)
 			{
 				case LegPoseCode.Idle:
-					if (currentPose == LegPoseCode.LiftUp) SetIdlePosition(handSide, false);
+					if (currentPose == LegPoseCode.LiftUp) SetIdlePosition(handSide, false, false);
 					break;
 				case LegPoseCode.LiftForward:
 					var forwardHitPoint = isLeft ? raycastSource.LeftForwardHitPoint : raycastSource.RightForwardHitPoint;
@@ -131,17 +140,23 @@ namespace Game.FingerRigging
 				OnRightLegChanged?.TryInvoke();
 			}
 		}
-		void SetIdlePosition(Finger finger, bool immediate)
+		void SetIdlePosition(Finger finger, bool immediate, bool reset)
 		{
+			var legSmoothing = finger == hand.Left ? leftLegSmoothing : rightLegSmoothing;
+			if (reset) goto RESET;
 			var hit = finger.Tip.position.GetTerrainHit();
 			if (hit.HasValue)
 			{
-				var legSmoothing = finger == hand.Left ? leftLegSmoothing : rightLegSmoothing;
 				if (immediate)
 					legSmoothing.SetPositionImmediate(hit.Value);
 				else
 					legSmoothing.Step(hit.Value, 0.05f);
+				return;
 			}
+		RESET:
+			legSmoothing.SetPositionImmediate(finger == hand.Left
+				? transform.TransformPoint(new(-0.01570791f, 0.001f, 0.01791708f))
+				: transform.TransformPoint(new(0.01392896f, 0.001f, 0.002082926f)));
 		}
 	}
 }

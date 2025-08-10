@@ -98,32 +98,26 @@ namespace Game.Gameplay
 			{
 				animator.SetTrigger(s_hi);
 				isInSpecialAnim = true;
-				handIKInput.SetWeight(0, 0.2f);
 			}
 			if (Input.GetKeyDown(KeyCode.Alpha2))
 			{
 				animator.SetTrigger(s_surpirse);
 				isInSpecialAnim = true;
-				handIKInput.SetWeight(0, 0.2f);
 			}
 			if (Input.GetKeyDown(KeyCode.Alpha3))
 			{
 				animator.SetTrigger(s_shy);
 				isInSpecialAnim = true;
-				handIKInput.SetWeight(0, 0.2f);
 			}
 			if (Input.GetKeyDown(KeyCode.Alpha4))
 			{
 				animator.SetTrigger(s_angry);
 				isInSpecialAnim = true;
-				handIKInput.SetWeight(0, 0.4f);
 			}
 		}
 		public void SetSpecialAnimEnd()
 		{
 			isInSpecialAnim = false;
-			handIKInput.SyncAnimationToIK();
-			handIKInput.SetWeight(1, 0.4f);
 		}
 	}
 }
