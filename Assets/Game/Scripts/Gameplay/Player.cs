@@ -122,6 +122,7 @@ namespace Game.Gameplay
 		public void SetSpecialAnimEnd()
 		{
 			isInSpecialAnim = false;
+			handIKInput.SyncAnimationToIK();
 			handIKInput.SetWeight(1, 0.2f);
 		}
 	}

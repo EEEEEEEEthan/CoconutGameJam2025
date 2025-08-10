@@ -19,6 +19,13 @@ namespace Game.FingerRigging
 			StopAllCoroutines();
 			StartCoroutine(SetStep(target, height));
 		}
+		public void SetPositionImmediate(Vector3 target)
+		{
+			StopAllCoroutines();
+			preferredPosition = target;
+			transform.position = target;
+			velocity = default;
+		}
 		/// <param name="target">Target position</param>
 		/// <param name="height">Maximum height</param>
 		IEnumerator SetStep(Vector3 target, float height)
