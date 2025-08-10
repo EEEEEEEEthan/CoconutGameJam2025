@@ -1,8 +1,10 @@
 using System;
+using System.Numerics;
 using Game.ResourceManagement;
 using Game.Utilities;
 using ReferenceHelper;
 using UnityEngine;
+using Vector3 = UnityEngine.Vector3;
 namespace Game.FingerRigging
 {
 	class HandPositionUpdater : MonoBehaviour
@@ -27,8 +29,12 @@ namespace Game.FingerRigging
 			if (!jumping)
 			{
 				preferredPosition = (hand.Left.Target.position + hand.Right.Target.position) * 0.5f + offset;
-				preferredPosition.y =
-					Mathf.Min(hand.Left.Target.position.y, hand.Right.Target.position.y) + offset.y;
+				preferredPosition.y = Mathf.Min(hand.Left.Target.position.y, hand.Right.Target.position.y) + offset.y;
+				var minDistance = Mathf.Min(
+					Vector3.Distance(preferredPosition, hand.Left.Target.position),
+					Vector3.Distance(preferredPosition, hand.Right.Target.position));
+				var down = minDistance.Remapped(0, 0.06f, 0, 0.01f);
+				preferredPosition += Vector3.down * down;
 			}
 			if (groundFix && jumpVelocity <= 0)
 			{
