@@ -98,43 +98,26 @@ namespace Game.Gameplay
 			{
 				animator.SetTrigger(s_hi);
 				isInSpecialAnim = true;
-				BlockIK(0.2f, 1, 0.5f);
 			}
 			if (Input.GetKeyDown(KeyCode.Alpha2))
 			{
 				animator.SetTrigger(s_surpirse);
 				isInSpecialAnim = true;
-				BlockIK(0.2f, 1, 0.5f);
 			}
 			if (Input.GetKeyDown(KeyCode.Alpha3))
 			{
 				animator.SetTrigger(s_shy);
 				isInSpecialAnim = true;
-				BlockIK(0.2f, 1.5f, 2f);
 			}
 			if (Input.GetKeyDown(KeyCode.Alpha4))
 			{
 				animator.SetTrigger(s_angry);
 				isInSpecialAnim = true;
-				BlockIK(0.4f, 1.5f, 0.2f);
 			}
 		}
 		public void SetSpecialAnimEnd()
 		{
 			isInSpecialAnim = false;
-		}
-		async void BlockIK(float fadeInSeconds, float keepSeconds, float fadeOutSeconds)
-		{
-			try
-			{
-				handIKInput.SetWeight(0, fadeInSeconds);
-				await MainThreadTimerManager.Await(keepSeconds);
-				handIKInput.SetWeight(1, fadeOutSeconds);
-			}
-			catch (Exception e)
-			{
-				Debug.LogException(e);
-			}
 		}
 	}
 }

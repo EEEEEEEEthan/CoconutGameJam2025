@@ -16,9 +16,9 @@ namespace Game.FingerRigging
 		[SerializeField, HideInInspector,] LegPoseCode rightLeg;
 		[SerializeField] Collider leftCollider;
 		[SerializeField] Collider rightCollider;
+		readonly LinearSmoothing weightSmoothing;
 		public Collider LeftCollider => leftCollider;
 		public Collider RightCollider => rightCollider;
-		readonly LinearSmoothing weightSmoothing;
 		/// <summary>获取当前IK权重值</summary>
 		/// <value>IK权重，范围0-1，0表示完全不使用IK，1表示完全由IK控制</value>
 		public float Weight => weight;
@@ -33,58 +33,14 @@ namespace Game.FingerRigging
 		public LegPoseCode LeftLeg
 		{
 			get => leftLeg;
-			set
-			{
-				if (leftLeg == value) return;
-				switch (value)
-				{
-					case LegPoseCode.Idle:
-						if (leftLeg == LegPoseCode.LiftUp)
-							if (hand.Left.Tip.position.GetTerrainHit().HasValue)
-								leftLegSmoothing.Step(hand.Left.Tip.position.GetTerrainHit().Value, 0.05f);
-						break;
-					case LegPoseCode.LiftForward when hand.RaycastSource.LeftForwardHitPoint.HasValue:
-						leftLegSmoothing.Step(hand.RaycastSource.LeftForwardHitPoint.Value, 0.05f);
-						break;
-					case LegPoseCode.LiftUp when hand.RaycastSource.LeftHitPoint.HasValue:
-						leftLegSmoothing.Step(hand.RaycastSource.LeftHitPoint.Value + Vector3.up * 0.04f, 0.05f);
-						break;
-					case LegPoseCode.LiftBackward when hand.RaycastSource.LeftBackwardHitPoint.HasValue:
-						leftLegSmoothing.Step(hand.RaycastSource.LeftBackwardHitPoint.Value, 0.05f);
-						break;
-				}
-				leftLeg = value;
-				OnLeftLegChanged?.TryInvoke();
-			}
+			set => SetLegPose(true, value);
 		}
 		/// <summary>获取或设置右腿的姿态代码</summary>
 		/// <value>右腿当前的姿态状态</value>
 		public LegPoseCode RightLeg
 		{
 			get => rightLeg;
-			set
-			{
-				if (rightLeg == value) return;
-				switch (value)
-				{
-					case LegPoseCode.Idle:
-						if (rightLeg == LegPoseCode.LiftUp)
-							if (hand.Right.Tip.position.GetTerrainHit().HasValue)
-								rightLegSmoothing.Step(hand.Right.Tip.position.GetTerrainHit().Value, 0.05f);
-						break;
-					case LegPoseCode.LiftForward when hand.RaycastSource.RightForwardHitPoint.HasValue:
-						rightLegSmoothing.Step(hand.RaycastSource.RightForwardHitPoint.Value, 0.05f);
-						break;
-					case LegPoseCode.LiftUp when hand.RaycastSource.RightHitPoint.HasValue:
-						rightLegSmoothing.Step(hand.RaycastSource.RightHitPoint.Value + Vector3.up * 0.03f, 0.05f);
-						break;
-					case LegPoseCode.LiftBackward when hand.RaycastSource.RightBackwardHitPoint.HasValue:
-						rightLegSmoothing.Step(hand.RaycastSource.RightBackwardHitPoint.Value, 0.05f);
-						break;
-				}
-				rightLeg = value;
-				OnRightLegChanged?.TryInvoke();
-			}
+			set => SetLegPose(false, value);
 		}
 		/// <summary>左腿姿态改变时触发的事件</summary>
 		public event Action OnLeftLegChanged;
@@ -127,6 +83,80 @@ namespace Game.FingerRigging
 			if (Jumping) return;
 			hand.HandPositionUpdater.Jump(speed, callback);
 			OnJump?.TryInvoke();
+		}
+		/// <summary>将ik状态同步为动画状态</summary>
+		public void SyncAnimationToIK()
+		{
+			SetIdlePosition(hand.Left, true, false);
+			SetIdlePosition(hand.Right, true, false);
+			leftLeg = LegPoseCode.Idle;
+			rightLeg = LegPoseCode.Idle;
+		}
+		/// <summary>将ik状态重置为站立的状态</summary>
+		public void ResetMotion()
+		{
+			SetIdlePosition(hand.Left, true, true);
+			SetIdlePosition(hand.Right, true, true);
+			leftLeg = LegPoseCode.Idle;
+			rightLeg = LegPoseCode.Idle;
+		}
+		/// <summary>设置腿部姿态的通用方法</summary>
+		/// <param name="isLeft">true表示左腿，false表示右腿</param>
+		/// <param name="newPose">新的姿态代码</param>
+		void SetLegPose(bool isLeft, LegPoseCode newPose)
+		{
+			var currentPose = isLeft ? leftLeg : rightLeg;
+			if (currentPose == newPose) return;
+			var legSmoothing = isLeft ? leftLegSmoothing : rightLegSmoothing;
+			var handSide = isLeft ? hand.Left : hand.Right;
+			var raycastSource = hand.RaycastSource;
+			var liftUpOffset = isLeft ? 0.04f : 0.03f;
+			switch (newPose)
+			{
+				case LegPoseCode.Idle:
+					if (currentPose == LegPoseCode.LiftUp) SetIdlePosition(handSide, false, false);
+					break;
+				case LegPoseCode.LiftForward:
+					var forwardHitPoint = isLeft ? raycastSource.LeftForwardHitPoint : raycastSource.RightForwardHitPoint;
+					if (forwardHitPoint.HasValue) legSmoothing.Step(forwardHitPoint.Value, 0.05f);
+					break;
+				case LegPoseCode.LiftUp:
+					var hitPoint = isLeft ? raycastSource.LeftHitPoint : raycastSource.RightHitPoint;
+					if (hitPoint.HasValue) legSmoothing.Step(hitPoint.Value + Vector3.up * liftUpOffset, 0.05f);
+					break;
+				case LegPoseCode.LiftBackward:
+					var backwardHitPoint = isLeft ? raycastSource.LeftBackwardHitPoint : raycastSource.RightBackwardHitPoint;
+					if (backwardHitPoint.HasValue) legSmoothing.Step(backwardHitPoint.Value, 0.05f);
+					break;
+			}
+			if (isLeft)
+			{
+				leftLeg = newPose;
+				OnLeftLegChanged?.TryInvoke();
+			}
+			else
+			{
+				rightLeg = newPose;
+				OnRightLegChanged?.TryInvoke();
+			}
+		}
+		void SetIdlePosition(Finger finger, bool immediate, bool reset)
+		{
+			var legSmoothing = finger == hand.Left ? leftLegSmoothing : rightLegSmoothing;
+			if (reset) goto RESET;
+			var hit = finger.Tip.position.GetTerrainHit();
+			if (hit.HasValue)
+			{
+				if (immediate)
+					legSmoothing.SetPositionImmediate(hit.Value);
+				else
+					legSmoothing.Step(hit.Value, 0.05f);
+				return;
+			}
+		RESET:
+			legSmoothing.SetPositionImmediate(finger == hand.Left
+				? transform.TransformPoint(new(-0.01570791f, 0.001f, 0.01791708f))
+				: transform.TransformPoint(new(0.01392896f, 0.001f, 0.002082926f)));
 		}
 	}
 }
