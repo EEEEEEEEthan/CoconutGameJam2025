@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 2260.9495, g: 2402.2815, b: 3499.5513, a: 1}
+  m_IndirectSpecularColor: {r: 2259.801, g: 2399.3167, b: 3491.0083, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -615,6 +615,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1564454350}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1564454352 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8599873436959024372, guid: c3288a7c1712e014b8090b7277b6658f,
+    type: 3}
+  m_PrefabInstance: {fileID: 1564454350}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4f87425531936e41a47737a9d769f72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2013410473
 GameObject:
   m_ObjectHideFlags: 1
@@ -716,6 +728,7 @@ MonoBehaviour:
   player: {fileID: 174921305544573685}
   waterGame: {fileID: 1371028383}
   volume: {fileID: 432432460}
+  cameraController: {fileID: 1564454352}
 --- !u!4 &174921305544573681 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6190928797500159636, guid: d3f078975b7693a499b11b16b254ee89,

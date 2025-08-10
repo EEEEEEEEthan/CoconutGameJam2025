@@ -79820,8 +79820,15 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.875
+  - time: 0.625
     functionName: AnimEvt_ResetIK
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.7916667
+    functionName: AnimEvt_ShakeCamera
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

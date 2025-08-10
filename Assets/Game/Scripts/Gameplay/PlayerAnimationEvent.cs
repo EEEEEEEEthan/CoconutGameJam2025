@@ -7,5 +7,6 @@ namespace Game.Gameplay
 		public void AnimEvt_SpecialAnimEnd() => GameRoot.Player.SetSpecialAnimEnd();
 		public void AnimEvt_SyncHandIK() => GameRoot.Player.HandIkInput.SyncAnimationToIK();
 		public void AnimEvt_ResetIK() => GameRoot.Player.HandIkInput.ResetMotion();
+		public void AnimEvt_ShakeCamera() => GameRoot.CameraController.Shake(0.2f);
 	}
 }
