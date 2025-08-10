@@ -10,7 +10,7 @@ namespace Game.ResourceManagement
 		Water = 4,
 		UI = 5,
 		Terrain = 6,
-		UserLayer7 = 7,
+		Hand = 7,
 		UserLayer8 = 8,
 		UserLayer9 = 9,
 		UserLayer10 = 10,
@@ -46,7 +46,7 @@ namespace Game.ResourceManagement
 		Water = 1 << LayerCode.Water,
 		UI = 1 << LayerCode.UI,
 		Terrain = 1 << LayerCode.Terrain,
-		UserLayer7 = 1 << LayerCode.UserLayer7,
+		Hand = 1 << LayerCode.Hand,
 		UserLayer8 = 1 << LayerCode.UserLayer8,
 		UserLayer9 = 1 << LayerCode.UserLayer9,
 		UserLayer10 = 1 << LayerCode.UserLayer10,
@@ -71,7 +71,7 @@ namespace Game.ResourceManagement
 		UserLayer29 = 1 << LayerCode.UserLayer29,
 		UserLayer30 = 1 << LayerCode.UserLayer30,
 		UserLayer31 = 1 << LayerCode.UserLayer31,
-		IgnoreStand = IgnoreRaycast | Detector | Water | TransparentFX | UI | Terrain,
+		IgnoreStand = IgnoreRaycast | Detector | Water | TransparentFX | UI | Hand,
 		Stand = ~IgnoreStand,
 	}
 }
