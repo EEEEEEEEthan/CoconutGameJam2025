@@ -21,7 +21,7 @@ namespace Game.Gameplay.WaterGame
 			using (ListPoolThreaded<ContactPoint>.Rent(out var contactPoints))
 			{
 				other.GetContacts(contactPoints);
-				var direction = isEnter ? -velocity.normalized : velocity.normalized;
+				var direction = isEnter ? Vector3.Reflect(velocity.normalized, Vector3.up) : -velocity.normalized;
 				var speed = velocity.magnitude;
 				if (contactPoints.Count <= 0)
 				{
