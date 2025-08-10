@@ -7,12 +7,14 @@ namespace Game.Gameplay
 {
 	public class CameraController : MonoBehaviour
 	{
-		[SerializeField, ObjectReference("Main Camera"),]
+		[SerializeField, ObjectReference("Main Camera")]
 		Camera mainCamera;
-		[SerializeField, ObjectReference("CinemachineCamera"),]
+		[SerializeField, ObjectReference("CinemachineCamera")]
 		CinemachineBasicMultiChannelPerlin linearMultiChannelPerlin;
+		[SerializeField]
+		private float maxShakeAmplitude = 0.3f;
 		DampSmoothing shakeSmoothing;
-		void Awake() => shakeSmoothing = new(0, v => linearMultiChannelPerlin.AmplitudeGain = v.Remapped(0, 1, 0, 0.3f));
+		void Awake() => shakeSmoothing = new(0, v => linearMultiChannelPerlin.AmplitudeGain = v.Remapped(0, 1, 0, maxShakeAmplitude));
 		public void Shake(float duration)
 		{
 			shakeSmoothing.Set(1, 0);

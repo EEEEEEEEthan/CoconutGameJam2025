@@ -23,7 +23,17 @@ namespace Game.Gameplay
 			}
 		}
 		public CameraController CameraController => cameraController;
-		public Player Player => player;
+		public Player Player 
+		{ 
+			get 
+			{ 
+				if (player == null) 
+				{ 
+					player = GetComponentInChildren<Player>(); 
+				} 
+				return player; 
+			} 
+		}
 		public WaterGameJudge WaterGame => waterGame;
 	}
 	public class GameBehaviour : MonoBehaviour
