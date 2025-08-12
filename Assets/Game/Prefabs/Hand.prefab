@@ -822,6 +822,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da9d6ae9cb3040c6a84ee5576a6c31dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inputBlock:
+    leftForward: 0
+    leftUp: 0
+    leftBackward: 0
+    rightForward: 0
+    rightUp: 0
+    rightBackward: 0
+    greetings: 0
+    surprise: 0
+    shy: 0
+    angry: 0
   handIKInput: {fileID: 1858106007382618880}
   animator: {fileID: 2469827012165198104}
   cameraTarget: {fileID: 3100051313230109323}

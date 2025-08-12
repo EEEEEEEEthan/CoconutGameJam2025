@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 2259.8088, g: 2399.2932, b: 3491.0435, a: 1}
+  m_IndirectSpecularColor: {r: 2259.8088, g: 2399.2698, b: 3491.016, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2044,6 +2044,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 822321117}
   m_PrefabAsset: {fileID: 0}
+--- !u!95 &606087194 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 667243987405619094, guid: cee22b7a6dc894d45bc860c21d1e459f,
+    type: 3}
+  m_PrefabInstance: {fileID: 242920161}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &822321117
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2314,8 +2320,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   block:
     leftForward: 1
+    leftUp: 0
     leftBackward: 1
     rightForward: 1
+    rightUp: 0
     rightBackward: 1
     greetings: 0
     surprise: 0
@@ -2450,6 +2458,18 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 606087194}
+        m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
+        m_MethodName: SetTrigger
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Hi
           m_BoolArgument: 1
         m_CallState: 2
 --- !u!1 &2013410473
@@ -2796,22 +2816,22 @@ PrefabInstance:
     - target: {fileID: 82077152508663960, guid: d3f078975b7693a499b11b16b254ee89,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.4182466
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 82077152508663960, guid: d3f078975b7693a499b11b16b254ee89,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.57014894
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 82077152508663960, guid: d3f078975b7693a499b11b16b254ee89,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.57014906
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 82077152508663960, guid: d3f078975b7693a499b11b16b254ee89,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.41824654
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 624702863419169347, guid: d3f078975b7693a499b11b16b254ee89,
         type: 3}
@@ -2861,22 +2881,22 @@ PrefabInstance:
     - target: {fileID: 1911847918144998528, guid: d3f078975b7693a499b11b16b254ee89,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.33846676
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 1911847918144998528, guid: d3f078975b7693a499b11b16b254ee89,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.6208384
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 1911847918144998528, guid: d3f078975b7693a499b11b16b254ee89,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.62083846
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1911847918144998528, guid: d3f078975b7693a499b11b16b254ee89,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.33846655
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 2687031442289581597, guid: d3f078975b7693a499b11b16b254ee89,
         type: 3}
