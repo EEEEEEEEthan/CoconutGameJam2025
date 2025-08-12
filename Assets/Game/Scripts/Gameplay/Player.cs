@@ -20,16 +20,23 @@ namespace Game.Gameplay
 		public bool shy;
 		public bool angry;
 	}
+	public enum EmotionCode
+	{
+		Hi,
+		Surprise,
+		Shy,
+		Angry
+	}
 	public class Player : GameBehaviour
 	{
 		static readonly int s_walkLeft = Animator.StringToHash("WalkLeft");
 		static readonly int s_walkRight = Animator.StringToHash("WalkRight");
 		static readonly int s_standLeft = Animator.StringToHash("StandLeft");
 		static readonly int s_standRight = Animator.StringToHash("StandRight");
-		static readonly int s_hi = Animator.StringToHash("Hi");
-		static readonly int s_surpirse = Animator.StringToHash("Surprise");
-		static readonly int s_shy = Animator.StringToHash("Shy");
-		static readonly int s_angry = Animator.StringToHash("Angry");
+		static readonly int s_hi = Animator.StringToHash(nameof(EmotionCode.Hi));
+		static readonly int s_surpirse = Animator.StringToHash(nameof(EmotionCode.Surprise));
+		static readonly int s_shy = Animator.StringToHash(nameof(EmotionCode.Shy));
+		static readonly int s_angry = Animator.StringToHash(nameof(EmotionCode.Angry));
 		public InputBlock inputBlock;
 		[SerializeField, ObjectReference,] HandIKInput handIKInput;
 		[SerializeField, ObjectReference("HandWithIK"),]
@@ -39,6 +46,7 @@ namespace Game.Gameplay
 		bool isInSpecialAnim;
 		public Transform CameraTarget => cameraTarget;
 		public HandIKInput HandIkInput => handIKInput;
+		public event Action<EmotionCode> OnEmotionTriggered;
 		void Awake()
 		{
 			if (GameRoot.WaterGame)
@@ -117,21 +125,25 @@ namespace Game.Gameplay
 			if (Input.GetKeyDown(KeyCode.Alpha1) && !inputBlock.greetings)
 			{
 				animator.SetTrigger(s_hi);
+				OnEmotionTriggered.TryInvoke(EmotionCode.Hi);
 				isInSpecialAnim = true;
 			}
 			if (Input.GetKeyDown(KeyCode.Alpha2) && !inputBlock.surprise)
 			{
 				animator.SetTrigger(s_surpirse);
+				OnEmotionTriggered.TryInvoke(EmotionCode.Surprise);
 				isInSpecialAnim = true;
 			}
 			if (Input.GetKeyDown(KeyCode.Alpha3) && !inputBlock.shy)
 			{
 				animator.SetTrigger(s_shy);
+				OnEmotionTriggered.TryInvoke(EmotionCode.Shy);
 				isInSpecialAnim = true;
 			}
 			if (Input.GetKeyDown(KeyCode.Alpha4) && !inputBlock.angry)
 			{
 				animator.SetTrigger(s_angry);
+				OnEmotionTriggered.TryInvoke(EmotionCode.Angry);
 				isInSpecialAnim = true;
 			}
 		}
