@@ -40,10 +40,14 @@ namespace Game.Gameplay.触发器
 		}
 #endif
 		[SerializeField, DisplayAs("一次性触发"),] bool autoDestroy;
+		[SerializeField] float coldDown = 0.5f;
 		[SerializeField] UnityEvent onPlayerEnter;
+		float lastTriggerTime;
 		public void OnTriggerEnter(Collider other)
 		{
 			if (!enabled) return;
+			if (lastTriggerTime + coldDown > Time.time) return; // 冷却中
+			lastTriggerTime = Time.time;
 			if (other.GetComponentInParent<Player>())
 			{
 				onPlayerEnter?.Invoke();

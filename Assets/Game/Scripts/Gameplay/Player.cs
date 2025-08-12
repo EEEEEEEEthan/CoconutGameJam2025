@@ -1,7 +1,6 @@
-using System;
 using Game.FingerRigging;
 using Game.Utilities;
-using Game.Utilities.UnityTools;
+using ReferenceHelper;
 using UnityEngine;
 using GUIDebug = Game.Utilities.GUIDebug;
 namespace Game.Gameplay
@@ -16,9 +15,13 @@ namespace Game.Gameplay
 		static readonly int s_surpirse = Animator.StringToHash("Surprise");
 		static readonly int s_shy = Animator.StringToHash("Shy");
 		static readonly int s_angry = Animator.StringToHash("Angry");
-		bool isInSpecialAnim = false;
-		[SerializeField] HandIKInput handIKInput;
-		[SerializeField] Animator animator;
+		[SerializeField, ObjectReference,] HandIKInput handIKInput;
+		[SerializeField, ObjectReference("HandWithIK"),]
+		Animator animator;
+		[SerializeField, ObjectReference(nameof(CameraTarget)),]
+		Transform cameraTarget;
+		bool isInSpecialAnim;
+		public Transform CameraTarget => cameraTarget;
 		public HandIKInput HandIkInput => handIKInput;
 		void Awake()
 		{
@@ -38,7 +41,6 @@ namespace Game.Gameplay
 		void Update()
 		{
 			handIKInput.transform.position = handIKInput.transform.position.WithZ(0);
-
 			if (Input.GetKey(KeyCode.Q))
 			{
 				handIKInput.LeftLeg = LegPoseCode.LiftForward;
@@ -115,9 +117,6 @@ namespace Game.Gameplay
 				isInSpecialAnim = true;
 			}
 		}
-		public void SetSpecialAnimEnd()
-		{
-			isInSpecialAnim = false;
-		}
+		public void SetSpecialAnimEnd() => isInSpecialAnim = false;
 	}
 }

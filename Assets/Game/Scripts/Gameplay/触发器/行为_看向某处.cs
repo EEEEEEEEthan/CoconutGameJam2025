@@ -7,12 +7,13 @@ namespace Game.Gameplay.触发器
 	{
 		[SerializeField] Transform lookTarget;
 		[SerializeField] float keepSeconds = 2f;
+		[SerializeField] float fov = 12f;
 		void Awake() => enabled = false;
 		async void OnEnable()
 		{
 			try
 			{
-				GameRoot.CameraController.LookAt(lookTarget, 12);
+				GameRoot.CameraController.LookAt(lookTarget, fov);
 				await MainThreadTimerManager.Await(keepSeconds);
 				GameRoot.CameraController.LookAtPlayer();
 			}
