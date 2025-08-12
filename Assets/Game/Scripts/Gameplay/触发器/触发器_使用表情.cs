@@ -13,10 +13,6 @@ namespace Game.Gameplay.触发器
 		{
 			if (other.GetComponentInParent<Player>()) GameRoot.Player.OnEmotionTriggered -= OnEmotionTriggered;
 		}
-		void OnTriggerStay(Collider other)
-		{
-			if (other.GetComponentInParent<Player>()) { }
-		}
 		void OnEmotionTriggered(EmotionCode emotion)
 		{
 			if (emotion == this.emotion) Trigger();

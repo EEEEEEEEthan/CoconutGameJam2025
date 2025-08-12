@@ -47,6 +47,10 @@ namespace Game.Gameplay
 		public Transform CameraTarget => cameraTarget;
 		public HandIKInput HandIkInput => handIKInput;
 		public event Action<EmotionCode> OnEmotionTriggered;
+		void OnDrawGizmos()
+		{
+			Gizmos.DrawRay(transform.position, Vector3.right * 100);
+		}
 		void Awake()
 		{
 			if (GameRoot.WaterGame)
