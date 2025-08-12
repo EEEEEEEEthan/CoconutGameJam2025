@@ -3,6 +3,7 @@ using Game.Utilities.Smoothing;
 using ReferenceHelper;
 using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.Assertions;
 namespace Game.Gameplay
 {
 	public class CameraController : GameBehaviour
@@ -15,18 +16,36 @@ namespace Game.Gameplay
 		CinemachineBasicMultiChannelPerlin linearMultiChannelPerlin;
 		[SerializeField, ObjectReference("CinemachineCamera"),]
 		CinemachineFollow cinemachineFollow;
+		readonly DampSmoothing fovSmoothing;
 		DampSmoothing shakeSmoothing;
-		void Awake() => shakeSmoothing = new(0, v => linearMultiChannelPerlin.AmplitudeGain = v.Remapped(0, 1, 0, 0.3f));
+		float playerFov;
+		Vector3 playerFollowOffset;
+		CameraController() =>
+			fovSmoothing = new(0,
+				v =>
+				{
+					Assert.IsNotNull(cinemachineCamera);
+					cinemachineCamera.Lens.FieldOfView = v;
+				});
+		void Awake()
+		{
+			playerFollowOffset = cinemachineFollow.FollowOffset;
+			playerFov = cinemachineCamera.Lens.FieldOfView;
+			shakeSmoothing = new(0, v => linearMultiChannelPerlin.AmplitudeGain = v.Remapped(0, 1, 0, 0.3f));
+			fovSmoothing.Set(cinemachineCamera.Lens.FieldOfView, 0);
+			LookAtPlayer();
+		}
 		public void LookAtPlayer()
 		{
 			cinemachineCamera.Target.TrackingTarget = GameRoot.Player.transform;
-			cinemachineFollow.FollowOffset = new(0.05f, 0.1f, -1);
+			cinemachineFollow.FollowOffset = playerFollowOffset;
+			fovSmoothing.Set(playerFov, 0.5f);
 		}
-		public void LookAt(Transform target)
+		public void LookAt(Transform target, float fov)
 		{
 			cinemachineCamera.Target.TrackingTarget = target;
 			cinemachineFollow.FollowOffset = new(0, 0.1f, -1);
-			cinemachineCamera.Lens.FieldOfView = 10;
+			fovSmoothing.Set(fov, 0.5f);
 		}
 		public void Shake(float duration)
 		{
