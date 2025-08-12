@@ -93,7 +93,7 @@ namespace Game.FingerRigging
 				}
 			}
 			var truePreferred = crunching ? preferredPosition + Vector3.down * 0.01f : preferredPosition;
-			hand.HandRoot.position = Vector3.SmoothDamp(hand.HandRoot.position, truePreferred, ref smoothVelocity, 0.1f);
+			hand.HandRoot.position = Vector3.SmoothDamp(hand.HandRoot.position, truePreferred, ref smoothVelocity, 0.05f);
 		}
 		public void Jump(float speed, Action callback)
 		{
