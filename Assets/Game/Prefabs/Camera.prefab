@@ -160,6 +160,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   follow: {fileID: 1257226598573019100}
+  minRange: {x: 0.1, y: 0.5}
+  maxRange: {x: 1.3, y: 3}
 --- !u!1 &7156463720877256298
 GameObject:
   m_ObjectHideFlags: 0
