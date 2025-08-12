@@ -51,31 +51,33 @@ namespace Game.Gameplay.触发器
 			}
 		}
 #if UNITY_EDITOR
-		GUIStyle style;
+		GUIStyle styleCorrect;
+		GUIStyle stileIncorrect;
 		void OnDrawGizmos()
 		{
 			Gizmos.color = new(0, 0, 0.6f);
 			for (var i = onPlayerEnter.GetPersistentEventCount(); i-- > 0;)
 			{
 				var target = onPlayerEnter.GetPersistentTarget(i);
-				if (target && target is GameObject targetObject)
+				if (!target) continue;
+				Transform targetTransform;
+				switch (target)
 				{
-					var methodName = onPlayerEnter.GetPersistentMethodName(i);
-					Gizmos.DrawLine(transform.position, targetObject.transform.position);
-					Gizmos.DrawSphere(targetObject.transform.position, 0.01f);
-					UnityEditor.Handles.Label(targetObject.transform.position,
-						$"{target.name}(GameObject).{methodName}",
-						style ??= new() { fontSize = 20, normal = new() { textColor = Color.blue, }, });
+					case GameObject targetObject:
+						targetTransform = targetObject.transform;
+						break;
+					case Component targetComponent:
+						targetTransform = targetComponent.transform;
+						break;
+					default:
+						continue;
 				}
-				if (target && target is Component targetComponent)
-				{
-					var methodName = onPlayerEnter.GetPersistentMethodName(i);
-					Gizmos.DrawLine(transform.position, targetComponent.transform.position);
-					Gizmos.DrawSphere(targetComponent.transform.position, 0.01f);
-					UnityEditor.Handles.Label(targetComponent.transform.position,
-						$"{target.name}({targetComponent.GetType().Name}).{methodName}",
-						style ??= new() { fontSize = 20, normal = new() { textColor = Color.blue, }, });
-				}
+				var methodName = onPlayerEnter.GetPersistentMethodName(i);
+				Gizmos.DrawLine(transform.position, targetTransform.position);
+				Gizmos.DrawSphere(targetTransform.position, 0.01f);
+				UnityEditor.Handles.Label(targetTransform.position,
+					$"{target.name}({target.GetType().Name}).{methodName}",
+					styleCorrect ??= new() { fontSize = 20, normal = new() { textColor = Color.blue, }, });
 			}
 			Gizmos.matrix = transform.localToWorldMatrix;
 			Gizmos.DrawCube(Vector3.zero, GetComponent<BoxCollider>().size);

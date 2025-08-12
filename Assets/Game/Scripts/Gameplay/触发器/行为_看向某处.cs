@@ -7,6 +7,7 @@ namespace Game.Gameplay.触发器
 	{
 		[SerializeField] Transform lookTarget;
 		[SerializeField] float keepSeconds = 2f;
+		void Awake() => enabled = false;
 		async void OnEnable()
 		{
 			try
