@@ -47,7 +47,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainCamera: {fileID: 7486388127309362302}
+  cinemachineCamera: {fileID: 1872582677351259133}
   linearMultiChannelPerlin: {fileID: 6169094116229673620}
+  cinemachineFollow: {fileID: 1257226598573019100}
 --- !u!1 &2969007505367021355
 GameObject:
   m_ObjectHideFlags: 0

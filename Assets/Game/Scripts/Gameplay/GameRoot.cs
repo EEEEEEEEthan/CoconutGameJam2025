@@ -25,6 +25,7 @@ namespace Game.Gameplay
 		public CameraController CameraController => cameraController;
 		public Player Player => player;
 		public WaterGameJudge WaterGame => waterGame;
+		void Awake() => cameraController.LookAtPlayer();
 	}
 	public class GameBehaviour : MonoBehaviour
 	{
