@@ -8,6 +8,7 @@ namespace Game.Gameplay
 		[SerializeField] Player player;
 		[SerializeField] WaterGameJudge waterGame;
 		[SerializeField] Volume volume;
+		[SerializeField] CameraController cameraController;
 		bool volumeProfileCopied;
 		public VolumeProfile VolumeProfile
 		{
@@ -21,7 +22,8 @@ namespace Game.Gameplay
 				return volume.sharedProfile;
 			}
 		}
-		public Player Player => player ??= GetComponentInChildren<Player>();
+		public CameraController CameraController => cameraController;
+		public Player Player => player;
 		public WaterGameJudge WaterGame => waterGame;
 	}
 	public class GameBehaviour : MonoBehaviour
