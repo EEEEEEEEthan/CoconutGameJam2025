@@ -48,6 +48,7 @@ namespace Game.Gameplay.触发器
 		{
 			try
 			{
+				if (!this) return;
 				if (!enabled) return;
 				if (lastTriggerTime + coldDown > Time.time) return; // 冷却中
 				lastTriggerTime = Time.time;

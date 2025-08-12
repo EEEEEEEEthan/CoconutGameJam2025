@@ -4,7 +4,7 @@ namespace Game.Gameplay.触发器
 	public class 触发器_使用表情 : 触发器
 	{
 		[SerializeField] EmotionCode emotion;
-		void OnEnable() => GameRoot.Player.OnEmotionTriggered += OnEmotionTriggered;
+		void OnDisable() => GameRoot.Player.OnEmotionTriggered -= OnEmotionTriggered;
 		void OnTriggerEnter(Collider other)
 		{
 			if (other.GetComponentInParent<Player>()) GameRoot.Player.OnEmotionTriggered += OnEmotionTriggered;
