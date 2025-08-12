@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 2259.8245, g: 2399.2776, b: 3491.0396, a: 1}
+  m_IndirectSpecularColor: {r: 2259.8167, g: 2399.262, b: 3491.016, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1989,6 +1989,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 242920161}
   m_PrefabAsset: {fileID: 0}
+--- !u!95 &242920163 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 667243987405619094, guid: cee22b7a6dc894d45bc860c21d1e459f,
+    type: 3}
+  m_PrefabInstance: {fileID: 242920161}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &432432459
 GameObject:
   m_ObjectHideFlags: 0
@@ -2174,7 +2180,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5a4fff9f7b270f428fb17e2ba92d775, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoDestroy: 1
+  delay: 0
+  triggerCount: 2147483647
   coldDown: 0.5
   actions:
     m_PersistentCalls:
@@ -2453,6 +2460,7 @@ GameObject:
   - component: {fileID: 2003562852}
   - component: {fileID: 2003562853}
   - component: {fileID: 2003562857}
+  - component: {fileID: 2003562858}
   m_Layer: 3
   m_Name: "\u5C0F\u5B69\u955C\u5934\u89E6\u53D1\u5668"
   m_TagString: Untagged
@@ -2510,7 +2518,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad975f5dda70d124cb345a690ff2135a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoDestroy: 1
+  delay: 0
+  triggerCount: 1
   coldDown: 0.5
   actions:
     m_PersistentCalls:
@@ -2549,6 +2558,36 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+--- !u!114 &2003562858
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2003562851}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad975f5dda70d124cb345a690ff2135a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  delay: 1
+  triggerCount: 1
+  coldDown: 0.5
+  actions:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 242920163}
+        m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
+        m_MethodName: SetTrigger
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Hi
           m_BoolArgument: 1
         m_CallState: 2
 --- !u!1 &2013410473

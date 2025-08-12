@@ -1,5 +1,6 @@
+using System;
 using Game.ResourceManagement;
-using Game.Utilities.UnityTools.Attributes;
+using Game.Utilities.UnityTools;
 using UnityEngine;
 using UnityEngine.Events;
 namespace Game.Gameplay.触发器
@@ -38,21 +39,36 @@ namespace Game.Gameplay.触发器
 			}
 		}
 #endif
-		[SerializeField, DisplayAs("一次性触发"),] bool autoDestroy;
+		[SerializeField] float delay;
+		[SerializeField] int triggerCount = int.MaxValue;
 		[SerializeField] float coldDown = 0.5f;
 		[SerializeField] UnityEvent actions;
 		float lastTriggerTime;
-		protected void Trigger()
+		protected async void Trigger()
 		{
-			if (!enabled) return;
-			if (lastTriggerTime + coldDown > Time.time) return; // 冷却中
-			lastTriggerTime = Time.time;
-			actions?.Invoke();
-			#if UNITY_EDITOR
-			Debug.Log($"触发器 {name} 被触发个事件。", this);
-			UnityEditor.EditorGUIUtility.PingObject(this);
-			#endif
-			if (autoDestroy) Destroy(this);
+			try
+			{
+				if (!enabled) return;
+				if (lastTriggerTime + coldDown > Time.time) return; // 冷却中
+				lastTriggerTime = Time.time;
+#if UNITY_EDITOR
+				Debug.Log($"触发器 {name} 被触发", this);
+				UnityEditor.EditorGUIUtility.PingObject(this);
+#endif
+				if (--triggerCount <= 0)
+				{
+#if UNITY_EDITOR
+					Destroy(this);
+					Debug.Log($"触发器 {name} 达到触发上限", this);
+#endif
+				}
+				await MainThreadTimerManager.Await(delay);
+				actions?.Invoke();
+			}
+			catch (Exception e)
+			{
+				Debug.LogException(e);
+			}
 		}
 #if UNITY_EDITOR
 		GUIStyle styleCorrect;
