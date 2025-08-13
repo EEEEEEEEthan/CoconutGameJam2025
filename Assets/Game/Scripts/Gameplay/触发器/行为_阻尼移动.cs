@@ -1,7 +1,7 @@
 using UnityEngine;
-namespace Game.Gameplay
+namespace Game.Gameplay.触发器
 {
-	public class 行为_阻尼移动 : MonoBehaviour
+	public class 行为_阻尼移动 : GameBehaviour
 	{
 		[SerializeField] Transform target;
 		[SerializeField] float smoothTime = 0.3f;
@@ -11,6 +11,7 @@ namespace Game.Gameplay
 		{
 			if (!target) return;
 			transform.position = Vector3.SmoothDamp(transform.position, target.position, ref velocity, smoothTime, maxSpeed, Time.deltaTime);
+			transform.rotation = Quaternion.Slerp(transform.rotation, target.rotation, Time.deltaTime / smoothTime);
 		}
 		void OnEnable() => velocity = Vector3.zero;
 		void OnDisable() => velocity = Vector3.zero;

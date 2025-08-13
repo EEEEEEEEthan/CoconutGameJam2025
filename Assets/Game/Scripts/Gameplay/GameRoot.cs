@@ -1,4 +1,5 @@
 using Game.Gameplay.WaterGame;
+using ReferenceHelper;
 using UnityEngine;
 using UnityEngine.Rendering;
 namespace Game.Gameplay
@@ -9,7 +10,10 @@ namespace Game.Gameplay
 		[SerializeField] WaterGameJudge waterGame;
 		[SerializeField] Volume volume;
 		[SerializeField] CameraController cameraController;
+		[SerializeField, ObjectReference(nameof(GameCanvas)),]
+		GameCanvas gameCanvas;
 		bool volumeProfileCopied;
+		public GameCanvas GameCanvas => gameCanvas;
 		public VolumeProfile VolumeProfile
 		{
 			get
