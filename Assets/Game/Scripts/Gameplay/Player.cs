@@ -130,25 +130,25 @@ namespace Game.Gameplay
 			if (Input.GetKeyDown(KeyCode.Alpha1) && !inputBlock.greetings)
 			{
 				animator.SetTrigger(s_hi);
-				OnEmotionTriggered.TryInvoke(EmotionCode.Hi);
+				OnEmotionTriggered?.TryInvoke(EmotionCode.Hi);
 				isInSpecialAnim = true;
 			}
 			if (Input.GetKeyDown(KeyCode.Alpha2) && !inputBlock.surprise)
 			{
 				animator.SetTrigger(s_surpirse);
-				OnEmotionTriggered.TryInvoke(EmotionCode.Surprise);
+				OnEmotionTriggered?.TryInvoke(EmotionCode.Surprise);
 				isInSpecialAnim = true;
 			}
 			if (Input.GetKeyDown(KeyCode.Alpha3) && !inputBlock.shy)
 			{
 				animator.SetTrigger(s_shy);
-				OnEmotionTriggered.TryInvoke(EmotionCode.Shy);
+				OnEmotionTriggered?.TryInvoke(EmotionCode.Shy);
 				isInSpecialAnim = true;
 			}
 			if (Input.GetKeyDown(KeyCode.Alpha4) && !inputBlock.angry)
 			{
 				animator.SetTrigger(s_angry);
-				OnEmotionTriggered.TryInvoke(EmotionCode.Angry);
+				OnEmotionTriggered?.TryInvoke(EmotionCode.Angry);
 				isInSpecialAnim = true;
 			}
 		}

@@ -2306,7 +2306,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   delay: 1
   triggerCount: 1
-  coldDown: 0.5
+  coldDown: 1
   actions:
     m_PersistentCalls:
       m_Calls:
