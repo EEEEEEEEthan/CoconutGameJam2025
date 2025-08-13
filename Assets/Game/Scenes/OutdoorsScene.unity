@@ -207,6 +207,7 @@ GameObject:
   - component: {fileID: 157207114}
   - component: {fileID: 157207113}
   - component: {fileID: 157207115}
+  - component: {fileID: 157207116}
   m_Layer: 0
   m_Name: Sunlight
   m_TagString: Untagged
@@ -431,6 +432,19 @@ MonoBehaviour:
   m_ObsoleteUseShadowQualitySettings: 0
   m_ObsoleteCustomShadowResolution: 512
   m_ObsoleteContactShadows: 0
+--- !u!114 &157207116
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 157207112}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f560d5144d8e9d45991a4cc7ded666e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hdLight: {fileID: 157207115}
 --- !u!1001 &242920161
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3548,7 +3562,7 @@ MonoBehaviour:
   volume: {fileID: 432432460}
   cameraController: {fileID: 8599873438221142330}
   gameCanvas: {fileID: 1893623896}
-  sun: {fileID: 0}
+  sun: {fileID: 157207116}
 --- !u!33 &24980342346386989
 MeshFilter:
   m_ObjectHideFlags: 0

@@ -1,20 +1,27 @@
 using Game.Utilities.Smoothing;
 using ReferenceHelper;
 using UnityEngine;
+using UnityEngine.Rendering.HighDefinition; // 添加HDRP命名空间
+
 namespace Game.Gameplay
 {
 	public class Sunlight : MonoBehaviour
 	{
-		[SerializeField, ObjectReference,] Light sun;
+		[SerializeField, ObjectReference,] HDAdditionalLightData hdLight;
 		readonly DampSmoothing damp;
 		float defaultIntensity;
-		Sunlight() => damp = new(0, v => sun.intensity = v);
-		void Awake() => damp.Set(defaultIntensity = sun.intensity, 0);
+		
+		Sunlight() => damp = new(0, v => hdLight.intensity = v);
+		
+		void Awake()
+		{
+			damp.Set(defaultIntensity = hdLight.intensity, 0);
+		}
 		public void SetIntensity(float intensity, float duration)
 		{
-			if (sun is null) return;
-			sun.intensity = intensity;
+			damp.Set(intensity, duration);
 		}
+		
 		public void ResetIntensity(float duration) => SetIntensity(defaultIntensity, duration);
 	}
 }
