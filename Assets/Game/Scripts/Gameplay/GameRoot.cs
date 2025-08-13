@@ -7,7 +7,6 @@ namespace Game.Gameplay
 	public class GameRoot : MonoBehaviour
 	{
 		[SerializeField] Player player;
-		[SerializeField] WaterGameJudge waterGame;
 		[SerializeField] Volume volume;
 		[SerializeField] CameraController cameraController;
 		[SerializeField, ObjectReference(nameof(GameCanvas)),]
@@ -31,7 +30,6 @@ namespace Game.Gameplay
 		}
 		public CameraController CameraController => cameraController;
 		public Player Player => player;
-		public WaterGameJudge WaterGame => waterGame;
 	}
 	public class GameBehaviour : MonoBehaviour
 	{

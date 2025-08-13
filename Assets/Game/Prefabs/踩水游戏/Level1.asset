@@ -20,6 +20,6 @@ MonoBehaviour:
     jumping: 0
   - startTime: 0
     endTime: 0
-    left: 0
-    right: 2
-    jumping: 1
+    left: 2
+    right: 0
+    jumping: 0

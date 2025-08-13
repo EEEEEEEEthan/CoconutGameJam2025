@@ -52,21 +52,6 @@ namespace Game.Gameplay
 			set => inputBlock = value;
 		}
 		public event Action<EmotionCode> OnEmotionTriggered;
-		void Awake()
-		{
-			if (GameRoot.WaterGame)
-				GameRoot.WaterGame.OnLevelCompleted += level =>
-				{
-					GUIDebug.CreateWindow($"You completed level {level}",
-						close =>
-						{
-							GUILayout.Label("You can listen to GameRoot.WaterGame.OnLevelCompleted event to handle level completion logic.",
-								GUILayout.Width(400));
-							GUILayout.Label("Next level automatically opened. See WaterGame/WaterGameJudge");
-							if (GUILayout.Button("Got it")) close();
-						});
-				};
-		}
 		void Update()
 		{
 			handIKInput.transform.position = handIKInput.transform.position.WithZ(0);
