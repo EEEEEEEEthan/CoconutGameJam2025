@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 2259.848, g: 2399.3088, b: 3491.0396, a: 1}
+  m_IndirectSpecularColor: {r: 2261.9788, g: 2403.0784, b: 3499.8364, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2086,7 +2086,7 @@ Transform:
   m_GameObject: {fileID: 306735422}
   serializedVersion: 2
   m_LocalRotation: {x: 0.5, y: -0, z: -0, w: 0.8660254}
-  m_LocalPosition: {x: -0.47367632, y: 6.3000007, z: -2.46}
+  m_LocalPosition: {x: 0.043, y: 6.319, z: -2.426}
   m_LocalScale: {x: 6.5189033, y: 10, z: 10}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2359,7 +2359,6 @@ GameObject:
   m_Component:
   - component: {fileID: 448000522}
   - component: {fileID: 448000523}
-  - component: {fileID: 448000524}
   m_Layer: 3
   m_Name: "\u542F\u52A8\u8E29\u6C34\u6E38\u620F"
   m_TagString: Untagged
@@ -2394,26 +2393,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 511c70fe6586e07468f62ccb401e82b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waterGameDetector: {fileID: 448000524}
   lightBoy: {fileID: 306735425}
   lightPlayer: {fileID: 1666197064}
   boy: {fileID: 242920163}
---- !u!114 &448000524
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 448000521}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b210baeeb39d3240998dbc003c4edb7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  targetLevel: {fileID: 11400000, guid: e795ad94bb1113043bd22a2df38b93a5, type: 2}
-  timeThreshold: 0.1
-  maxWaitTime: 10
-  enableDebugLog: 1
 --- !u!1 &488611875
 GameObject:
   m_ObjectHideFlags: 0
@@ -2439,7 +2421,7 @@ Transform:
   m_GameObject: {fileID: 488611875}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 1.7526, y: 0, z: 0.1151}
+  m_LocalPosition: {x: 1.8158, y: 0, z: 0.1336}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3174,7 +3156,7 @@ Transform:
   m_GameObject: {fileID: 1666197061}
   serializedVersion: 2
   m_LocalRotation: {x: 0.5, y: -0, z: -0, w: 0.8660254}
-  m_LocalPosition: {x: -0.906, y: 6.16, z: -2.703}
+  m_LocalPosition: {x: -1.087, y: 6.16, z: -2.703}
   m_LocalScale: {x: 6.5189033, y: 10, z: 10}
   m_ConstrainProportionsScale: 0
   m_Children: []
