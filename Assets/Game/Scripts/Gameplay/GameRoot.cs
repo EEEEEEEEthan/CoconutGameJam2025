@@ -12,7 +12,10 @@ namespace Game.Gameplay
 		[SerializeField] CameraController cameraController;
 		[SerializeField, ObjectReference(nameof(GameCanvas)),]
 		GameCanvas gameCanvas;
+		[SerializeField, ObjectReference(nameof(Sunlight)),]
+		Sunlight sun;
 		bool volumeProfileCopied;
+		public Sunlight Sunlight => sun;
 		public GameCanvas GameCanvas => gameCanvas;
 		public VolumeProfile VolumeProfile
 		{
