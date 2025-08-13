@@ -25,7 +25,7 @@ namespace Game.Gameplay
 		Hi,
 		Surprise,
 		Shy,
-		Angry
+		Angry,
 	}
 	public class Player : GameBehaviour
 	{
@@ -37,7 +37,7 @@ namespace Game.Gameplay
 		static readonly int s_surpirse = Animator.StringToHash(nameof(EmotionCode.Surprise));
 		static readonly int s_shy = Animator.StringToHash(nameof(EmotionCode.Shy));
 		static readonly int s_angry = Animator.StringToHash(nameof(EmotionCode.Angry));
-		public InputBlock inputBlock;
+		[SerializeField] InputBlock inputBlock;
 		[SerializeField, ObjectReference,] HandIKInput handIKInput;
 		[SerializeField, ObjectReference("HandWithIK"),]
 		Animator animator;
@@ -46,11 +46,12 @@ namespace Game.Gameplay
 		bool isInSpecialAnim;
 		public Transform CameraTarget => cameraTarget;
 		public HandIKInput HandIkInput => handIKInput;
-		public event Action<EmotionCode> OnEmotionTriggered;
-		void OnDrawGizmos()
+		public InputBlock InputBlock
 		{
-			Gizmos.DrawRay(transform.position, Vector3.right * 100);
+			get => inputBlock;
+			set => inputBlock = value;
 		}
+		public event Action<EmotionCode> OnEmotionTriggered;
 		void Awake()
 		{
 			if (GameRoot.WaterGame)
@@ -151,6 +152,7 @@ namespace Game.Gameplay
 				isInSpecialAnim = true;
 			}
 		}
+		void OnDrawGizmos() => Gizmos.DrawRay(transform.position, Vector3.right * 100);
 		public void SetSpecialAnimEnd() => isInSpecialAnim = false;
 	}
 }
