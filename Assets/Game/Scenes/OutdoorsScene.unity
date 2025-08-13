@@ -1981,7 +1981,11 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2207130969038606573, guid: cee22b7a6dc894d45bc860c21d1e459f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1073150400}
   m_SourcePrefab: {fileID: 100100000, guid: cee22b7a6dc894d45bc860c21d1e459f, type: 3}
 --- !u!4 &242920162 stripped
 Transform:
@@ -2050,6 +2054,37 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 822321117}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &488611875
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 488611876}
+  m_Layer: 0
+  m_Name: "\u5C0F\u5B69\u8BA9\u4F4D\u7F6E"
+  m_TagString: Untagged
+  m_Icon: {fileID: 7250588514170254948, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &488611876
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 488611875}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1.813, y: 0, z: 0.1206}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1987088209}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &822321117
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2184,7 +2219,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5a4fff9f7b270f428fb17e2ba92d775, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  delay: 0
+  delay: 1
   triggerCount: 1
   coldDown: 0.5
   actions:
@@ -2200,6 +2235,30 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1073150400}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 242920163}
+        m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
+        m_MethodName: SetTrigger
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Please
           m_BoolArgument: 0
         m_CallState: 2
   emotion: 0
@@ -2224,6 +2283,27 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &1073150399 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2207130969038606573, guid: cee22b7a6dc894d45bc860c21d1e459f,
+    type: 3}
+  m_PrefabInstance: {fileID: 242920161}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1073150400
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1073150399}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ce2bbee063859e49b0bc7f1eb165567, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 488611876}
+  smoothTime: 0.3
+  maxSpeed: 1
 --- !u!1 &1191552053 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6800398303002138120, guid: 0012203b2cb5c75478b929172260fc3b,
@@ -2450,6 +2530,7 @@ Transform:
   - {fileID: 3010562186804228723}
   - {fileID: 2003562852}
   - {fileID: 926855259}
+  - {fileID: 488611876}
   - {fileID: 242920162}
   m_Father: {fileID: 5878362304304003333}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
