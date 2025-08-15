@@ -13,7 +13,6 @@ namespace Game.Gameplay.Triggers
 			UnityEditor.Selection.activeGameObject = triggerObject;
 		}
 #endif
-		[SerializeField] Player.EmotionCode emotion;
 		void OnTriggerEnter(Collider other)
 		{
 			if (other != GameRoot.Player.PlayerPositionTrigger) return;

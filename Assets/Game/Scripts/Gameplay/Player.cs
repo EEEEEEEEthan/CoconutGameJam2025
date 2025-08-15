@@ -66,6 +66,7 @@ namespace Game.Gameplay
 			get => inputBlock;
 			set => inputBlock = value;
 		}
+		public EmotionCode CurrentEmotion { get; private set; }
 		public event Action<EmotionCode> OnEmotionTriggered;
 		void Update()
 		{
@@ -130,25 +131,25 @@ namespace Game.Gameplay
 			if (Input.GetKeyDown(KeyCode.Alpha1) && !inputBlock.greetings)
 			{
 				animator.SetTrigger(s_hi);
-				OnEmotionTriggered?.TryInvoke(EmotionCode.Hi);
+				OnEmotionTriggered?.TryInvoke(CurrentEmotion = EmotionCode.Hi);
 				isInSpecialAnim = true;
 			}
 			if (Input.GetKeyDown(KeyCode.Alpha2) && !inputBlock.surprise)
 			{
 				animator.SetTrigger(s_surpirse);
-				OnEmotionTriggered?.TryInvoke(EmotionCode.Surprise);
+				OnEmotionTriggered?.TryInvoke(CurrentEmotion = EmotionCode.Surprise);
 				isInSpecialAnim = true;
 			}
 			if (Input.GetKeyDown(KeyCode.Alpha3) && !inputBlock.shy)
 			{
 				animator.SetTrigger(s_shy);
-				OnEmotionTriggered?.TryInvoke(EmotionCode.Shy);
+				OnEmotionTriggered?.TryInvoke(CurrentEmotion = EmotionCode.Shy);
 				isInSpecialAnim = true;
 			}
 			if (Input.GetKeyDown(KeyCode.Alpha4) && !inputBlock.angry)
 			{
 				animator.SetTrigger(s_angry);
-				OnEmotionTriggered?.TryInvoke(EmotionCode.Angry);
+				OnEmotionTriggered?.TryInvoke(CurrentEmotion = EmotionCode.Angry);
 				isInSpecialAnim = true;
 			}
 		}

@@ -1,4 +1,4 @@
-using Game.Gameplay.WaterGame;
+using System.Collections.Generic;
 using ReferenceHelper;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -13,7 +13,9 @@ namespace Game.Gameplay
 		GameCanvas gameCanvas;
 		[SerializeField, ObjectReference(nameof(Sunlight)),]
 		Sunlight sun;
+		[SerializeField] Collider[] groundColliders;
 		bool volumeProfileCopied;
+		public IReadOnlyList<Collider> GroundColliders => groundColliders;
 		public Sunlight Sunlight => sun;
 		public GameCanvas GameCanvas => gameCanvas;
 		public VolumeProfile VolumeProfile

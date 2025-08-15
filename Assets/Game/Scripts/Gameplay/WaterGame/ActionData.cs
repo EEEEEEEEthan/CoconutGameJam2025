@@ -1,5 +1,6 @@
 using System;
 using Game.FingerRigging;
+using Game.Utilities.Pools;
 using UnityEngine;
 namespace Game.Gameplay.WaterGame
 {
@@ -12,5 +13,45 @@ namespace Game.Gameplay.WaterGame
 		public LegPoseCode left;
 		public LegPoseCode right;
 		public bool jumping;
+		public override string ToString()
+		{
+			using (StringBuilderPoolThreaded.Rent(out var builder))
+			{
+				builder.Append("(");
+				switch (left)
+				{
+					case LegPoseCode.Idle:
+						builder.Append('O');
+						break;
+					case LegPoseCode.LiftForward:
+						builder.Append('Q');
+						break;
+					case LegPoseCode.LiftUp:
+						builder.Append('A');
+						break;
+					case LegPoseCode.LiftBackward:
+						builder.Append('Z');
+						break;
+				}
+				builder.Append(',');
+				switch (right)
+				{
+					case LegPoseCode.Idle:
+						builder.Append('O');
+						break;
+					case LegPoseCode.LiftForward:
+						builder.Append('W');
+						break;
+					case LegPoseCode.LiftUp:
+						builder.Append('S');
+						break;
+					case LegPoseCode.LiftBackward:
+						builder.Append('X');
+						break;
+				}
+				builder.Append(')');
+				return builder.ToString();
+			}
+		}
 	}
 }

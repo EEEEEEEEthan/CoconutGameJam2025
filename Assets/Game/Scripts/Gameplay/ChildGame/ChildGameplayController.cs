@@ -2,14 +2,16 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Game.FingerRigging;
 using Game.Gameplay.WaterGame;
 using Game.Utilities;
+using Game.Utilities.Pools;
 using UnityEngine;
 namespace Game.Gameplay.ChildGame
 {
 	public class ChildGameplayController : GameBehaviour
 	{
-		public enum EmotionCode
+		enum EmotionCode
 		{
 			Idle,
 			Hi,
@@ -28,16 +30,11 @@ namespace Game.Gameplay.ChildGame
 		[SerializeField] Transform lookTarget;
 		[SerializeField] Transform jump1;
 		[SerializeField] Transform jump2;
-		[SerializeField] MeshCollider groundMesh;
-		public bool PlayerInWaterArea { get; set; }
+		[SerializeField] GameObject playArea;
 		void Awake()
 		{
 			enabled = false;
 			Emotion(EmotionCode.Alone);
-		}
-		void OnDisable()
-		{
-			PlayerInWaterArea = false;
 		}
 		void OnEnable()
 		{
@@ -47,7 +44,7 @@ namespace Game.Gameplay.ChildGame
 			IEnumerator Play()
 			{
 				GameRoot.Player.InputBlock = InputBlock.all;
-				groundMesh.enabled = false;
+				foreach (var collider in GameRoot.GroundColliders) collider.enabled = false;
 				Emotion(EmotionCode.Idle);
 				yield return new WaitForSeconds(0.5f);
 				GameRoot.CameraController.LookAt(lookTarget, 14);
@@ -57,43 +54,124 @@ namespace Game.Gameplay.ChildGame
 				Emotion(EmotionCode.Please);
 				yield return childRoot.WaitJump(jump1.position, 0.01f, 0.3f);
 				yield return childRoot.WaitJump(jump2.position, 0.01f, 0.3f);
+				yield return new WaitForSeconds(0.5f);
 				GameRoot.Player.InputBlock = default;
-				yield return new WaitUntil(() => PlayerInWaterArea);
+				GameRoot.CameraController.LookAtPlayer();
+				yield return new WaitUntil(() => playArea.activeSelf);
 				GameRoot.GameCanvas.Filmic(true);
-				
-				
-				
-				
-				groundMesh.enabled = true;
+				while (true)
+				{
+					Emotion(EmotionCode.A);
+					yield return new WaitForSeconds(0.5f);
+					Emotion(EmotionCode.Idle);
+					yield return new WaitForSeconds(0.5f);
+					Emotion(EmotionCode.S);
+					yield return new WaitForSeconds(0.5f);
+					Emotion(EmotionCode.Idle);
+					yield return new WaitForSeconds(1);
+					var result = false;
+					yield return WaitForInputSequence(new[]
+						{
+							new ActionData
+							{
+								left = LegPoseCode.LiftUp,
+								right = LegPoseCode.Idle,
+							},
+							new ActionData
+							{
+								left = LegPoseCode.Idle,
+								right = LegPoseCode.Idle,
+							},
+							new ActionData
+							{
+								left = LegPoseCode.LiftForward,
+								right = LegPoseCode.Idle,
+							},
+							new ActionData
+							{
+								left = LegPoseCode.Idle,
+								right = LegPoseCode.Idle,
+							},
+						},
+						r => result = r);
+					Debug.Log($"Input sequence result: {result}");
+					if (result)
+					{
+						yield return new WaitForSeconds(0.1f);
+						Emotion(EmotionCode.Success);
+						yield return new WaitForSeconds(0.8f);
+						break;
+					}
+					yield return new WaitForSeconds(0.5f);
+					Emotion(EmotionCode.Wrong);
+					yield return new WaitForSeconds(0.8f);
+					yield return null;
+				}
+				foreach (var collider in GameRoot.GroundColliders) collider.enabled = true;
 				GameRoot.GameCanvas.Filmic(false);
 				GameRoot.CameraController.LookAtPlayer();
 			}
 		}
 		void Emotion(EmotionCode code) => animator.SetTrigger(emotionHashes[(int)code]);
-		IEnumerator<bool?> WaitForInputSequence(ActionData[] sequence)
+		IEnumerator WaitForInputSequence(ActionData[] sequence, Action<bool> callback)
 		{
-			// 检测玩家是否以指定序列输入.
-			// 1.输入少于0.1秒,且这一个输入不匹配,需要忽略这一个输入
-			// 2.输入之后的1秒内没有其他输入,则认为输入结束
-			// 3.无任何输入,3秒后得到null
+			const float threshold = 0.1f;
 			var startTime = Time.time;
 			var deadline = startTime + 3f;
-			while (true)
-			{
-				if (Time.time > deadline)
+			var player = GameRoot.Player;
+			List<ActionData> input = new();
+			player.OnEmotionTriggered += onEmotionTriggered;
+			player.HandIkInput.OnLeftLegChanged += onAnyInput;
+			player.HandIkInput.OnRightLegChanged += onAnyInput;
+			using var disposable = new Disposable(() =>
 				{
-					yield return null;
-					yield break;
+					player.OnEmotionTriggered -= onEmotionTriggered;
+					player.HandIkInput.OnLeftLegChanged -= onAnyInput;
+					player.HandIkInput.OnRightLegChanged -= onAnyInput;
 				}
-				/* if matched
-				 {
-				   yield return true;
-				   yield break;
-				 }
-				*/
+			);
+			while (Time.time < deadline)
+			{
+				if (check() == false) break;
 				yield return null;
 			}
+			using (StringBuilderPoolThreaded.Rent(out var builder))
+			{
+				builder.Append("Input sequence: ");
+				foreach (var i in input) builder.Append(i.ToString());
+				Debug.Log(builder, this);
+			}
+			callback?.TryInvoke(check() == true);
 			yield break;
+			bool? check()
+			{
+				for (var i = 0; i < sequence.Length; ++i)
+				{
+					if (input.Count <= i) return null;
+					var required = sequence[i];
+					var inputAction = input[i];
+					if (inputAction.endTime == 0) return null;
+					if (!ActionData.Match(required, inputAction)) return false;
+				}
+				return true;
+			}
+			void onEmotionTriggered(Player.EmotionCode emotion) => onAnyInput();
+			void onAnyInput()
+			{
+				if (input.Count > 0)
+				{
+					var last = input[^1];
+					last.endTime = Time.time;
+					if (last.endTime - last.startTime > threshold) input[^1] = last;
+				}
+				input.Add(new()
+				{
+					startTime = Time.time,
+					left = player.HandIkInput.LeftLeg,
+					right = player.HandIkInput.RightLeg,
+				});
+				deadline = Time.time + 1;
+			}
 		}
 	}
 }
