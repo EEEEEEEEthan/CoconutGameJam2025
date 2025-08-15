@@ -84,7 +84,7 @@ namespace Game.Gameplay.ChildGame
 							},
 							new ActionData
 							{
-								left = LegPoseCode.LiftForward,
+								left = LegPoseCode.LiftUp,
 								right = LegPoseCode.Idle,
 							},
 							new ActionData
@@ -139,6 +139,8 @@ namespace Game.Gameplay.ChildGame
 			{
 				builder.Append("Input sequence: ");
 				foreach (var i in input) builder.Append(i.ToString());
+				builder.Append(" | Required: ");
+				foreach (var i in sequence) builder.Append(i.ToString());
 				Debug.Log(builder, this);
 			}
 			callback?.TryInvoke(check() == true);
