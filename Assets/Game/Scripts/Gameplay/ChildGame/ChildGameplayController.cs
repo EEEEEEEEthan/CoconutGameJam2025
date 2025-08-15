@@ -145,6 +145,67 @@ namespace Game.Gameplay.ChildGame
 					yield return new WaitForSeconds(0.5f);
 					Emotion(EmotionCode.Wrong);
 				}
+				while (true)
+				{
+					yield return new WaitForSeconds(1);
+					Emotion(EmotionCode.A);
+					yield return new WaitForSeconds(0.5f);
+					Emotion(EmotionCode.Idle);
+					yield return new WaitForSeconds(0.5f);
+					Emotion(EmotionCode.S);
+					yield return new WaitForSeconds(0.5f);
+					Emotion(EmotionCode.Idle);
+					yield return new WaitForSeconds(0.5f);
+					Emotion(EmotionCode.A);
+					yield return new WaitForSeconds(0.5f);
+					Emotion(EmotionCode.Idle);
+					yield return new WaitForSeconds(0.5f);
+					Emotion(EmotionCode.A);
+					yield return new WaitForSeconds(0.5f);
+					Emotion(EmotionCode.Idle);
+					yield return new WaitForSeconds(0.5f);
+					Emotion(EmotionCode.S);
+					yield return new WaitForSeconds(0.5f);
+					Emotion(EmotionCode.Idle);
+					yield return new WaitForSeconds(0.5f);
+					Emotion(EmotionCode.A);
+					yield return new WaitForSeconds(0.5f);
+					Emotion(EmotionCode.Idle);
+					yield return new WaitForSeconds(0.5f);
+					Emotion(EmotionCode.A);
+					yield return new WaitForSeconds(0.5f);
+					Emotion(EmotionCode.Idle);
+					var result = false;
+					yield return WaitForInputSequence(new[]
+						{
+							new ActionData('A', 'O'),
+							new ActionData('O', 'O'),
+							new ActionData('O', 'S'),
+							new ActionData('O', 'O'),
+							new ActionData('A', 'O'),
+							new ActionData('O', 'O'),
+							new ActionData('A', 'O'),
+							new ActionData('O', 'O'),
+							new ActionData('O', 'S'),
+							new ActionData('O', 'O'),
+							new ActionData('A', 'O'),
+							new ActionData('O', 'O'),
+							new ActionData('A', 'O'),
+							new ActionData('O', 'O'),
+						},
+						r => result = r);
+					Debug.Log($"Input sequence result: {result}");
+					if (result)
+					{
+						yield return new WaitForSeconds(0.1f);
+						Emotion(EmotionCode.Success);
+						yield return new WaitForSeconds(0.8f);
+						break;
+					}
+					yield return new WaitForSeconds(0.5f);
+					Emotion(EmotionCode.Wrong);
+				}
+				Emotion(EmotionCode.Alone);
 				foreach (var collider in GameRoot.GroundColliders) collider.enabled = true;
 				GameRoot.GameCanvas.Filmic(false);
 				GameRoot.CameraController.LookAtPlayer();
