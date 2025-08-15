@@ -34,7 +34,9 @@ namespace Game.Gameplay.ChildGame
 			return;
 			IEnumerator Play()
 			{
-				GameRoot.CameraController.LookAt(lookTarget, 12);
+				GameRoot.Player.InputBlock = InputBlock.all;
+				yield return new WaitForSeconds(0.5f);
+				GameRoot.CameraController.LookAt(lookTarget, 14);
 				yield return new WaitForSeconds(1.5f);
 				Emotion(EmotionCode.Hi);
 				yield return new WaitForSeconds(1.5f);

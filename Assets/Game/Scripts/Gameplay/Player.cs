@@ -8,6 +8,19 @@ namespace Game.Gameplay
 	[Serializable]
 	public struct InputBlock
 	{
+		public static readonly InputBlock all = new()
+		{
+			leftForward = true,
+			leftUp = true,
+			leftBackward = true,
+			rightForward = true,
+			rightUp = true,
+			rightBackward = true,
+			greetings = true,
+			surprise = true,
+			shy = true,
+			angry = true,
+		};
 		public bool leftForward;
 		public bool leftUp;
 		public bool leftBackward;
