@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Game.FingerRigging;
 using Game.Gameplay.Triggers;
 using Game.Gameplay.WaterGame;
 using Game.Utilities;
@@ -32,6 +31,7 @@ namespace Game.Gameplay.ChildGame
 		[SerializeField] Transform jump1;
 		[SerializeField] Transform jump2;
 		[SerializeField] PlayerDetector danceArea;
+		[SerializeField] Transform lookTarget2;
 		void Awake()
 		{
 			enabled = false;
@@ -60,39 +60,36 @@ namespace Game.Gameplay.ChildGame
 				yield return new WaitUntil(() => danceArea.PlayerInside);
 				foreach (var collider in GameRoot.GroundColliders) collider.enabled = false;
 				GameRoot.GameCanvas.Filmic(true);
+				GameRoot.CameraController.LookAt(lookTarget2, 14);
 				while (true)
 				{
-					Emotion(EmotionCode.S);
-					yield return new WaitForSeconds(0.5f);
-					Emotion(EmotionCode.Idle);
-					yield return new WaitForSeconds(0.5f);
-					Emotion(EmotionCode.A);
-					yield return new WaitForSeconds(0.5f);
-					Emotion(EmotionCode.Idle);
 					yield return new WaitForSeconds(1);
+					Emotion(EmotionCode.AJump);
+					yield return new WaitForSeconds(0.5f);
+					Emotion(EmotionCode.Idle);
+					yield return new WaitForSeconds(0.5f);
+					Emotion(EmotionCode.AJump);
+					yield return new WaitForSeconds(0.5f);
+					Emotion(EmotionCode.Idle);
+					yield return new WaitForSeconds(0.5f);
+					Emotion(EmotionCode.SJump);
+					yield return new WaitForSeconds(0.5f);
+					Emotion(EmotionCode.Idle);
+					yield return new WaitForSeconds(0.5f);
+					Emotion(EmotionCode.SJump);
+					yield return new WaitForSeconds(0.5f);
+					Emotion(EmotionCode.Idle);
 					var result = false;
 					yield return WaitForInputSequence(new[]
 						{
-							new ActionData
-							{
-								left = LegPoseCode.LiftUp,
-								right = LegPoseCode.Idle,
-							},
-							new ActionData
-							{
-								left = LegPoseCode.Idle,
-								right = LegPoseCode.Idle,
-							},
-							new ActionData
-							{
-								left = LegPoseCode.Idle,
-								right = LegPoseCode.LiftUp,
-							},
-							new ActionData
-							{
-								left = LegPoseCode.Idle,
-								right = LegPoseCode.Idle,
-							},
+							new ActionData('A', 'O'),
+							new ActionData('O', 'O'),
+							new ActionData('A', 'O'),
+							new ActionData('O', 'O'),
+							new ActionData('O', 'S'),
+							new ActionData('O', 'O'),
+							new ActionData('O', 'S'),
+							new ActionData('O', 'O'),
 						},
 						r => result = r);
 					Debug.Log($"Input sequence result: {result}");
@@ -105,8 +102,48 @@ namespace Game.Gameplay.ChildGame
 					}
 					yield return new WaitForSeconds(0.5f);
 					Emotion(EmotionCode.Wrong);
+				}
+				while (true)
+				{
 					yield return new WaitForSeconds(1);
-					yield return null;
+					Emotion(EmotionCode.SJump);
+					yield return new WaitForSeconds(0.5f);
+					Emotion(EmotionCode.Idle);
+					yield return new WaitForSeconds(0.5f);
+					Emotion(EmotionCode.AJump);
+					yield return new WaitForSeconds(0.5f);
+					Emotion(EmotionCode.Idle);
+					yield return new WaitForSeconds(0.5f);
+					Emotion(EmotionCode.SJump);
+					yield return new WaitForSeconds(0.5f);
+					Emotion(EmotionCode.Idle);
+					yield return new WaitForSeconds(0.5f);
+					Emotion(EmotionCode.AJump);
+					yield return new WaitForSeconds(0.5f);
+					Emotion(EmotionCode.Idle);
+					var result = false;
+					yield return WaitForInputSequence(new[]
+						{
+							new ActionData('A', 'O'),
+							new ActionData('O', 'O'),
+							new ActionData('O', 'S'),
+							new ActionData('O', 'O'),
+							new ActionData('A', 'O'),
+							new ActionData('O', 'O'),
+							new ActionData('O', 'S'),
+							new ActionData('O', 'O'),
+						},
+						r => result = r);
+					Debug.Log($"Input sequence result: {result}");
+					if (result)
+					{
+						yield return new WaitForSeconds(0.1f);
+						Emotion(EmotionCode.Success);
+						yield return new WaitForSeconds(0.8f);
+						break;
+					}
+					yield return new WaitForSeconds(0.5f);
+					Emotion(EmotionCode.Wrong);
 				}
 				foreach (var collider in GameRoot.GroundColliders) collider.enabled = true;
 				GameRoot.GameCanvas.Filmic(false);
@@ -136,7 +173,7 @@ namespace Game.Gameplay.ChildGame
 				if (check() == false) break;
 				yield return null;
 			}
-			if(input.Count > 0)
+			if (input.Count > 0)
 			{
 				var last = input[^1];
 				last.endTime = Time.time;

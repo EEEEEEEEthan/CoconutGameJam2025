@@ -8,6 +8,26 @@ namespace Game.Gameplay.WaterGame
 	public struct ActionData
 	{
 		public static bool Match(ActionData a, ActionData b) => a.left == b.left && a.right == b.right && a.jumping == b.jumping;
+		public ActionData(char left, char right)
+		{
+			this.left = left switch
+			{
+				'Q' => LegPoseCode.LiftForward,
+				'A' => LegPoseCode.LiftUp,
+				'Z' => LegPoseCode.LiftBackward,
+				_ => LegPoseCode.Idle,
+			};
+			this.right = right switch
+			{
+				'W' => LegPoseCode.LiftForward,
+				'S' => LegPoseCode.LiftUp,
+				'X' => LegPoseCode.LiftBackward,
+				_ => LegPoseCode.Idle,
+			};
+			jumping = false;
+			startTime = 0f;
+			endTime = 0f;
+		}
 		[HideInInspector] public float startTime;
 		[HideInInspector] public float endTime;
 		public LegPoseCode left;
