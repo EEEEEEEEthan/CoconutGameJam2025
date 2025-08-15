@@ -4,7 +4,7 @@ namespace Game.FingerRigging
 {
 	class Hand : MonoBehaviour
 	{
-		[SerializeField] Transform handRoot;
+		[SerializeField, ObjectReference,] Transform handRoot;
 		[SerializeField] Transform handYRoot;
 		[SerializeField] Finger left;
 		[SerializeField] Finger right;

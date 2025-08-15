@@ -3,7 +3,6 @@ using Game.FingerRigging;
 using Game.Utilities;
 using ReferenceHelper;
 using UnityEngine;
-using GUIDebug = Game.Utilities.GUIDebug;
 namespace Game.Gameplay
 {
 	[Serializable]
@@ -20,15 +19,15 @@ namespace Game.Gameplay
 		public bool shy;
 		public bool angry;
 	}
-	public enum EmotionCode
-	{
-		Hi,
-		Surprise,
-		Shy,
-		Angry,
-	}
 	public class Player : GameBehaviour
 	{
+		public enum EmotionCode
+		{
+			Hi,
+			Surprise,
+			Shy,
+			Angry,
+		}
 		static readonly int s_walkLeft = Animator.StringToHash("WalkLeft");
 		static readonly int s_walkRight = Animator.StringToHash("WalkRight");
 		static readonly int s_standLeft = Animator.StringToHash("StandLeft");
@@ -43,7 +42,10 @@ namespace Game.Gameplay
 		Animator animator;
 		[SerializeField, ObjectReference(nameof(CameraTarget)),]
 		Transform cameraTarget;
+		[SerializeField, ObjectReference("PlayerPosition"),]
+		Collider playerPositionTrigger;
 		bool isInSpecialAnim;
+		public Collider PlayerPositionTrigger => playerPositionTrigger;
 		public Transform CameraTarget => cameraTarget;
 		public HandIKInput HandIkInput => handIKInput;
 		public InputBlock InputBlock
