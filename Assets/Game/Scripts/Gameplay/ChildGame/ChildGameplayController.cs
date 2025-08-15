@@ -64,19 +64,19 @@ namespace Game.Gameplay.ChildGame
 				while (true)
 				{
 					yield return new WaitForSeconds(1);
-					Emotion(EmotionCode.AJump);
+					Emotion(EmotionCode.A);
 					yield return new WaitForSeconds(0.5f);
 					Emotion(EmotionCode.Idle);
 					yield return new WaitForSeconds(0.5f);
-					Emotion(EmotionCode.AJump);
+					Emotion(EmotionCode.A);
 					yield return new WaitForSeconds(0.5f);
 					Emotion(EmotionCode.Idle);
 					yield return new WaitForSeconds(0.5f);
-					Emotion(EmotionCode.SJump);
+					Emotion(EmotionCode.S);
 					yield return new WaitForSeconds(0.5f);
 					Emotion(EmotionCode.Idle);
 					yield return new WaitForSeconds(0.5f);
-					Emotion(EmotionCode.SJump);
+					Emotion(EmotionCode.S);
 					yield return new WaitForSeconds(0.5f);
 					Emotion(EmotionCode.Idle);
 					var result = false;
@@ -106,31 +106,31 @@ namespace Game.Gameplay.ChildGame
 				while (true)
 				{
 					yield return new WaitForSeconds(1);
-					Emotion(EmotionCode.SJump);
+					Emotion(EmotionCode.S);
 					yield return new WaitForSeconds(0.5f);
 					Emotion(EmotionCode.Idle);
 					yield return new WaitForSeconds(0.5f);
-					Emotion(EmotionCode.AJump);
+					Emotion(EmotionCode.A);
 					yield return new WaitForSeconds(0.5f);
 					Emotion(EmotionCode.Idle);
 					yield return new WaitForSeconds(0.5f);
-					Emotion(EmotionCode.SJump);
+					Emotion(EmotionCode.S);
 					yield return new WaitForSeconds(0.5f);
 					Emotion(EmotionCode.Idle);
 					yield return new WaitForSeconds(0.5f);
-					Emotion(EmotionCode.AJump);
+					Emotion(EmotionCode.A);
 					yield return new WaitForSeconds(0.5f);
 					Emotion(EmotionCode.Idle);
 					var result = false;
 					yield return WaitForInputSequence(new[]
 						{
-							new ActionData('A', 'O'),
-							new ActionData('O', 'O'),
 							new ActionData('O', 'S'),
 							new ActionData('O', 'O'),
 							new ActionData('A', 'O'),
 							new ActionData('O', 'O'),
 							new ActionData('O', 'S'),
+							new ActionData('O', 'O'),
+							new ActionData('A', 'O'),
 							new ActionData('O', 'O'),
 						},
 						r => result = r);
