@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Game.FingerRigging;
+using Game.Gameplay.Triggers;
 using Game.Gameplay.WaterGame;
 using Game.Utilities;
 using Game.Utilities.Pools;
@@ -30,7 +31,7 @@ namespace Game.Gameplay.ChildGame
 		[SerializeField] Transform lookTarget;
 		[SerializeField] Transform jump1;
 		[SerializeField] Transform jump2;
-		[SerializeField] GameObject playArea;
+		[SerializeField] PlayerDetector danceArea;
 		void Awake()
 		{
 			enabled = false;
@@ -44,7 +45,6 @@ namespace Game.Gameplay.ChildGame
 			IEnumerator Play()
 			{
 				GameRoot.Player.InputBlock = InputBlock.all;
-				foreach (var collider in GameRoot.GroundColliders) collider.enabled = false;
 				Emotion(EmotionCode.Idle);
 				yield return new WaitForSeconds(0.5f);
 				GameRoot.CameraController.LookAt(lookTarget, 14);
@@ -57,15 +57,16 @@ namespace Game.Gameplay.ChildGame
 				yield return new WaitForSeconds(0.5f);
 				GameRoot.Player.InputBlock = default;
 				GameRoot.CameraController.LookAtPlayer();
-				yield return new WaitUntil(() => playArea.activeSelf);
+				yield return new WaitUntil(() => danceArea.PlayerInside);
+				foreach (var collider in GameRoot.GroundColliders) collider.enabled = false;
 				GameRoot.GameCanvas.Filmic(true);
 				while (true)
 				{
-					Emotion(EmotionCode.A);
+					Emotion(EmotionCode.S);
 					yield return new WaitForSeconds(0.5f);
 					Emotion(EmotionCode.Idle);
 					yield return new WaitForSeconds(0.5f);
-					Emotion(EmotionCode.S);
+					Emotion(EmotionCode.A);
 					yield return new WaitForSeconds(0.5f);
 					Emotion(EmotionCode.Idle);
 					yield return new WaitForSeconds(1);
@@ -84,8 +85,8 @@ namespace Game.Gameplay.ChildGame
 							},
 							new ActionData
 							{
-								left = LegPoseCode.LiftUp,
-								right = LegPoseCode.Idle,
+								left = LegPoseCode.Idle,
+								right = LegPoseCode.LiftUp,
 							},
 							new ActionData
 							{
@@ -104,7 +105,7 @@ namespace Game.Gameplay.ChildGame
 					}
 					yield return new WaitForSeconds(0.5f);
 					Emotion(EmotionCode.Wrong);
-					yield return new WaitForSeconds(0.8f);
+					yield return new WaitForSeconds(1);
 					yield return null;
 				}
 				foreach (var collider in GameRoot.GroundColliders) collider.enabled = true;
@@ -134,6 +135,12 @@ namespace Game.Gameplay.ChildGame
 			{
 				if (check() == false) break;
 				yield return null;
+			}
+			if(input.Count > 0)
+			{
+				var last = input[^1];
+				last.endTime = Time.time;
+				input[^1] = last;
 			}
 			using (StringBuilderPoolThreaded.Rent(out var builder))
 			{
