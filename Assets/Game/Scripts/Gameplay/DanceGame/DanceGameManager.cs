@@ -40,7 +40,7 @@ namespace Game.Gameplay.DanceGame
         /// 启动跳舞玩法系统
         /// </summary>
         /// <param name="callback">游戏结束时的回调函数，返回游戏统计结果</param>
-        public void Start(Action<(int correct, int wrong, int miss)> callback)
+        public void StartGame(Action<(int correct, int wrong, int miss)> callback)
         {
             gameEndCallback = callback;
             

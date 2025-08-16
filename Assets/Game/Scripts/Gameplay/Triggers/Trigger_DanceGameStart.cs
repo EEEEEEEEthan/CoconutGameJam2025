@@ -29,7 +29,7 @@ namespace Game.Gameplay.Triggers
             if (danceGameManager != null)
             {
                 // 调用DanceGameManager的Start方法，传入空的回调
-                danceGameManager.Start(null);
+                danceGameManager.StartGame(null);
             }
             else
             {
