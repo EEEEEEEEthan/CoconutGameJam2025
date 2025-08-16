@@ -11,12 +11,14 @@ namespace Game.Gameplay.DanceGame
         public Action<Note3DModel> OnReachTarget;
         Transform managerTransform;
         float gameStartTime;
+        bool isDestroyed = false;
         void Awake()
         {
             meshRenderer.sharedMaterial = new Material(meshRenderer.sharedMaterial);
         }
         void Update()
 		{
+			if (isDestroyed) return;
 			var currentGameTime = Time.time - gameStartTime;
 			var timeRemaining = noteData.time - currentGameTime;
 			var targetX = timeRemaining * MOVE_SPEED;
@@ -48,6 +50,11 @@ namespace Game.Gameplay.DanceGame
 			{
 				meshRenderer.sharedMaterial.mainTexture = texture;
 			}
+		}
+		public void DestroyNote()
+		{
+			isDestroyed = true;
+			Destroy(gameObject);
 		}
 	}
 }

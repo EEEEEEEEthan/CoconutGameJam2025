@@ -244,6 +244,7 @@ namespace Game.Gameplay.DanceGame
     private void RemoveNote(Note3DModel note)
     {
         activeNotes.Remove(note);
+        note.DestroyNote();
         
         // 检查游戏是否结束
         if (activeNotes.Count == 0)
