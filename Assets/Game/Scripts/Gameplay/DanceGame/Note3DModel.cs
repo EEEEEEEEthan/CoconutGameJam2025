@@ -10,8 +10,11 @@ namespace Game.Gameplay.DanceGame
         [SerializeField] MeshRenderer meshRenderer;
         public Action<Note3DModel> OnReachTarget;
         Transform managerTransform;
-        MaterialPropertyBlock materialPropertyBlock;
         float gameStartTime;
+        void Awake()
+        {
+            meshRenderer.sharedMaterial = new Material(meshRenderer.sharedMaterial);
+        }
         void Update()
 		{
 			var currentGameTime = Time.time - gameStartTime;
@@ -35,13 +38,10 @@ namespace Game.Gameplay.DanceGame
 		}
         void SetNoteTexture()
 		{
-			if (meshRenderer == null) return;
-			if (materialPropertyBlock == null) materialPropertyBlock = new();
 			var texture = GetTextureByKey(noteData.key);
 			if (texture != null)
 			{
-				materialPropertyBlock.SetTexture("_MainTex", texture);
-				meshRenderer.SetPropertyBlock(materialPropertyBlock);
+				meshRenderer.sharedMaterial.mainTexture = texture;
 			}
 		}
         Texture2D GetTextureByKey(KeyCode key) =>
