@@ -87,7 +87,7 @@ namespace Game.Gameplay.DanceGame
 					handIkInput.RightLeg = LegPoseCode.LiftBackward;
 					break;
 				case KeyCode.D:
-					//handIkInput.Jump(1.0f, null);
+					handIkInput.Jump(1.0f, null);
 					break;
 				default:
 					Debug.LogWarning($"DanceNPC: 未识别的按键 {keyCode}");
