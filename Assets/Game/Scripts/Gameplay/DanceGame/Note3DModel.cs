@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using Game.ResourceManagement;
 
 namespace Game.Gameplay.DanceGame
 {
@@ -17,9 +18,19 @@ namespace Game.Gameplay.DanceGame
         public NoteData noteData;
         
         /// <summary>
+        /// 音符的网格渲染器，用于材质属性设置
+        /// </summary>
+        [SerializeField] private MeshRenderer meshRenderer;
+        
+        /// <summary>
         /// DanceGameManager的Transform引用，用于本地空间坐标计算
         /// </summary>
         private Transform managerTransform;
+        
+        /// <summary>
+        /// 材质属性块，用于设置纹理
+        /// </summary>
+        private MaterialPropertyBlock materialPropertyBlock;
         
 
         
@@ -43,6 +54,48 @@ namespace Game.Gameplay.DanceGame
             noteData = data;
             managerTransform = manager;
             gameStartTime = Time.time;
+            
+            // 设置音符纹理
+            SetNoteTexture();
+        }
+        
+        /// <summary>
+        /// 根据按键设置音符纹理
+        /// </summary>
+        private void SetNoteTexture()
+        {
+            if (meshRenderer == null) return;
+            
+            // 创建MaterialPropertyBlock
+            if (materialPropertyBlock == null)
+                materialPropertyBlock = new MaterialPropertyBlock();
+            
+            // 根据按键获取对应纹理
+            Texture2D texture = GetTextureByKey(noteData.key);
+            if (texture != null)
+            {
+                materialPropertyBlock.SetTexture("_MainTex", texture);
+                meshRenderer.SetPropertyBlock(materialPropertyBlock);
+            }
+        }
+        
+        /// <summary>
+        /// 根据按键字符串获取对应纹理
+        /// </summary>
+        /// <param name="key">按键字符串</param>
+        /// <returns>对应的纹理</returns>
+        private Texture2D GetTextureByKey(KeyCode key)
+        {
+            return key switch
+            {
+                KeyCode.A => ResourceTable.aPng.Main,
+                KeyCode.S => ResourceTable.sPng.Main,
+                KeyCode.W => ResourceTable.wPng.Main,
+                KeyCode.Q => ResourceTable.qPng.Main,
+                KeyCode.X => ResourceTable.xPng.Main,
+                KeyCode.Z => ResourceTable.zPng.Main,
+                _ => null
+            };
         }
         
         /// <summary>
