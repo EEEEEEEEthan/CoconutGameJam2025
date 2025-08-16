@@ -41,10 +41,10 @@ namespace Game.Gameplay
 			Shy,
 			Angry,
 		}
-		static readonly int s_walkLeft = Animator.StringToHash("WalkLeft");
-		static readonly int s_walkRight = Animator.StringToHash("WalkRight");
-		static readonly int s_standLeft = Animator.StringToHash("StandLeft");
-		static readonly int s_standRight = Animator.StringToHash("StandRight");
+		public static readonly int s_walkLeft = Animator.StringToHash("WalkLeft");
+		public static readonly int s_walkRight = Animator.StringToHash("WalkRight");
+		public static readonly int s_standLeft = Animator.StringToHash("StandLeft");
+		public static readonly int s_standRight = Animator.StringToHash("StandRight");
 		static readonly int s_hi = Animator.StringToHash(nameof(EmotionCode.Hi));
 		static readonly int s_surpirse = Animator.StringToHash(nameof(EmotionCode.Surprise));
 		static readonly int s_shy = Animator.StringToHash(nameof(EmotionCode.Shy));

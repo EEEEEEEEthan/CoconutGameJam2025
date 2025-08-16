@@ -63,7 +63,7 @@ namespace Game.Gameplay.DanceGame
 		{
 			var noteDataList = new List<NoteData>();
 			var lines = levelTextAsset.text.Split('\n');
-			var notePattern = new Regex(@"\[([0-9]+\.?[0-9]*)\]([A-Za-z]+)");
+			var notePattern = new Regex(@"\[([0-9]{2}:[0-9]{2}\.[0-9]{2})\]([A-Za-z0-9]+)");
 			foreach (var line in lines)
 			{
 				var trimmedLine = line.Trim();
@@ -73,7 +73,7 @@ namespace Game.Gameplay.DanceGame
 				{
 					var timeStr = match.Groups[1].Value;
 					var keyStr = match.Groups[2].Value;
-					if (float.TryParse(timeStr, out var time) && Enum.TryParse(keyStr, true, out KeyCode keyCode))
+					if (TryParseTimeFormat(timeStr, out var time) && TryParseKeyCode(keyStr, out KeyCode keyCode))
 					{
 						var noteData = new NoteData
 						{
@@ -89,7 +89,35 @@ namespace Game.Gameplay.DanceGame
 				}
 			}
 			return noteDataList;
+	}
+	bool TryParseTimeFormat(string timeStr, out float totalSeconds)
+	{
+		totalSeconds = 0f;
+		var parts = timeStr.Split(':');
+		if (parts.Length != 2) return false;
+		if (!int.TryParse(parts[0], out var minutes)) return false;
+		if (!float.TryParse(parts[1], out var seconds)) return false;
+		totalSeconds = minutes * 60f + seconds;
+		return true;
+	}
+	bool TryParseKeyCode(string keyStr, out KeyCode keyCode)
+	{
+		keyCode = KeyCode.None;
+		switch (keyStr.ToUpper())
+		{
+			case "Q": keyCode = KeyCode.Q; return true;
+			case "W": keyCode = KeyCode.W; return true;
+			case "A": keyCode = KeyCode.A; return true;
+			case "S": keyCode = KeyCode.S; return true;
+			case "Z": keyCode = KeyCode.Z; return true;
+			case "X": keyCode = KeyCode.X; return true;
+			case "1": keyCode = KeyCode.Alpha1; return true;
+			case "2": keyCode = KeyCode.Alpha2; return true;
+			case "3": keyCode = KeyCode.Alpha3; return true;
+			case "4": keyCode = KeyCode.Alpha4; return true;
+			default: return false;
 		}
+	}
 		void ParseAndGenerateNotes()
 		{
 			var noteDataList = Parse();
@@ -109,7 +137,7 @@ namespace Game.Gameplay.DanceGame
 		}
 		void DetectInput()
 		{
-			KeyCode[] keysToCheck = { KeyCode.A, KeyCode.S, KeyCode.D, KeyCode.W, KeyCode.Q, KeyCode.X, KeyCode.Z, };
+			KeyCode[] keysToCheck = { KeyCode.Q, KeyCode.W, KeyCode.A, KeyCode.S, KeyCode.Z, KeyCode.X, KeyCode.Alpha1, KeyCode.Alpha2, KeyCode.Alpha3, KeyCode.Alpha4, };
 			foreach (var key in keysToCheck)
 				if (Input.GetKeyDown(key))
 					ProcessInput(key);

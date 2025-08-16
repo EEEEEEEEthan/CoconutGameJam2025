@@ -8,6 +8,7 @@ namespace Game.Gameplay.DanceGame
 	public class DanceNPC : MonoBehaviour
 	{
 		[SerializeField] HandIKInput handIkInput;
+		[SerializeField] Animator animator;
 		[SerializeField] float actionDuration = 0.5f;
 		Coroutine danceCoroutine;
 		bool isDancing;
@@ -54,7 +55,11 @@ namespace Game.Gameplay.DanceGame
 					ExecuteAction(noteData.key);
 					noteIndex++;
 					yield return new WaitForSeconds(actionDuration);
-					ResetPose();
+				ResetPose();
+				animator.SetBool(Player.s_walkLeft, false);
+				animator.SetBool(Player.s_walkRight, false);
+				animator.SetBool(Player.s_standLeft, false);
+				animator.SetBool(Player.s_standRight, false);
 				}
 				else
 				{
@@ -86,8 +91,21 @@ namespace Game.Gameplay.DanceGame
 				case KeyCode.X:
 					handIkInput.RightLeg = LegPoseCode.LiftBackward;
 					break;
-				case KeyCode.D:
-					handIkInput.Jump(1.0f, null);
+				case KeyCode.Alpha1:
+					animator.SetBool(Player.s_walkLeft, true);
+					animator.SetBool(Player.s_standLeft, false);
+					break;
+				case KeyCode.Alpha2:
+					animator.SetBool(Player.s_walkRight, true);
+					animator.SetBool(Player.s_standRight, false);
+					break;
+				case KeyCode.Alpha3:
+					animator.SetBool(Player.s_standLeft, true);
+					animator.SetBool(Player.s_walkLeft, false);
+					break;
+				case KeyCode.Alpha4:
+					animator.SetBool(Player.s_standRight, true);
+					animator.SetBool(Player.s_walkRight, false);
 					break;
 				default:
 					Debug.LogWarning($"DanceNPC: 未识别的按键 {keyCode}");
