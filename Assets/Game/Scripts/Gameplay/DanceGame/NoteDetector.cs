@@ -44,7 +44,7 @@ namespace Game.Gameplay.DanceGame
         
         void OnTriggerEnter(Collider other)
         {
-            var note = other.GetComponent<Note3DModel>();
+            var note = other.GetComponentInParent<Note3DModel>();
             if (note != null && !notesInArea.Contains(note))
             {
                 notesInArea.Add(note);
@@ -57,9 +57,28 @@ namespace Game.Gameplay.DanceGame
             }
         }
         
+        /// <summary>
+        /// 每帧检测音符是否还存在，处理Unity的Collider销毁不触发OnTriggerExit的问题
+        /// </summary>
+        void Update()
+        {
+            // 检查记录的音符是否还存在
+            for (int i = notesInArea.Count - 1; i >= 0; i--)
+            {
+                if (notesInArea[i] == null)
+                {
+                    // 音符已被销毁，手动触发离开逻辑
+                    notesInArea.RemoveAt(i);
+                    UpdateColor();
+                    
+                    Debug.Log("Note destroyed, manually triggered exit logic", this);
+                }
+            }
+        }
+        
         void OnTriggerExit(Collider other)
         {
-            var note = other.GetComponent<Note3DModel>();
+            var note = other.GetComponentInParent<Note3DModel>();
             if (note != null && notesInArea.Contains(note))
             {
                 notesInArea.Remove(note);
