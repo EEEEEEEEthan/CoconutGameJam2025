@@ -36,10 +36,7 @@ namespace Game.Gameplay.DanceGame
     /// </summary>
     private Action<(int correct, int wrong, int miss)> gameEndCallback;
     
-    /// <summary>
-    /// 判定时间窗口（秒）
-    /// </summary>
-    [SerializeField] private float judgmentWindow = 0.2f;
+
     
     /// <summary>
     /// 统计计数器
@@ -204,35 +201,27 @@ namespace Game.Gameplay.DanceGame
     /// <param name="inputKey">按下的按键</param>
     private void ProcessInput(KeyCode inputKey)
     {
-        float currentGameTime = Time.time - gameStartTime;
-        Note3DModel closestNote = null;
-        float closestDistance = float.MaxValue;
+        Note3DModel targetNote = null;
         
-        // 找到最接近目标位置且按键匹配的音符，并且必须在检测区域内
+        // 找到在检测区域内且按键匹配的音符
         foreach (Note3DModel note in activeNotes)
         {
             if (note.noteData.key == inputKey && IsNoteInDetectionArea(note))
             {
-                float timeToTarget = note.noteData.time - currentGameTime;
-                float distance = Mathf.Abs(timeToTarget);
-                
-                if (distance < closestDistance && distance <= judgmentWindow)
-                {
-                    closestDistance = distance;
-                    closestNote = note;
-                }
+                targetNote = note;
+                break;
             }
         }
         
-        if (closestNote != null)
+        if (targetNote != null)
         {
             // 正确判定
-            TriggerCorrectEvent(closestNote);
-            RemoveNote(closestNote);
+            TriggerCorrectEvent(targetNote);
+            RemoveNote(targetNote);
         }
         else
         {
-            // 错误判定（按键错误或时机不对，或音符不在检测区域内）
+            // 错误判定（按键错误或音符不在检测区域内）
             TriggerWrongEvent(inputKey);
         }
     }
