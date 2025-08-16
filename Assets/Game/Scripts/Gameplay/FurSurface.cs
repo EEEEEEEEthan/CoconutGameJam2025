@@ -20,11 +20,23 @@ namespace Game.Gameplay
 		[SerializeField] float gravityPower;
 		void OnEnable() => Refresh();
 		void OnDisable() => meshRenderer.sharedMaterials = new Material[0];
-		void OnValidate() => Refresh();
+		void OnBecameVisible()
+		{
+			var bounds = meshRenderer.bounds;
+			bounds = new(bounds.center, bounds.size + Vector3.one * fullLength * 2);
+			meshRenderer.bounds = bounds;
+			var localBounds = meshRenderer.localBounds;
+			localBounds = new(localBounds.center, localBounds.size + Vector3.one * fullLength);
+			meshRenderer.localBounds = localBounds;
+		}
+		void OnValidate()
+		{
+			if (Application.isPlaying) return;
+			Refresh();
+		}
 		void Refresh()
 		{
 			if (!enabled) return;
-			if (Application.isPlaying) return;
 			var sharedMaterials = new Material[layerCount];
 			Array.Copy(meshRenderer.sharedMaterials, sharedMaterials, Mathf.Min(meshRenderer.sharedMaterials.Length, layerCount));
 			for (var i = 0; i < layerCount; i++)
@@ -46,15 +58,6 @@ namespace Game.Gameplay
 				material.SetFloat("_GravityPower", gravityPower);
 			}
 			meshRenderer.sharedMaterials = sharedMaterials;
-		}
-		void OnBecameVisible()
-		{
-			var bounds = meshRenderer.bounds;
-			bounds = new(bounds.center, bounds.size + Vector3.one * fullLength * 2);
-			meshRenderer.bounds = bounds;
-			var localBounds = meshRenderer.localBounds;
-			localBounds = new(localBounds.center, localBounds.size + Vector3.one * fullLength);
-			meshRenderer.localBounds = localBounds;
 		}
 	}
 }
