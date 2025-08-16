@@ -9,7 +9,15 @@ namespace Game.Gameplay.DanceGame
     /// </summary>
     public class DanceGameManager : MonoBehaviour
     {
+        /// <summary>
+        /// 音符3D预制体引用，用于生成音符实例
+        /// </summary>
         [SerializeField] Note3DModel note3DPrefab;
+        
+        /// <summary>
+        /// 关卡txt文件资源，包含音符时序数据
+        /// </summary>
+        [SerializeField] TextAsset levelTextAsset;
         
         /// <summary>
         /// 启动跳舞玩法系统
