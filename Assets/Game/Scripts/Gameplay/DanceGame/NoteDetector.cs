@@ -8,12 +8,15 @@ namespace Game.Gameplay.DanceGame
 		public static Action<Note3DModel> OnNoteEnter;
 		public static Action<Note3DModel> OnNoteExit;
 		[SerializeField] MeshRenderer meshRenderer;
+		[SerializeField] Color highlightColor = Color.red;
+		Color originalColor;
 		readonly List<Note3DModel> notesInArea = new();
 		void Awake()
 		{
 			var col = GetComponent<Collider>();
 			if (col != null) col.isTrigger = true;
 			meshRenderer.sharedMaterial = new(meshRenderer.sharedMaterial);
+			originalColor = meshRenderer.sharedMaterial.color;
 		}
 		void Update()
 		{
@@ -31,8 +34,8 @@ namespace Game.Gameplay.DanceGame
 			if (note != null && !notesInArea.Contains(note))
 			{
 				notesInArea.Add(note);
-				SetColor(Color.red);
-				OnNoteEnter?.Invoke(note);
+			meshRenderer.sharedMaterial.color = highlightColor;
+			OnNoteEnter?.Invoke(note);
 				Debug.Log($"音符 {note.name} 进入检测区域", this);
 			}
 		}
@@ -42,17 +45,17 @@ namespace Game.Gameplay.DanceGame
 			if (note != null && notesInArea.Contains(note))
 			{
 				notesInArea.Remove(note);
-				if (notesInArea.Count == 0) SetColor(Color.white);
-				OnNoteExit?.Invoke(note);
+			if (notesInArea.Count == 0) meshRenderer.sharedMaterial.color = originalColor;
+			OnNoteExit?.Invoke(note);
 				Debug.Log($"音符 {note.name} 离开检测区域", this);
 			}
 		}
 		public bool IsNoteInArea(Note3DModel note) => notesInArea.Contains(note);
 		void UpdateColor()
-		{
-			var targetColor = notesInArea.Count > 0 ? Color.red : Color.white;
-			SetColor(targetColor);
-		}
-		void SetColor(Color color) => meshRenderer.sharedMaterial.color = color;
+	{
+		var targetColor = notesInArea.Count > 0 ? highlightColor : originalColor;
+		meshRenderer.sharedMaterial.color = targetColor;
+	}
+	
 	}
 }
