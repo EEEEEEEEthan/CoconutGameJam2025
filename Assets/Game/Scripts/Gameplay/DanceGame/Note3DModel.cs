@@ -8,7 +8,7 @@ namespace Game.Gameplay.DanceGame
         public const float MOVE_SPEED = 0.1f;
 		public NoteData noteData;
         [SerializeField] MeshRenderer meshRenderer;
-        public Action<Note3DModel> OnReachTarget;
+
         Transform managerTransform;
         float gameStartTime;
         bool isDestroyed = false;
@@ -25,10 +25,6 @@ namespace Game.Gameplay.DanceGame
 			var currentPosition = transform.localPosition;
 			currentPosition.x = targetX;
 			transform.localPosition = currentPosition;
-			if (timeRemaining <= 0f)
-			{
-				OnReachTarget?.Invoke(this);
-			}
 		}
         public void Initialize(NoteData data, Transform manager)
 		{

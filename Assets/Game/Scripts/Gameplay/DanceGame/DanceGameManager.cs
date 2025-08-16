@@ -132,7 +132,7 @@ namespace Game.Gameplay.DanceGame
 			noteInstance.transform.localPosition = localStartPosition;
 			noteInstance.gameObject.name = $"Note_{noteData.key}";
 			noteInstance.Initialize(noteData, transform);
-			noteInstance.OnReachTarget += OnNoteReachTarget;
+
 			activeNotes.Add(noteInstance);
 		}
 		void DetectInput()
@@ -161,11 +161,7 @@ namespace Game.Gameplay.DanceGame
 				TriggerWrongEvent(inputKey);
 			}
 		}
-		void OnNoteReachTarget(Note3DModel note)
-		{
-			TriggerMissEvent(note);
-			RemoveNote(note, false);
-		}
+
 		void RemoveNote(Note3DModel note, bool isHit)
 		{
 			activeNotes.Remove(note);
