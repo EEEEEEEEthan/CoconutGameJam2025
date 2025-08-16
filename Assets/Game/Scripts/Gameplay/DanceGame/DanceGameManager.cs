@@ -49,8 +49,9 @@ namespace Game.Gameplay.DanceGame
 			NoteDetector.OnNoteExit -= OnNoteExitDetectionArea;
 		}
 		public void SetGameEndCallback(Action<(int correct, int wrong, int miss)> callback) => gameEndCallback = callback;
-		void ParseAndGenerateNotes()
+		List<NoteData> Parse()
 		{
+			var noteDataList = new List<NoteData>();
 			var lines = levelTextAsset.text.Split('\n');
 			var notePattern = new Regex(@"\[([0-9]+\.?[0-9]*)\]([A-Za-z]+)");
 			foreach (var line in lines)
@@ -69,7 +70,7 @@ namespace Game.Gameplay.DanceGame
 							time = time,
 							key = keyCode,
 						};
-						GenerateNote(noteData);
+						noteDataList.Add(noteData);
 					}
 					else
 					{
@@ -77,6 +78,12 @@ namespace Game.Gameplay.DanceGame
 					}
 				}
 			}
+			return noteDataList;
+		}
+		void ParseAndGenerateNotes()
+		{
+			var noteDataList = Parse();
+			foreach (var noteData in noteDataList) GenerateNote(noteData);
 		}
 		void GenerateNote(NoteData noteData)
 		{
