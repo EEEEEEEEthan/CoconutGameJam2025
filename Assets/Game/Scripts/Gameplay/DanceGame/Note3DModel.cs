@@ -9,6 +9,11 @@ namespace Game.Gameplay.DanceGame
     /// </summary>
     public class Note3DModel : MonoBehaviour
     {
+        /// <summary>
+        /// 音符移动速度常量（每秒移动距离）
+        /// </summary>
+        public const float MOVE_SPEED = 0.1f;
+        
         public NoteData noteData;
         
         /// <summary>
@@ -23,6 +28,15 @@ namespace Game.Gameplay.DanceGame
         public void Initialize(NoteData data)
         {
             // TODO: 实现音符初始化逻辑
+        }
+        
+        /// <summary>
+        /// 每帧更新音符位置
+        /// </summary>
+        void Update()
+        {
+            // 每秒向左移动MOVE_SPEED距离
+            transform.position += Vector3.left * MOVE_SPEED * Time.deltaTime;
         }
     }
 }
