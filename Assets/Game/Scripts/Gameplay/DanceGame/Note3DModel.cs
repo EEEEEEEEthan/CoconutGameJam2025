@@ -21,6 +21,7 @@ namespace Game.Gameplay.DanceGame
         /// 音符的网格渲染器，用于材质属性设置
         /// </summary>
         [SerializeField] private MeshRenderer meshRenderer;
+        [SerializeField] FurSurface furSurface;
         
         /// <summary>
         /// DanceGameManager的Transform引用，用于本地空间坐标计算
@@ -57,6 +58,7 @@ namespace Game.Gameplay.DanceGame
             
             // 设置音符纹理
             SetNoteTexture();
+            furSurface.enabled = true;
         }
         
         /// <summary>

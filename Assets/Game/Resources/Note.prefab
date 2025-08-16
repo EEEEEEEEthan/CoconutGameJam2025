@@ -257,3 +257,5 @@ MonoBehaviour:
   noteData:
     time: 0
     key: 0
+  meshRenderer: {fileID: 2344723362701259539}
+  furSurface: {fileID: 2399334834754379712}
