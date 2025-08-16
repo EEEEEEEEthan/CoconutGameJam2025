@@ -32,33 +32,56 @@ namespace Game.Gameplay.DanceGame
         private List<Note3DModel> activeNotes = new List<Note3DModel>();
         
         /// <summary>
-        /// 游戏结束回调
-        /// </summary>
-        private Action<(int correct, int wrong, int miss)> gameEndCallback;
+    /// 游戏结束回调
+    /// </summary>
+    private Action<(int correct, int wrong, int miss)> gameEndCallback;
+    
+    /// <summary>
+    /// 判定时间窗口（秒）
+    /// </summary>
+    [SerializeField] private float judgmentWindow = 0.2f;
+    
+    /// <summary>
+    /// 统计计数器
+    /// </summary>
+    private int correctCount = 0;
+    private int wrongCount = 0;
+    private int missCount = 0;
+    
+    /// <summary>
+    /// 游戏开始时间
+    /// </summary>
+    private float gameStartTime;
         
         /// <summary>
-        /// 启动跳舞玩法系统
-        /// </summary>
-        /// <param name="callback">游戏结束时的回调函数，返回游戏统计结果</param>
-        public void StartGame(Action<(int correct, int wrong, int miss)> callback)
+    /// 启动跳舞玩法系统
+    /// </summary>
+    /// <param name="callback">游戏结束时的回调函数，返回游戏统计结果</param>
+    public void StartGame(Action<(int correct, int wrong, int miss)> callback)
+    {
+        gameEndCallback = callback;
+        gameStartTime = Time.time;
+        
+        // 重置统计计数器
+        correctCount = 0;
+        wrongCount = 0;
+        missCount = 0;
+        
+        if (levelTextAsset == null)
         {
-            gameEndCallback = callback;
-            
-            if (levelTextAsset == null)
-            {
-                Debug.LogError("Level text asset is not assigned!");
-                return;
-            }
-            
-            if (note3DPrefab == null)
-            {
-                Debug.LogError("Note3D prefab is not assigned!");
-                return;
-            }
-            
-            // 解析txt文件并生成所有音符
-            ParseAndGenerateNotes();
+            Debug.LogError("Level text asset is not assigned!");
+            return;
         }
+        
+        if (note3DPrefab == null)
+        {
+            Debug.LogError("Note3D prefab is not assigned!");
+            return;
+        }
+        
+        // 解析txt文件并生成所有音符
+        ParseAndGenerateNotes();
+    }
         
         /// <summary>
         /// 解析txt文件并生成所有音符
@@ -128,15 +151,133 @@ namespace Game.Gameplay.DanceGame
         }
         
         /// <summary>
-        /// 音符到达目标时的处理
-        /// </summary>
-        /// <param name="note">到达目标的音符</param>
-        private void OnNoteReachTarget(Note3DModel note)
+    /// 每帧更新，处理输入检测
+    /// </summary>
+    void Update()
+    {
+        // 检测输入
+        DetectInput();
+    }
+    
+    /// <summary>
+    /// 检测玩家输入
+    /// </summary>
+    private void DetectInput()
+    {
+        // 检测常用按键
+        KeyCode[] keysToCheck = { KeyCode.A, KeyCode.S, KeyCode.D, KeyCode.W, KeyCode.Q, KeyCode.X, KeyCode.Z };
+        
+        foreach (KeyCode key in keysToCheck)
         {
-            // 从活跃列表中移除
-            activeNotes.Remove(note);
-            
-            // TODO: 实现判定逻辑和分数统计
+            if (Input.GetKeyDown(key))
+            {
+                ProcessInput(key);
+            }
         }
+    }
+    
+    /// <summary>
+    /// 处理玩家输入
+    /// </summary>
+    /// <param name="inputKey">按下的按键</param>
+    private void ProcessInput(KeyCode inputKey)
+    {
+        float currentGameTime = Time.time - gameStartTime;
+        Note3DModel closestNote = null;
+        float closestDistance = float.MaxValue;
+        
+        // 找到最接近目标位置且按键匹配的音符
+        foreach (Note3DModel note in activeNotes)
+        {
+            if (note.noteData.key == inputKey)
+            {
+                float timeToTarget = note.noteData.time - currentGameTime;
+                float distance = Mathf.Abs(timeToTarget);
+                
+                if (distance < closestDistance && distance <= judgmentWindow)
+                {
+                    closestDistance = distance;
+                    closestNote = note;
+                }
+            }
+        }
+        
+        if (closestNote != null)
+        {
+            // 正确判定
+            TriggerCorrectEvent(closestNote);
+            RemoveNote(closestNote);
+        }
+        else
+        {
+            // 错误判定（按键错误或时机不对）
+            TriggerWrongEvent(inputKey);
+        }
+    }
+    
+    /// <summary>
+    /// 音符到达目标时的处理
+    /// </summary>
+    /// <param name="note">到达目标的音符</param>
+    private void OnNoteReachTarget(Note3DModel note)
+    {
+        // Miss判定（音符到达但玩家未按键）
+        TriggerMissEvent(note);
+        RemoveNote(note);
+    }
+    
+    /// <summary>
+    /// 移除音符
+    /// </summary>
+    /// <param name="note">要移除的音符</param>
+    private void RemoveNote(Note3DModel note)
+    {
+        activeNotes.Remove(note);
+        
+        // 检查游戏是否结束
+        if (activeNotes.Count == 0)
+        {
+            EndGame();
+        }
+    }
+    
+    /// <summary>
+    /// 触发正确事件
+    /// </summary>
+    /// <param name="note">正确判定的音符</param>
+    private void TriggerCorrectEvent(Note3DModel note)
+    {
+        correctCount++;
+        Debug.Log($"Correct! Key: {note.noteData.key}, Score: {correctCount}");
+    }
+    
+    /// <summary>
+    /// 触发错误事件
+    /// </summary>
+    /// <param name="inputKey">错误的按键</param>
+    private void TriggerWrongEvent(KeyCode inputKey)
+    {
+        wrongCount++;
+        Debug.Log($"Wrong! Key: {inputKey}, Wrong Count: {wrongCount}");
+    }
+    
+    /// <summary>
+    /// 触发错过事件
+    /// </summary>
+    /// <param name="note">错过的音符</param>
+    private void TriggerMissEvent(Note3DModel note)
+    {
+        missCount++;
+        Debug.Log($"Miss! Key: {note.noteData.key}, Miss Count: {missCount}");
+    }
+    
+    /// <summary>
+    /// 结束游戏
+    /// </summary>
+    private void EndGame()
+    {
+        Debug.Log($"Game End! Correct: {correctCount}, Wrong: {wrongCount}, Miss: {missCount}");
+        gameEndCallback?.Invoke((correctCount, wrongCount, missCount));
+    }
     }
 }
