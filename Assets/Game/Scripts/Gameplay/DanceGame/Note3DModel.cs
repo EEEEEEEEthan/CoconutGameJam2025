@@ -27,7 +27,7 @@ namespace Game.Gameplay.DanceGame
         /// <param name="data">音符数据</param>
         public void Initialize(NoteData data)
         {
-            // TODO: 实现音符初始化逻辑
+            noteData = data;
         }
         
         /// <summary>
@@ -37,6 +37,16 @@ namespace Game.Gameplay.DanceGame
         {
             // 每秒向左移动MOVE_SPEED距离
             transform.position += Vector3.left * MOVE_SPEED * Time.deltaTime;
+            
+            // 检查是否到达或超过目标位置（x <= 0）
+            if (transform.position.x <= 0f)
+            {
+                // 触发到达目标事件
+                OnReachTarget?.Invoke(this);
+                
+                // 自毁
+                Destroy(gameObject);
+            }
         }
     }
 }

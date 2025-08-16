@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Game.Gameplay.DanceGame
@@ -20,12 +21,110 @@ namespace Game.Gameplay.DanceGame
         [SerializeField] TextAsset levelTextAsset;
         
         /// <summary>
+        /// 目标位置（音符到达的位置）
+        /// </summary>
+        private Vector3 targetPosition = Vector3.zero;
+        
+        /// <summary>
+        /// 生成的音符列表
+        /// </summary>
+        private List<Note3DModel> activeNotes = new List<Note3DModel>();
+        
+        /// <summary>
+        /// 游戏结束回调
+        /// </summary>
+        private Action<(int correct, int wrong, int miss)> gameEndCallback;
+        
+        /// <summary>
         /// 启动跳舞玩法系统
         /// </summary>
         /// <param name="callback">游戏结束时的回调函数，返回游戏统计结果</param>
         public void Start(Action<(int correct, int wrong, int miss)> callback)
         {
-            // TODO: 实现游戏启动逻辑
+            gameEndCallback = callback;
+            
+            if (levelTextAsset == null)
+            {
+                Debug.LogError("Level text asset is not assigned!");
+                return;
+            }
+            
+            if (note3DPrefab == null)
+            {
+                Debug.LogError("Note3D prefab is not assigned!");
+                return;
+            }
+            
+            // 解析txt文件并生成所有音符
+            ParseAndGenerateNotes();
+        }
+        
+        /// <summary>
+        /// 解析txt文件并生成所有音符
+        /// </summary>
+        private void ParseAndGenerateNotes()
+        {
+            string[] lines = levelTextAsset.text.Split('\n');
+            
+            foreach (string line in lines)
+            {
+                string trimmedLine = line.Trim();
+                if (string.IsNullOrEmpty(trimmedLine)) continue;
+                
+                // 解析格式：[时间]键
+                if (trimmedLine.StartsWith("[") && trimmedLine.Contains("]"))
+                {
+                    int closeBracketIndex = trimmedLine.IndexOf(']');
+                    string timeStr = trimmedLine.Substring(1, closeBracketIndex - 1);
+                    string keyStr = trimmedLine.Substring(closeBracketIndex + 1);
+                    
+                    if (float.TryParse(timeStr, out float time))
+                    {
+                        NoteData noteData = new NoteData
+                        {
+                            time = time,
+                            key = keyStr
+                        };
+                        
+                        GenerateNote(noteData);
+                    }
+                }
+            }
+        }
+        
+        /// <summary>
+        /// 生成单个音符
+        /// </summary>
+        /// <param name="noteData">音符数据</param>
+        private void GenerateNote(NoteData noteData)
+        {
+            // 计算音符的初始位置
+            // 由于音符需要在noteData.time时间到达目标位置
+            // 而移动速度是每秒0.1距离，所以初始位置需要向右偏移
+            float distanceToTravel = noteData.time * Note3DModel.MOVE_SPEED;
+            Vector3 startPosition = targetPosition + Vector3.right * distanceToTravel;
+            
+            // 实例化音符
+            Note3DModel noteInstance = Instantiate(note3DPrefab, startPosition, Quaternion.identity);
+            noteInstance.Initialize(noteData);
+            
+            // 订阅到达目标事件
+            noteInstance.OnReachTarget += OnNoteReachTarget;
+            
+            // 添加到活跃音符列表
+            activeNotes.Add(noteInstance);
+        }
+        
+        /// <summary>
+        /// 音符到达目标时的处理
+        /// </summary>
+        /// <param name="note">到达目标的音符</param>
+        private void OnNoteReachTarget(Note3DModel note)
+        {
+            // 从活跃列表中移除
+            activeNotes.Remove(note);
+            
+            // TODO: 实现判定逻辑和分数统计
         }
     }
 }
