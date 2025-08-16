@@ -1,25 +1,21 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using Game.FingerRigging;
 using UnityEngine;
 namespace Game.Gameplay.DanceGame
 {
-	public class DanceNPC : MonoBehaviour
+	public class DanceNPC : GameBehaviour
 	{
 		[SerializeField] HandIKInput handIkInput;
 		[SerializeField] Animator animator;
 		[SerializeField] float actionDuration = 0.5f;
 		Coroutine danceCoroutine;
-		bool isDancing;
-		public bool IsDancing => isDancing;
+		public bool IsDancing { get; private set; }
+		void Awake() => transform.parent = GameRoot.transform;
+		void OnDisable() => StopDance();
 		public void Dance(List<NoteData> noteDataList)
 		{
-			if (isDancing)
-			{
-				StopCoroutine(danceCoroutine);
-				ResetPose();
-			}
+			if (IsDancing) StopCoroutine(danceCoroutine);
 			if (noteDataList == null || noteDataList.Count == 0)
 			{
 				Debug.LogWarning("DanceNPC: 舞谱数据为空");
@@ -34,19 +30,18 @@ namespace Game.Gameplay.DanceGame
 		}
 		public void StopDance()
 		{
-			if (isDancing && danceCoroutine != null)
+			if (IsDancing && danceCoroutine != null)
 			{
 				StopCoroutine(danceCoroutine);
-				ResetPose();
-				isDancing = false;
+				IsDancing = false;
 			}
 		}
 		IEnumerator DanceCoroutine(List<NoteData> noteDataList)
 		{
-			isDancing = true;
+			IsDancing = true;
 			var startTime = Time.time;
 			var noteIndex = 0;
-			while (noteIndex < noteDataList.Count && isDancing)
+			while (noteIndex < noteDataList.Count && IsDancing)
 			{
 				var currentTime = Time.time - startTime;
 				var noteData = noteDataList[noteIndex];
@@ -55,18 +50,17 @@ namespace Game.Gameplay.DanceGame
 					ExecuteAction(noteData.key);
 					noteIndex++;
 					yield return new WaitForSeconds(actionDuration);
-				ResetPose();
-				animator.SetBool(Player.s_walkLeft, false);
-				animator.SetBool(Player.s_walkRight, false);
-				animator.SetBool(Player.s_standLeft, false);
-				animator.SetBool(Player.s_standRight, false);
+					animator.SetBool(Player.s_walkLeft, false);
+					animator.SetBool(Player.s_walkRight, false);
+					animator.SetBool(Player.s_standLeft, false);
+					animator.SetBool(Player.s_standRight, false);
 				}
 				else
 				{
 					yield return null;
 				}
 			}
-			isDancing = false;
+			IsDancing = false;
 			Debug.Log("DanceNPC: 舞蹈完成");
 		}
 		void ExecuteAction(KeyCode keyCode)
@@ -112,15 +106,6 @@ namespace Game.Gameplay.DanceGame
 					break;
 			}
 			Debug.Log($"DanceNPC: 执行动作 {keyCode}");
-		}
-		void ResetPose()
-		{
-			handIkInput.LeftLeg = LegPoseCode.Idle;
-			handIkInput.RightLeg = LegPoseCode.Idle;
-		}
-		void OnDisable()
-		{
-			StopDance();
 		}
 	}
 }
