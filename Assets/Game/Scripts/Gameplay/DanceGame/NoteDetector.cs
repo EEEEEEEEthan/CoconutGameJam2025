@@ -82,7 +82,7 @@ namespace Game.Gameplay.DanceGame
         /// </summary>
         private void UpdateColor()
         {
-            Color targetColor = notesInArea.Count > 0 ? detectedColor : originalColor;
+            Color targetColor = notesInArea.Count > 0 ? Color.red : Color.white;
             SetColor(targetColor);
         }
         
