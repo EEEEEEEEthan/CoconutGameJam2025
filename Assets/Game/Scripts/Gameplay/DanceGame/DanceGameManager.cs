@@ -52,8 +52,16 @@ namespace Game.Gameplay.DanceGame
     /// 游戏开始时间
     /// </summary>
     private float gameStartTime;
-        
-        /// <summary>
+    
+    /// <summary>
+    /// 音符检测区域字典，存储音符与检测区域的对应关系
+    /// </summary>
+    private Dictionary<Note3DModel, List<NoteDetector>> noteDetectorMap = new Dictionary<Note3DModel, List<NoteDetector>>();
+    void Awake()
+    {
+        note3DPrefab.gameObject.SetActive(false);
+    }
+    /// <summary>
     /// 组件启用时自动开始游戏
     /// </summary>
     void OnEnable()
@@ -143,6 +151,7 @@ namespace Game.Gameplay.DanceGame
             
             // 实例化音符，设置为DanceGameManager的子对象
             Note3DModel noteInstance = Instantiate(note3DPrefab, this.transform);
+            noteInstance.gameObject.SetActive(true);
             noteInstance.transform.localPosition = localStartPosition;
             
             // 为调试方便，使用按键命名音符GameObject
@@ -193,10 +202,10 @@ namespace Game.Gameplay.DanceGame
         Note3DModel closestNote = null;
         float closestDistance = float.MaxValue;
         
-        // 找到最接近目标位置且按键匹配的音符
+        // 找到最接近目标位置且按键匹配的音符，并且必须在检测区域内
         foreach (Note3DModel note in activeNotes)
         {
-            if (note.noteData.key == inputKey)
+            if (note.noteData.key == inputKey && IsNoteInAnyDetectionArea(note))
             {
                 float timeToTarget = note.noteData.time - currentGameTime;
                 float distance = Mathf.Abs(timeToTarget);
@@ -217,7 +226,7 @@ namespace Game.Gameplay.DanceGame
         }
         else
         {
-            // 错误判定（按键错误或时机不对）
+            // 错误判定（按键错误或时机不对，或音符不在检测区域内）
             TriggerWrongEvent(inputKey);
         }
     }
@@ -276,6 +285,53 @@ namespace Game.Gameplay.DanceGame
     {
         missCount++;
         Debug.Log($"Miss! Key: {note.noteData.key}, Miss Count: {missCount}");
+    }
+    
+    /// <summary>
+    /// 音符进入检测区域时的处理
+    /// </summary>
+    /// <param name="note">进入检测区域的音符</param>
+    /// <param name="detector">检测区域</param>
+    public void OnNoteEnterDetectionArea(Note3DModel note, NoteDetector detector)
+    {
+        if (!noteDetectorMap.ContainsKey(note))
+        {
+            noteDetectorMap[note] = new List<NoteDetector>();
+        }
+        
+        if (!noteDetectorMap[note].Contains(detector))
+        {
+            noteDetectorMap[note].Add(detector);
+        }
+    }
+    
+    /// <summary>
+    /// 音符离开检测区域时的处理
+    /// </summary>
+    /// <param name="note">离开检测区域的音符</param>
+    /// <param name="detector">检测区域</param>
+    public void OnNoteExitDetectionArea(Note3DModel note, NoteDetector detector)
+    {
+        if (noteDetectorMap.ContainsKey(note))
+        {
+            noteDetectorMap[note].Remove(detector);
+            
+            // 如果音符不在任何检测区域内，移除字典条目
+            if (noteDetectorMap[note].Count == 0)
+            {
+                noteDetectorMap.Remove(note);
+            }
+        }
+    }
+    
+    /// <summary>
+    /// 检查音符是否在任何检测区域内
+    /// </summary>
+    /// <param name="note">要检查的音符</param>
+    /// <returns>如果音符在检测区域内返回true</returns>
+    private bool IsNoteInAnyDetectionArea(Note3DModel note)
+    {
+        return noteDetectorMap.ContainsKey(note) && noteDetectorMap[note].Count > 0;
     }
     
     /// <summary>
