@@ -87,6 +87,10 @@ namespace Game.Gameplay.DanceGame
             return;
         }
         
+        // 订阅NoteDetector事件
+        NoteDetector.OnNoteEnter += OnNoteEnterDetectionArea;
+        NoteDetector.OnNoteExit += OnNoteExitDetectionArea;
+        
         // 解析txt文件并生成所有音符
         ParseAndGenerateNotes();
     }
@@ -290,11 +294,20 @@ namespace Game.Gameplay.DanceGame
     }
     
     /// <summary>
+    /// 组件禁用时取消事件订阅
+    /// </summary>
+    void OnDisable()
+    {
+        // 取消订阅NoteDetector事件
+        NoteDetector.OnNoteEnter -= OnNoteEnterDetectionArea;
+        NoteDetector.OnNoteExit -= OnNoteExitDetectionArea;
+    }
+    
+    /// <summary>
     /// 音符进入检测区域时的处理
     /// </summary>
     /// <param name="note">进入的音符</param>
-    /// <param name="detector">检测区域</param>
-    public void OnNoteEnterDetectionArea(Note3DModel note, NoteDetector detector)
+    private void OnNoteEnterDetectionArea(Note3DModel note)
     {
         Debug.Log($"音符 {note.noteData.key} 进入检测区域");
     }
@@ -303,8 +316,7 @@ namespace Game.Gameplay.DanceGame
     /// 音符离开检测区域时的处理
     /// </summary>
     /// <param name="note">离开的音符</param>
-    /// <param name="detector">检测区域</param>
-    public void OnNoteExitDetectionArea(Note3DModel note, NoteDetector detector)
+    private void OnNoteExitDetectionArea(Note3DModel note)
     {
         Debug.Log($"音符 {note.noteData.key} 离开检测区域");
     }

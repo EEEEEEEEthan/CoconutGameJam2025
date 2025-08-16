@@ -1,112 +1,79 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Game.Gameplay.DanceGame
 {
     /// <summary>
-    /// 音符检测区域组件
-    /// 当音符进入检测区域时变红色，离开时变白色
-    /// 只有音符在检测区域内时按对应键才会被判定为正确
+    /// 音符检测区域脚本
+    /// 当音符进入时变红色，离开时变白色
+    /// 只有音符在检测区域内时按对应键才正确
     /// </summary>
-    [RequireComponent(typeof(Collider))]
-    [RequireComponent(typeof(MeshRenderer))]
     public class NoteDetector : MonoBehaviour
     {
         /// <summary>
-        /// 渲染器组件引用
+        /// 音符进入检测区域事件
         /// </summary>
+        public static System.Action<Note3DModel> OnNoteEnter;
+        
+        /// <summary>
+        /// 音符离开检测区域事件
+        /// </summary>
+        public static System.Action<Note3DModel> OnNoteExit;
+        
         [SerializeField] private MeshRenderer meshRenderer;
-        
-        /// <summary>
-        /// 当前在检测区域内的音符列表
-        /// </summary>
         private List<Note3DModel> notesInArea = new List<Note3DModel>();
-        
-        /// <summary>
-        /// 原始材质颜色（白色）
-        /// </summary>
-        private Color originalColor = Color.white;
-        
-        /// <summary>
-        /// 检测到音符时的颜色（红色）
-        /// </summary>
-        private Color detectedColor = Color.red;
-        
-        /// <summary>
-        /// 材质属性块，用于动态修改材质颜色
-        /// </summary>
-        private MaterialPropertyBlock materialPropertyBlock;
-        
-        /// <summary>
-        /// DanceGameManager引用，用于通知判定系统
-        /// </summary>
-        private DanceGameManager danceGameManager;
         
         void Awake()
         {
-            // 获取组件引用
+            // 确保有MeshRenderer组件
             if (meshRenderer == null)
                 meshRenderer = GetComponent<MeshRenderer>();
             
-            // 初始化材质属性块
-            materialPropertyBlock = new MaterialPropertyBlock();
+            // 确保有Collider组件且设置为Trigger
+            Collider col = GetComponent<Collider>();
+            if (col != null)
+                col.isTrigger = true;
             
-            // 确保Collider是触发器
-            Collider collider = GetComponent<Collider>();
-            if (collider != null)
-                collider.isTrigger = true;
-            
-            // 查找DanceGameManager
-            danceGameManager = FindObjectOfType<DanceGameManager>();
-        }
-        
-        void Start()
-        {
-            // 设置初始颜色为白色
-            SetColor(originalColor);
-        }
-        
-        /// <summary>
-        /// 音符进入检测区域
-        /// </summary>
-        /// <param name="other">进入的碰撞体</param>
-        void OnTriggerEnter(Collider other)
-        {
-            Note3DModel note = other.GetComponent<Note3DModel>();
-            if (note != null && !notesInArea.Contains(note))
+            // 创建材质副本，避免影响原始材质
+            if (meshRenderer != null && meshRenderer.sharedMaterial != null)
             {
-                notesInArea.Add(note);
-                UpdateColor();
-                
-                // 通知DanceGameManager音符进入检测区域
-                if (danceGameManager != null)
-                {
-                    danceGameManager.OnNoteEnterDetectionArea(note, this);
-                }
-                
-                Debug.Log($"音符 {note.name} 进入检测区域 {name}", this);
+                meshRenderer.sharedMaterial = new Material(meshRenderer.sharedMaterial);
             }
         }
         
-        /// <summary>
-        /// 音符离开检测区域
-        /// </summary>
-        /// <param name="other">离开的碰撞体</param>
+        void OnTriggerEnter(Collider other)
+        {
+            var note = other.GetComponent<Note3DModel>();
+            if (note != null && !notesInArea.Contains(note))
+            {
+                notesInArea.Add(note);
+                SetColor(Color.red);
+                
+                // 触发音符进入事件
+                OnNoteEnter?.Invoke(note);
+                
+                Debug.Log($"音符 {note.name} 进入检测区域", this);
+            }
+        }
+        
         void OnTriggerExit(Collider other)
         {
-            Note3DModel note = other.GetComponent<Note3DModel>();
+            var note = other.GetComponent<Note3DModel>();
             if (note != null && notesInArea.Contains(note))
             {
                 notesInArea.Remove(note);
-                UpdateColor();
                 
-                // 通知DanceGameManager音符离开检测区域
-                if (danceGameManager != null)
+                // 如果没有音符在区域内，恢复白色
+                if (notesInArea.Count == 0)
                 {
-                    danceGameManager.OnNoteExitDetectionArea(note, this);
+                    SetColor(Color.white);
                 }
                 
-                Debug.Log($"音符 {note.name} 离开检测区域 {name}", this);
+                // 触发音符离开事件
+                OnNoteExit?.Invoke(note);
+                
+                Debug.Log($"音符 {note.name} 离开检测区域", this);
             }
         }
         
@@ -120,15 +87,14 @@ namespace Game.Gameplay.DanceGame
         }
         
         /// <summary>
-        /// 设置材质颜色
+        /// 设置检测区域颜色
         /// </summary>
         /// <param name="color">目标颜色</param>
         private void SetColor(Color color)
         {
-            if (meshRenderer != null && materialPropertyBlock != null)
+            if (meshRenderer != null && meshRenderer.sharedMaterial != null)
             {
-                materialPropertyBlock.SetColor("_Color", color);
-                meshRenderer.SetPropertyBlock(materialPropertyBlock);
+                meshRenderer.sharedMaterial.color = color;
             }
         }
         
