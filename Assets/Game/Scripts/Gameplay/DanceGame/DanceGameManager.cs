@@ -154,7 +154,7 @@ namespace Game.Gameplay.DanceGame
 			if (targetNote != null)
 			{
 				TriggerCorrectEvent(targetNote);
-				RemoveNote(targetNote);
+				RemoveNote(targetNote, true);
 			}
 			else
 			{
@@ -164,12 +164,12 @@ namespace Game.Gameplay.DanceGame
 		void OnNoteReachTarget(Note3DModel note)
 		{
 			TriggerMissEvent(note);
-			RemoveNote(note);
+			RemoveNote(note, false);
 		}
-		void RemoveNote(Note3DModel note)
+		void RemoveNote(Note3DModel note, bool isHit)
 		{
 			activeNotes.Remove(note);
-			note.DestroyNote();
+			note.DestroyNote(isHit);
 			if (activeNotes.Count == 0) EndGame();
 		}
 		void TriggerCorrectEvent(Note3DModel note)
@@ -188,7 +188,15 @@ namespace Game.Gameplay.DanceGame
 			Debug.Log($"Miss! Key: {note.noteData.key}, Miss Count: {missCount}");
 		}
 		void OnNoteEnterDetectionArea(Note3DModel note) => Debug.Log($"音符 {note.noteData.key} 进入检测区域");
-		void OnNoteExitDetectionArea(Note3DModel note) => Debug.Log($"音符 {note.noteData.key} 离开检测区域");
+		void OnNoteExitDetectionArea(Note3DModel note)
+		{
+			Debug.Log($"音符 {note.noteData.key} 离开检测区域");
+			if (activeNotes.Contains(note))
+			{
+				TriggerMissEvent(note);
+				RemoveNote(note, false);
+			}
+		}
 		bool IsNoteInDetectionArea(Note3DModel note) => noteDetector != null && noteDetector.IsNoteInArea(note);
 		void EndGame()
 		{

@@ -28,7 +28,6 @@ namespace Game.Gameplay.DanceGame
 			if (timeRemaining <= 0f)
 			{
 				OnReachTarget?.Invoke(this);
-				Destroy(gameObject);
 			}
 		}
         public void Initialize(NoteData data, Transform manager)
@@ -51,7 +50,7 @@ namespace Game.Gameplay.DanceGame
 				meshRenderer.sharedMaterial.mainTexture = texture;
 			}
 		}
-		public void DestroyNote()
+		public void DestroyNote(bool isHit)
 		{
 			isDestroyed = true;
 			Destroy(gameObject);
