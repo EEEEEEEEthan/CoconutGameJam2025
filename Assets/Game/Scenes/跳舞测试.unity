@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 4065.397, g: 3700.8638, b: 4088.4731, a: 1}
+  m_IndirectSpecularColor: {r: 4070.483, g: 3706.6646, b: 4098.9575, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -4825,12 +4825,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 191483407}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.0306, y: 0.2189, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.0194, y: 0.11898705, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2135327886}
+  m_Father: {fileID: 432500365}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &191483409
 MonoBehaviour:
@@ -10276,6 +10276,12 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2135327886}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &432500365 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 495642496853174854, guid: c3288a7c1712e014b8090b7277b6658f,
+    type: 3}
+  m_PrefabInstance: {fileID: 1564454350}
+  m_PrefabAsset: {fileID: 0}
 --- !u!21 &436780134
 Material:
   serializedVersion: 8
@@ -36597,7 +36603,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 495642496853174854, guid: c3288a7c1712e014b8090b7277b6658f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 191483408}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c3288a7c1712e014b8090b7277b6658f, type: 3}
 --- !u!21 &1568970520
@@ -47594,7 +47604,6 @@ Transform:
   - {fileID: 1111397592}
   - {fileID: 994690208}
   - {fileID: 187385900}
-  - {fileID: 191483408}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2135327887
