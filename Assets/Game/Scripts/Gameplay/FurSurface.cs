@@ -46,9 +46,15 @@ namespace Game.Gameplay
 				material.SetFloat("_GravityPower", gravityPower);
 			}
 			meshRenderer.sharedMaterials = sharedMaterials;
+		}
+		void OnBecameVisible()
+		{
 			var bounds = meshRenderer.bounds;
 			bounds = new(bounds.center, bounds.size + Vector3.one * fullLength * 2);
 			meshRenderer.bounds = bounds;
+			var localBounds = meshRenderer.localBounds;
+			localBounds = new(localBounds.center, localBounds.size + Vector3.one * fullLength);
+			meshRenderer.localBounds = localBounds;
 		}
 	}
 }
