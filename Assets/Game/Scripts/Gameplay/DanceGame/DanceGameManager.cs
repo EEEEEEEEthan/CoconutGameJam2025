@@ -59,6 +59,7 @@ namespace Game.Gameplay.DanceGame
     [SerializeField] private NoteDetector noteDetector;
     void Awake()
     {
+        noteDetector.gameObject.SetActive(false);
         note3DPrefab.gameObject.SetActive(false);
     }
     /// <summary>
@@ -66,6 +67,7 @@ namespace Game.Gameplay.DanceGame
     /// </summary>
     void OnEnable()
     {
+        noteDetector.gameObject.SetActive(true);
         gameStartTime = Time.time;
         
         // 重置统计计数器
