@@ -21,6 +21,13 @@ namespace Game.Gameplay.DanceGame
         /// </summary>
         private Transform managerTransform;
         
+
+        
+        /// <summary>
+        /// 游戏开始时间
+        /// </summary>
+        private float gameStartTime;
+        
         /// <summary>
         /// 到达目标点时的事件回调
         /// </summary>
@@ -35,6 +42,7 @@ namespace Game.Gameplay.DanceGame
         {
             noteData = data;
             managerTransform = manager;
+            gameStartTime = Time.time;
         }
         
         /// <summary>
@@ -42,11 +50,21 @@ namespace Game.Gameplay.DanceGame
         /// </summary>
         void Update()
         {
-            // 在本地空间中每秒向左移动MOVE_SPEED距离
-            transform.localPosition += Vector3.left * MOVE_SPEED * Time.deltaTime;
+            // 计算当前游戏时间
+            float currentGameTime = Time.time - gameStartTime;
             
-            // 检查是否到达或超过目标位置（本地坐标x <= 0）
-            if (transform.localPosition.x <= 0f)
+            // 基于抵达时间和当前时间精确计算位置，避免顿卡造成精度丢失
+            // 音符应该在noteData.time时间到达目标位置（x=0）
+            float timeRemaining = noteData.time - currentGameTime;
+            float targetX = timeRemaining * MOVE_SPEED;
+            
+            // 更新位置（直接设置x坐标，y和z保持不变）
+            Vector3 currentPosition = transform.localPosition;
+            currentPosition.x = targetX;
+            transform.localPosition = currentPosition;
+            
+            // 检查是否到达或超过目标位置
+            if (timeRemaining <= 0f)
             {
                 // 触发到达目标事件
                 OnReachTarget?.Invoke(this);

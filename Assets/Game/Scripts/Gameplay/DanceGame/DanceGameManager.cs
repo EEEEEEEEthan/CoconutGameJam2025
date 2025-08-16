@@ -114,6 +114,10 @@ namespace Game.Gameplay.DanceGame
             // 实例化音符，设置为DanceGameManager的子对象
             Note3DModel noteInstance = Instantiate(note3DPrefab, this.transform);
             noteInstance.transform.localPosition = localStartPosition;
+            
+            // 为调试方便，使用按键命名音符GameObject
+            noteInstance.gameObject.name = $"Note_{noteData.key}";
+            
             noteInstance.Initialize(noteData, this.transform);
             
             // 订阅到达目标事件
