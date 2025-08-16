@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using UnityEngine;
 
 namespace Game.Gameplay.DanceGame
@@ -66,27 +67,33 @@ namespace Game.Gameplay.DanceGame
         {
             string[] lines = levelTextAsset.text.Split('\n');
             
+            // 正则表达式匹配格式：[时间]键
+            Regex notePattern = new Regex(@"\[([0-9]+\.?[0-9]*)\]([A-Za-z]+)");
+            
             foreach (string line in lines)
             {
                 string trimmedLine = line.Trim();
                 if (string.IsNullOrEmpty(trimmedLine)) continue;
                 
-                // 解析格式：[时间]键
-                if (trimmedLine.StartsWith("[") && trimmedLine.Contains("]"))
+                Match match = notePattern.Match(trimmedLine);
+                if (match.Success)
                 {
-                    int closeBracketIndex = trimmedLine.IndexOf(']');
-                    string timeStr = trimmedLine.Substring(1, closeBracketIndex - 1);
-                    string keyStr = trimmedLine.Substring(closeBracketIndex + 1);
+                    string timeStr = match.Groups[1].Value;
+                    string keyStr = match.Groups[2].Value;
                     
-                    if (float.TryParse(timeStr, out float time))
+                    if (float.TryParse(timeStr, out float time) && System.Enum.TryParse<KeyCode>(keyStr, true, out KeyCode keyCode))
                     {
                         NoteData noteData = new NoteData
                         {
                             time = time,
-                            key = keyStr
+                            key = keyCode
                         };
                         
                         GenerateNote(noteData);
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"Failed to parse note data: {trimmedLine}");
                     }
                 }
             }
