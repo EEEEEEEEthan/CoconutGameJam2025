@@ -10,7 +10,8 @@ namespace Game.Gameplay
 		[SerializeField, Range(0, 128),] int layerCount = 10;
 		[SerializeField] Gradient gradient;
 		[SerializeField, Min(0),] float fullLength;
-		[SerializeField] float noiseScale = 1f;
+		[SerializeField] Vector4 noiseScales = new(100, 100, 100, 100);
+		[SerializeField] Vector4 noiseWeights = new(1, 1, 1, 1);
 		[SerializeField] AnimationCurve layerToLength;
 		[SerializeField] AnimationCurve layerToAlphaClip;
 		[SerializeField] float smoothness;
@@ -48,7 +49,8 @@ namespace Game.Gameplay
 					material = sharedMaterials[i] = new(this.material);
 				var progress = (i + 1f) / layerCount;
 				material.SetFloat("_Length", layerToLength.Evaluate(progress) * fullLength);
-				material.SetFloat("_NoiseScale", noiseScale);
+				material.SetVector("_NoiseScales", noiseScales);
+				material.SetVector("_NoiseWeights", noiseWeights);
 				material.color = gradient.Evaluate(progress);
 				material.SetFloat("_AlphaClipThreshold", layerToAlphaClip.Evaluate(progress));
 				material.SetFloat("_Smoothness", smoothness);
