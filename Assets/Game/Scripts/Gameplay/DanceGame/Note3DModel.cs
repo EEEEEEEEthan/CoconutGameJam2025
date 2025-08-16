@@ -34,18 +34,7 @@ namespace Game.Gameplay.DanceGame
 			noteData = data;
 			managerTransform = manager;
 			gameStartTime = Time.time;
-			SetNoteTexture();
-		}
-        void SetNoteTexture()
-		{
-			var texture = GetTextureByKey(noteData.key);
-			if (texture != null)
-			{
-				meshRenderer.sharedMaterial.mainTexture = texture;
-			}
-		}
-        Texture2D GetTextureByKey(KeyCode key) =>
-			key switch
+			var texture = noteData.key switch
 			{
 				KeyCode.A => ResourceTable.aPng.Main,
 				KeyCode.S => ResourceTable.sPng.Main,
@@ -55,5 +44,10 @@ namespace Game.Gameplay.DanceGame
 				KeyCode.Z => ResourceTable.zPng.Main,
 				_ => null,
 			};
+			if (texture != null)
+			{
+				meshRenderer.sharedMaterial.mainTexture = texture;
+			}
+		}
 	}
 }
