@@ -54,12 +54,10 @@ namespace Game.Gameplay.DanceGame
     private float gameStartTime;
         
         /// <summary>
-    /// 启动跳舞玩法系统
+    /// 组件启用时自动开始游戏
     /// </summary>
-    /// <param name="callback">游戏结束时的回调函数，返回游戏统计结果</param>
-    public void StartGame(Action<(int correct, int wrong, int miss)> callback)
+    void OnEnable()
     {
-        gameEndCallback = callback;
         gameStartTime = Time.time;
         
         // 重置统计计数器
@@ -81,6 +79,15 @@ namespace Game.Gameplay.DanceGame
         
         // 解析txt文件并生成所有音符
         ParseAndGenerateNotes();
+    }
+    
+    /// <summary>
+    /// 设置游戏结束回调
+    /// </summary>
+    /// <param name="callback">游戏结束时的回调函数，返回游戏统计结果</param>
+    public void SetGameEndCallback(Action<(int correct, int wrong, int miss)> callback)
+    {
+        gameEndCallback = callback;
     }
         
         /// <summary>
