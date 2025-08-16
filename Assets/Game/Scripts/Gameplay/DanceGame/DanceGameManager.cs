@@ -105,15 +105,16 @@ namespace Game.Gameplay.DanceGame
         /// <param name="noteData">音符数据</param>
         private void GenerateNote(NoteData noteData)
         {
-            // 计算音符的初始位置
+            // 计算音符的初始位置（在本地空间中）
             // 由于音符需要在noteData.time时间到达目标位置
             // 而移动速度是每秒0.1距离，所以初始位置需要向右偏移
             float distanceToTravel = noteData.time * Note3DModel.MOVE_SPEED;
-            Vector3 startPosition = targetPosition + Vector3.right * distanceToTravel;
+            Vector3 localStartPosition = targetPosition + Vector3.right * distanceToTravel;
             
-            // 实例化音符
-            Note3DModel noteInstance = Instantiate(note3DPrefab, startPosition, Quaternion.identity);
-            noteInstance.Initialize(noteData);
+            // 实例化音符，设置为DanceGameManager的子对象
+            Note3DModel noteInstance = Instantiate(note3DPrefab, this.transform);
+            noteInstance.transform.localPosition = localStartPosition;
+            noteInstance.Initialize(noteData, this.transform);
             
             // 订阅到达目标事件
             noteInstance.OnReachTarget += OnNoteReachTarget;

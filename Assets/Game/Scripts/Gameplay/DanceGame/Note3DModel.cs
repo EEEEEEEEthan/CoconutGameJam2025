@@ -17,6 +17,11 @@ namespace Game.Gameplay.DanceGame
         public NoteData noteData;
         
         /// <summary>
+        /// DanceGameManager的Transform引用，用于本地空间坐标计算
+        /// </summary>
+        private Transform managerTransform;
+        
+        /// <summary>
         /// 到达目标点时的事件回调
         /// </summary>
         public System.Action<Note3DModel> OnReachTarget;
@@ -25,9 +30,11 @@ namespace Game.Gameplay.DanceGame
         /// 初始化音符数据
         /// </summary>
         /// <param name="data">音符数据</param>
-        public void Initialize(NoteData data)
+        /// <param name="manager">DanceGameManager的Transform</param>
+        public void Initialize(NoteData data, Transform manager)
         {
             noteData = data;
+            managerTransform = manager;
         }
         
         /// <summary>
@@ -35,11 +42,11 @@ namespace Game.Gameplay.DanceGame
         /// </summary>
         void Update()
         {
-            // 每秒向左移动MOVE_SPEED距离
-            transform.position += Vector3.left * MOVE_SPEED * Time.deltaTime;
+            // 在本地空间中每秒向左移动MOVE_SPEED距离
+            transform.localPosition += Vector3.left * MOVE_SPEED * Time.deltaTime;
             
-            // 检查是否到达或超过目标位置（x <= 0）
-            if (transform.position.x <= 0f)
+            // 检查是否到达或超过目标位置（本地坐标x <= 0）
+            if (transform.localPosition.x <= 0f)
             {
                 // 触发到达目标事件
                 OnReachTarget?.Invoke(this);
