@@ -7,8 +7,9 @@ namespace Game.Gameplay.DanceGame
 	public class DanceGameManager : MonoBehaviour
 	{
 		[SerializeField] Note3DModel note3DPrefab;
-		[SerializeField] TextAsset levelTextAsset;
-		[SerializeField] NoteDetector noteDetector;
+	[SerializeField] TextAsset levelTextAsset;
+	[SerializeField] NoteDetector noteDetector;
+	[SerializeField] DanceNPC danceNPC;
 		readonly Vector3 targetPosition = Vector3.zero;
 		readonly List<Note3DModel> activeNotes = new();
 		Action<(int correct, int wrong, int miss)> gameEndCallback;
@@ -40,14 +41,23 @@ namespace Game.Gameplay.DanceGame
 				return;
 			}
 			NoteDetector.OnNoteEnter += OnNoteEnterDetectionArea;
-			NoteDetector.OnNoteExit += OnNoteExitDetectionArea;
-			ParseAndGenerateNotes();
+		NoteDetector.OnNoteExit += OnNoteExitDetectionArea;
+		ParseAndGenerateNotes();
+		if (danceNPC != null)
+		{
+			var noteDataList = Parse();
+			danceNPC.Dance(noteDataList);
+		}
 		}
 		void OnDisable()
+	{
+		NoteDetector.OnNoteEnter -= OnNoteEnterDetectionArea;
+		NoteDetector.OnNoteExit -= OnNoteExitDetectionArea;
+		if (danceNPC != null)
 		{
-			NoteDetector.OnNoteEnter -= OnNoteEnterDetectionArea;
-			NoteDetector.OnNoteExit -= OnNoteExitDetectionArea;
+			danceNPC.StopDance();
 		}
+	}
 		public void SetGameEndCallback(Action<(int correct, int wrong, int miss)> callback) => gameEndCallback = callback;
 		List<NoteData> Parse()
 		{

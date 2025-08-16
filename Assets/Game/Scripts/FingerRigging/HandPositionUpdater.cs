@@ -30,7 +30,7 @@ namespace Game.FingerRigging
 				preferredPosition = (hand.Left.Target.position + hand.Right.Target.position) * 0.5f + offset;
 				preferredPosition.y = Mathf.Min(hand.Left.Target.position.y, hand.Right.Target.position.y) + offset.y;
 				var minDistance = float.MaxValue;
-				var legLength = 0f;
+				var legLength = Mathf.Max(hand.Left.MaxDistance, hand.Right.MaxDistance);
 				var leftDistance = Vector3.Distance(hand.Left.Tip.position, hand.Left.Target.position);
 				if(leftDistance < hand.Left.MaxDistance)
 				{
@@ -43,6 +43,7 @@ namespace Game.FingerRigging
 					minDistance = rightDistance;
 					legLength = hand.Right.MaxDistance;
 				}
+				if (minDistance == float.MaxValue) minDistance = 0;
 				var height = Mathf.Sqrt(legLength * legLength - minDistance * minDistance);
 				var down = legLength - height;
 				preferredPosition += Vector3.down * (down * 15);  // 不知道为什么是15, 反正15效果最好
