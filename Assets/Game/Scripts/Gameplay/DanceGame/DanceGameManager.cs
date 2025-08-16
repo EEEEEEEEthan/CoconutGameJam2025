@@ -54,9 +54,9 @@ namespace Game.Gameplay.DanceGame
     private float gameStartTime;
     
     /// <summary>
-    /// 音符检测区域字典，存储音符与检测区域的对应关系
+    /// 单一的音符检测区域
     /// </summary>
-    private Dictionary<Note3DModel, List<NoteDetector>> noteDetectorMap = new Dictionary<Note3DModel, List<NoteDetector>>();
+    [SerializeField] private NoteDetector noteDetector;
     void Awake()
     {
         note3DPrefab.gameObject.SetActive(false);
@@ -205,7 +205,7 @@ namespace Game.Gameplay.DanceGame
         // 找到最接近目标位置且按键匹配的音符，并且必须在检测区域内
         foreach (Note3DModel note in activeNotes)
         {
-            if (note.noteData.key == inputKey && IsNoteInAnyDetectionArea(note))
+            if (note.noteData.key == inputKey && IsNoteInDetectionArea(note))
             {
                 float timeToTarget = note.noteData.time - currentGameTime;
                 float distance = Mathf.Abs(timeToTarget);
@@ -290,48 +290,31 @@ namespace Game.Gameplay.DanceGame
     /// <summary>
     /// 音符进入检测区域时的处理
     /// </summary>
-    /// <param name="note">进入检测区域的音符</param>
+    /// <param name="note">进入的音符</param>
     /// <param name="detector">检测区域</param>
     public void OnNoteEnterDetectionArea(Note3DModel note, NoteDetector detector)
     {
-        if (!noteDetectorMap.ContainsKey(note))
-        {
-            noteDetectorMap[note] = new List<NoteDetector>();
-        }
-        
-        if (!noteDetectorMap[note].Contains(detector))
-        {
-            noteDetectorMap[note].Add(detector);
-        }
+        Debug.Log($"音符 {note.noteData.key} 进入检测区域");
     }
     
     /// <summary>
     /// 音符离开检测区域时的处理
     /// </summary>
-    /// <param name="note">离开检测区域的音符</param>
+    /// <param name="note">离开的音符</param>
     /// <param name="detector">检测区域</param>
     public void OnNoteExitDetectionArea(Note3DModel note, NoteDetector detector)
     {
-        if (noteDetectorMap.ContainsKey(note))
-        {
-            noteDetectorMap[note].Remove(detector);
-            
-            // 如果音符不在任何检测区域内，移除字典条目
-            if (noteDetectorMap[note].Count == 0)
-            {
-                noteDetectorMap.Remove(note);
-            }
-        }
+        Debug.Log($"音符 {note.noteData.key} 离开检测区域");
     }
     
     /// <summary>
-    /// 检查音符是否在任何检测区域内
+    /// 检查音符是否在检测区域内
     /// </summary>
     /// <param name="note">要检查的音符</param>
-    /// <returns>如果音符在检测区域内返回true</returns>
-    private bool IsNoteInAnyDetectionArea(Note3DModel note)
+    /// <returns>是否在检测区域内</returns>
+    private bool IsNoteInDetectionArea(Note3DModel note)
     {
-        return noteDetectorMap.ContainsKey(note) && noteDetectorMap[note].Count > 0;
+        return noteDetector != null && noteDetector.IsNoteInArea(note);
     }
     
     /// <summary>
