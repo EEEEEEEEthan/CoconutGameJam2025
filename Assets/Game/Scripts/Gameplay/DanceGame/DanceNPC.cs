@@ -36,6 +36,16 @@ namespace Game.Gameplay.DanceGame
 				IsDancing = false;
 			}
 		}
+		IEnumerator Start()
+		{
+			handIkInput.LeftLeg = LegPoseCode.LiftUp;
+			yield return new WaitForSeconds(0.5f);
+			handIkInput.LeftLeg = LegPoseCode.Idle;
+			yield return new WaitForSeconds(0.5f);
+			handIkInput.RightLeg = LegPoseCode.LiftUp;
+			yield return new WaitForSeconds(0.5f);
+			handIkInput.RightLeg = LegPoseCode.Idle;
+		}
 		IEnumerator DanceCoroutine(List<NoteData> noteDataList)
 		{
 			IsDancing = true;
@@ -68,48 +78,81 @@ namespace Game.Gameplay.DanceGame
 					animator.SetBool(Player.s_walkLeft, true);
 					animator.SetBool(Player.s_standLeft, false);
 					handIkInput.LeftLeg = LegPoseCode.LiftForward;
+					handIkInput.RightLeg = LegPoseCode.Idle;
 					break;
 				case KeyCode.A:
 					animator.SetBool(Player.s_walkLeft, false);
 					animator.SetBool(Player.s_standLeft, true);
 					handIkInput.LeftLeg = LegPoseCode.LiftUp;
+					handIkInput.RightLeg = LegPoseCode.Idle;
 					break;
 				case KeyCode.Z:
 					animator.SetBool(Player.s_walkLeft, false);
 					animator.SetBool(Player.s_standLeft, false);
 					handIkInput.LeftLeg = LegPoseCode.LiftBackward;
+					handIkInput.RightLeg = LegPoseCode.Idle;
 					break;
 				case KeyCode.W:
-					handIkInput.RightLeg = LegPoseCode.LiftForward;
 					animator.SetBool(Player.s_walkRight, true);
 					animator.SetBool(Player.s_standRight, false);
+					handIkInput.LeftLeg = LegPoseCode.Idle;
+					handIkInput.RightLeg = LegPoseCode.LiftForward;
 					break;
 				case KeyCode.S:
-					handIkInput.RightLeg = LegPoseCode.LiftUp;
 					animator.SetBool(Player.s_walkRight, false);
 					animator.SetBool(Player.s_standRight, true);
+					handIkInput.LeftLeg = LegPoseCode.Idle;
+					handIkInput.RightLeg = LegPoseCode.LiftUp;
 					break;
 				case KeyCode.X:
-					handIkInput.RightLeg = LegPoseCode.LiftBackward;
 					animator.SetBool(Player.s_walkRight, false);
 					animator.SetBool(Player.s_standRight, false);
+					handIkInput.LeftLeg = LegPoseCode.Idle;
+					handIkInput.RightLeg = LegPoseCode.LiftBackward;
 					break;
 				case KeyCode.Alpha1:
-					animator.SetTrigger(Player.s_hi);
-					break;
-				case KeyCode.Alpha2:
-					animator.SetTrigger(Player.s_surpirse);
-					break;
-				case KeyCode.Alpha3:
-					animator.SetTrigger(Player.s_shy);
-					break;
-				case KeyCode.Alpha4:
-					animator.SetTrigger(Player.s_angry);
-					break;
-				default:
-					handIkInput.RightLeg = LegPoseCode.Idle;
+					animator.SetBool(Player.s_walkLeft, false);
+					animator.SetBool(Player.s_standLeft, false);
 					animator.SetBool(Player.s_walkRight, false);
 					animator.SetBool(Player.s_standRight, false);
+					animator.SetTrigger(Player.s_hi);
+					handIkInput.LeftLeg = LegPoseCode.Idle;
+					handIkInput.RightLeg = LegPoseCode.Idle;
+					break;
+				case KeyCode.Alpha2:
+					animator.SetBool(Player.s_walkLeft, false);
+					animator.SetBool(Player.s_standLeft, false);
+					animator.SetBool(Player.s_walkRight, false);
+					animator.SetBool(Player.s_standRight, false);
+					animator.SetTrigger(Player.s_surpirse);
+					handIkInput.LeftLeg = LegPoseCode.Idle;
+					handIkInput.RightLeg = LegPoseCode.Idle;
+					break;
+				case KeyCode.Alpha3:
+					animator.SetBool(Player.s_walkLeft, false);
+					animator.SetBool(Player.s_standLeft, false);
+					animator.SetBool(Player.s_walkRight, false);
+					animator.SetBool(Player.s_standRight, false);
+					animator.SetTrigger(Player.s_shy);
+					handIkInput.LeftLeg = LegPoseCode.Idle;
+					handIkInput.RightLeg = LegPoseCode.Idle;
+					break;
+				case KeyCode.Alpha4:
+					animator.SetBool(Player.s_walkLeft, false);
+					animator.SetBool(Player.s_standLeft, false);
+					animator.SetBool(Player.s_walkRight, false);
+					animator.SetBool(Player.s_standRight, false);
+					animator.SetTrigger(Player.s_angry);
+					handIkInput.LeftLeg = LegPoseCode.Idle;
+					handIkInput.RightLeg = LegPoseCode.Idle;
+					break;
+				default:
+					animator.SetBool(Player.s_walkLeft, false);
+					animator.SetBool(Player.s_standLeft, false);
+					animator.SetBool(Player.s_walkRight, false);
+					animator.SetBool(Player.s_standRight, false);
+					handIkInput.LeftLeg = LegPoseCode.Idle;
+					handIkInput.RightLeg = LegPoseCode.Idle;
 					break;
 			}
 			Debug.Log($"DanceNPC: 执行动作 {keyCode}");
