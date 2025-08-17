@@ -31,22 +31,22 @@ namespace Game.FingerRigging
 				preferredPosition.y = Mathf.Min(hand.Left.Target.position.y, hand.Right.Target.position.y) + offset.y;
 				var minDistance = float.MaxValue;
 				var legLength = Mathf.Max(hand.Left.MaxDistance, hand.Right.MaxDistance);
-				var leftDistance = Vector3.Distance(hand.Left.Tip.position, hand.Left.Target.position);
+				var leftDistance = (hand.Left.Tip.position - hand.HandRoot.position).WithY(0).magnitude;
 				if(leftDistance < hand.Left.MaxDistance)
 				{
 					minDistance = leftDistance;
 					legLength = hand.Left.MaxDistance;
 				}
-				var rightDistance = Vector3.Distance(hand.Right.Tip.position, hand.Right.Target.position);
+				var rightDistance = (hand.Right.Tip.position - hand.HandRoot.position).WithY(0).magnitude;
 				if (rightDistance < hand.Right.MaxDistance && rightDistance < minDistance)
 				{
 					minDistance = rightDistance;
 					legLength = hand.Right.MaxDistance;
 				}
-				if (minDistance == float.MaxValue) minDistance = 0;
+				if (minDistance == float.MaxValue) minDistance = Mathf.Min(leftDistance, rightDistance);
 				var height = Mathf.Sqrt(legLength * legLength - minDistance * minDistance);
 				var down = legLength - height;
-				preferredPosition += Vector3.down * (down * 15);  // 不知道为什么是15, 反正15效果最好
+				preferredPosition += Vector3.down * (down * 1);
 			}
 			if (groundFix && jumpVelocity <= 0)
 			{
