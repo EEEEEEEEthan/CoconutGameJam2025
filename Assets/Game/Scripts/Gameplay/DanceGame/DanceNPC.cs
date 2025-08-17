@@ -58,10 +58,17 @@ namespace Game.Gameplay.DanceGame
 			var noteIndex = 0;
 			while (noteIndex < noteDataList.Count && IsDancing)
 			{
+				var motionBegin = Time.time;
+				var noteData = noteDataList[noteIndex];
 				while (true)
 				{
+					var motionElapsed = Time.time - motionBegin;
+					if (motionElapsed > 0.5f)
+					{
+						handIkInput.LeftLeg = LegPoseCode.Idle;
+						handIkInput.RightLeg = LegPoseCode.Idle;
+					}
 					var currentTime = Time.time - startTime;
-					var noteData = noteDataList[noteIndex];
 					if (currentTime >= noteData.time)
 					{
 						ExecuteAction(noteData.key);
