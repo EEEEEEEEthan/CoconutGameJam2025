@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 4070.483, g: 3706.6567, b: 4098.9575, a: 1}
+  m_IndirectSpecularColor: {r: 4070.483, g: 3706.6646, b: 4098.9575, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -413,7 +413,7 @@ GameObject:
   - component: {fileID: 187385902}
   - component: {fileID: 187385905}
   m_Layer: 3
-  m_Name: Trigger_DanceGameStart
+  m_Name: TriggerStartGame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -427,12 +427,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 187385899}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.7238, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.012400031, y: 0, z: 0}
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2135327886}
+  m_Father: {fileID: 423518258}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &187385902
 MeshRenderer:
@@ -522,10 +522,10 @@ MonoBehaviour:
   callback:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
-        m_MethodName: set_enabled
-        m_Mode: 6
+      - m_Target: {fileID: 423518259}
+        m_TargetAssemblyTypeName: Game.Gameplay.DodgeGame.BoxDodgeGameManager, Game.Gameplay
+        m_MethodName: StartGame
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -879,6 +879,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 187385900}
   - {fileID: 1230527617}
   - {fileID: 1523723103}
   - {fileID: 1789592140}
@@ -2715,7 +2716,6 @@ Transform:
   - {fileID: 1365160772}
   - {fileID: 1111397592}
   - {fileID: 994690208}
-  - {fileID: 187385900}
   - {fileID: 423518258}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

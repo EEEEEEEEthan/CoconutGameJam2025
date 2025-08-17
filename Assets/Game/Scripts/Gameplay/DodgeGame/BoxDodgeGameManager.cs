@@ -3,7 +3,7 @@ using UnityEngine;
 using Game.Gameplay;
 namespace Game.Gameplay.DodgeGame
 {
-	public class BoxDodgeGameManager : MonoBehaviour
+	public class BoxDodgeGameManager : GameBehaviour
 	{
 		[Header("游戏配置")]
 		public int requiredDodgeCount = 10;
@@ -13,7 +13,7 @@ namespace Game.Gameplay.DodgeGame
 		public Rect targetArea;
 		public GameObject boxPrefab;
 		[Header("玩家引用")]
-		public Player player;
+
 		[Header("调试设置")]
 		public bool showTargetArea = true;
 		public bool autoStart = true;
@@ -64,11 +64,11 @@ boxPrefab.SetActive(false);
 				Debug.LogError("[BoxDodgeGameManager] Box预制体未配置");
 				return false;
 			}
-			if (player == null)
-			{
-				Debug.LogError("[BoxDodgeGameManager] Player组件未配置");
-				return false;
-			}
+			if (this.GameRoot.Player == null)
+		{
+			Debug.LogError("[BoxDodgeGameManager] Player组件未找到");
+			return false;
+		}
 			return true;
 		}
         
@@ -119,10 +119,10 @@ DodgeBox dodgeBox = boxObj.GetComponent<DodgeBox>();
 			if (dodgeBox != null)
 			{
 				dodgeBox.Initialize(launcher.position, targetPos, dodgeBox.speed);
-				if (player != null && player.PlayerPositionTrigger != null)
-				{
-					dodgeBox.playerLayer = 1 << player.PlayerPositionTrigger.gameObject.layer;
-				}
+				if (this.GameRoot.Player != null && this.GameRoot.Player.PlayerPositionTrigger != null)
+			{
+				dodgeBox.playerLayer = 1 << this.GameRoot.Player.PlayerPositionTrigger.gameObject.layer;
+			}
 			}
 			currentLauncherIndex = (currentLauncherIndex + 1) % launcherPositions.Length;
 			Debug.Log($"[BoxDodgeGameManager] 发射Box，目标位置: {targetPos}");
