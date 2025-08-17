@@ -173,17 +173,6 @@ namespace Game.Gameplay.DodgeGame
 			Vector3 center = new Vector3(targetArea.center.x, targetArea.center.y, 0f);
 			Vector3 size = new Vector3(targetArea.width, targetArea.height, 0.1f);
 			Gizmos.DrawWireCube(center, size);
-			if (launcherPositions != null)
-			{
-				Gizmos.color = Color.red;
-				foreach (Transform launcher in launcherPositions)
-				{
-					if (launcher != null)
-					{
-						Gizmos.DrawWireSphere(launcher.position, 0.5f);
-					}
-				}
-			}
 		}
 	}
 }

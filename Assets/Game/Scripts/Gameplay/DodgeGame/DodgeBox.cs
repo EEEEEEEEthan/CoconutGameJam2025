@@ -109,12 +109,6 @@ namespace Game.Gameplay.DodgeGame
 			}
 		}
         
-		void OnDrawGizmos()
-		{
-			Gizmos.color = Color.red;
-			Gizmos.DrawLine(transform.position, targetPosition);
-			Gizmos.color = Color.yellow;
-			Gizmos.DrawWireSphere(targetPosition, 0.5f);
-		}
+
 	}
 }
