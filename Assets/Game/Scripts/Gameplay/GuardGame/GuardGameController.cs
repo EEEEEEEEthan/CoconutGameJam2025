@@ -7,6 +7,8 @@ namespace Game.Gameplay.GuardGame
 	{
 		[SerializeField] Transform guardPosition;
 		[SerializeField] Animator guardAnimator;
+		[SerializeField] Transform playerResetPosition;
+		[SerializeField] Transform guardResetPosition;
 		void Update() => guardPosition.position = guardAnimator.transform.position.WithY(0);
 		public void Attack()
 		{
@@ -23,6 +25,17 @@ namespace Game.Gameplay.GuardGame
 				yield return guardAnimator.transform.WaitJump(guardAnimator.transform.position + guardPosition.forward * 0.05f, 0.05f, 0.2f);
 				yield return new WaitForSeconds(0.7f);
 				GameRoot.CameraController.Shake(0.2f);
+			}
+		}
+		public void Restart()
+		{
+			StopAllCoroutines();
+			StartCoroutine(restart());
+			IEnumerator restart()
+			{
+				GameRoot.Player.HandIkInput.ResetPosition(playerResetPosition.position);
+				yield return new WaitForSeconds(0.5f);
+				guardAnimator.transform.position = guardResetPosition.position;
 			}
 		}
 	}
