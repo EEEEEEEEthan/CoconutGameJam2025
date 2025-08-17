@@ -4,7 +4,7 @@ namespace Game.Gameplay.Triggers
 	public class Trigger_PlayerEnter : GameTrigger
 	{
 #if UNITY_EDITOR
-		[UnityEditor.MenuItem("GameObject/触发器/玩家动作")]
+		[UnityEditor.MenuItem("GameObject/触发器/玩家进入")]
 		static void Create()
 		{
 			var triggerObject = Create(UnityEditor.Selection.activeTransform);

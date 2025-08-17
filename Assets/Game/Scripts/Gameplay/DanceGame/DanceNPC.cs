@@ -44,6 +44,9 @@ namespace Game.Gameplay.DanceGame
 		}
 		IEnumerator Start()
 		{
+			yield return new WaitForSeconds(0.5f);
+			handIkInput.PositionUpdaterEnabled = true;
+			yield return new WaitForSeconds(0.5f);
 			handIkInput.LeftLeg = LegPoseCode.LiftUp;
 			yield return new WaitForSeconds(0.5f);
 			handIkInput.LeftLeg = LegPoseCode.Idle;

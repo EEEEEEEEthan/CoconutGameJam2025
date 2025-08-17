@@ -28,6 +28,11 @@ namespace Game.FingerRigging
 		/// <summary>获取当前是否处于蹲伏状态</summary>
 		/// <value>true表示正在蹲伏，false表示未蹲伏</value>
 		public bool Crunching => hand.HandPositionUpdater.Crunching;
+		public bool PositionUpdaterEnabled
+		{
+			get => hand.HandPositionUpdater.enabled;
+			set => hand.HandPositionUpdater.enabled = value;
+		}
 		/// <summary>获取或设置左腿的姿态代码</summary>
 		/// <value>左腿当前的姿态状态</value>
 		public LegPoseCode LeftLeg
