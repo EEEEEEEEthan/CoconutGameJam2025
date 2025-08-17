@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Game.FingerRigging;
+using Game.Utilities;
 using UnityEngine;
 namespace Game.Gameplay.DanceGame
 {
@@ -11,6 +13,10 @@ namespace Game.Gameplay.DanceGame
 		[SerializeField] float actionDuration = 0.5f;
 		Coroutine danceCoroutine;
 		public bool IsDancing { get; private set; }
+		void Update()
+		{
+			transform.position = transform.position.WithZ(0);
+		}
 		void Awake() => transform.parent = GameRoot.transform;
 		void OnDisable() => StopDance();
 		public void Dance(List<NoteData> noteDataList)
