@@ -35,7 +35,8 @@ namespace Game.Gameplay.GuardGame
 				GameRoot.CameraController.Shake(0.2f);
 				yield return new WaitForSeconds(0.5f);
 				attacking = false;
-				if (guardAnimator.transform.localPosition.z <= 0) guarding = false;
+				if (guardAnimator.transform.localPosition.z > 0) yield break;
+				guarding = false;
 				yield return new WaitForSeconds(1.5f);
 				guardAnimator.SetTrigger("Hi");
 				yield return new WaitForSeconds(0.8f);
