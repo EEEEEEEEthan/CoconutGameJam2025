@@ -1,22 +1,12 @@
 using System;
 using System.Linq;
-using Game.ResourceManagement;
 using UnityEngine;
 namespace Game.Gameplay
 {
 	[ExecuteAlways]
 	public class FurSurface : MonoBehaviour
 	{
-		public enum UVType
-		{
-			Uv,
-			ObjectXy,
-			ObjectXz,
-			WorldXy,
-			WorldXz,
-		}
 		[SerializeField] Material furMaterial;
-		[SerializeField] UVType uvtype;
 		[SerializeField, Range(0, 128),] int layerCount = 10;
 		[SerializeField] Gradient gradient = new()
 		{
@@ -55,8 +45,6 @@ namespace Game.Gameplay
 		[SerializeField, Range(0, 1),] float metallic;
 		[SerializeField] float gravityStrength;
 		[SerializeField] float gravityPower = 2;
-		[SerializeField] bool fixedDirection;
-		[SerializeField] Vector3 direction;
 		MeshRenderer meshRenderer;
 		MeshRenderer MeshRenderer => meshRenderer ??= GetComponent<MeshRenderer>();
 		void OnEnable() => Refresh();
@@ -104,9 +92,6 @@ namespace Game.Gameplay
 				material.SetFloat("_Metallic", metallic);
 				material.SetFloat("_GravityStrength", gravityStrength);
 				material.SetFloat("_GravityPower", gravityPower);
-				material.SetInt("_UVTYPE", (int)uvtype);
-				material.SetInt("_FIXEDDIRECTION", fixedDirection ? 1 : 0);
-				material.SetVector("_Direction", direction.normalized);
 			}
 			MeshRenderer.sharedMaterials = sharedMaterials;
 		}
