@@ -342,6 +342,8 @@ MonoBehaviour:
   metallic: 0.5
   gravityStrength: 0.05
   gravityPower: 2
+  fixedDirection: 0
+  direction: {x: 0, y: 0, z: 0}
 --- !u!1 &127687784
 GameObject:
   m_ObjectHideFlags: 0
@@ -1151,6 +1153,8 @@ MonoBehaviour:
   metallic: 0.5
   gravityStrength: 0.05
   gravityPower: 2
+  fixedDirection: 0
+  direction: {x: 0, y: 0, z: 0}
 --- !u!4 &338625823 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 823216f580be45b428979b877526351b,
@@ -1538,7 +1542,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c74827fd20b4bd14fb2ccc7474244418, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uvtype: 0
+  uvtype: 4
   layerCount: 128
   gradient:
     serializedVersion: 2
@@ -1570,8 +1574,8 @@ MonoBehaviour:
     m_ColorSpace: -1
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
-  fullLength: 0.00005
-  noiseScales: {x: 6000, y: 30, z: 6000, w: 10000}
+  fullLength: 0.0002
+  noiseScales: {x: 6000, y: 10, z: 6000, w: 0}
   noiseWeights: {x: 2, y: 2, z: 3, w: 0}
   layerToLength:
     serializedVersion: 2
@@ -1626,6 +1630,8 @@ MonoBehaviour:
   metallic: 0.5
   gravityStrength: 0
   gravityPower: 0
+  fixedDirection: 1
+  direction: {x: 0, y: 1, z: 0}
 --- !u!1 &574247050
 GameObject:
   m_ObjectHideFlags: 0
@@ -2742,6 +2748,8 @@ MonoBehaviour:
   metallic: 0.5
   gravityStrength: 0.01
   gravityPower: 2
+  fixedDirection: 0
+  direction: {x: 0, y: 0, z: 0}
 --- !u!1 &1679655743
 GameObject:
   m_ObjectHideFlags: 0
@@ -4045,6 +4053,21 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -6320813187331670327, guid: 0012203b2cb5c75478b929172260fc3b,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 947.83
+      objectReference: {fileID: 0}
+    - target: {fileID: -6320813187331670327, guid: 0012203b2cb5c75478b929172260fc3b,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.0062
+      objectReference: {fileID: 0}
+    - target: {fileID: -6320813187331670327, guid: 0012203b2cb5c75478b929172260fc3b,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.2168
+      objectReference: {fileID: 0}
     - target: {fileID: -5160817616161375171, guid: 0012203b2cb5c75478b929172260fc3b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4100,6 +4123,16 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 4300000, guid: b8ab0f43432d77c42b595ec850e43074, type: 2}
+    - target: {fileID: 2040205985691484501, guid: 0012203b2cb5c75478b929172260fc3b,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 801.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 2040205985691484501, guid: 0012203b2cb5c75478b929172260fc3b,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.0078
+      objectReference: {fileID: 0}
     - target: {fileID: 3582576998027958431, guid: 0012203b2cb5c75478b929172260fc3b,
         type: 3}
       propertyPath: m_IsActive
@@ -5087,7 +5120,7 @@ MonoBehaviour:
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
   fullLength: 0.0002
-  noiseScales: {x: 6000, y: 30, z: 6000, w: 0}
+  noiseScales: {x: 6000, y: 10, z: 6000, w: 0}
   noiseWeights: {x: 2, y: 2, z: 3, w: 0}
   layerToLength:
     serializedVersion: 2
@@ -5142,6 +5175,8 @@ MonoBehaviour:
   metallic: 0.5
   gravityStrength: 0
   gravityPower: 0
+  fixedDirection: 1
+  direction: {x: 0, y: 1, z: 0}
 --- !u!4 &8212413982456215476 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8212413980933577338, guid: c3288a7c1712e014b8090b7277b6658f,
