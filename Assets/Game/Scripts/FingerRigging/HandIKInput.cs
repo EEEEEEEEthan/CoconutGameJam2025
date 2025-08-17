@@ -105,6 +105,12 @@ namespace Game.FingerRigging
 			leftLeg = LegPoseCode.Idle;
 			rightLeg = LegPoseCode.Idle;
 		}
+		public void ResetPosition(Vector3 position)
+		{
+			hand.HandRoot.position = position;
+			SetIdlePosition(hand.Left, true, true);
+			SetIdlePosition(hand.Right, true, true);
+		}
 		/// <summary>设置腿部姿态的通用方法</summary>
 		/// <param name="isLeft">true表示左腿，false表示右腿</param>
 		/// <param name="newPose">新的姿态代码</param>

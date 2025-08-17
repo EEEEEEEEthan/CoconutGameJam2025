@@ -73,6 +73,7 @@ namespace Game.Gameplay
 		public event Action<EmotionCode> OnEmotionTriggered;
 		void Update()
 		{
+			if (isInSpecialAnim) return;
 			handIKInput.transform.position = handIKInput.transform.position.WithZ(0);
 			if (Input.GetKey(KeyCode.Q) && !inputBlock.leftForward)
 			{
