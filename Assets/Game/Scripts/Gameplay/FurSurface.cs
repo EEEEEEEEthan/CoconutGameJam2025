@@ -5,7 +5,6 @@ namespace Game.Gameplay
 	[ExecuteAlways]
 	public class FurSurface : MonoBehaviour
 	{
-		[SerializeField] MeshRenderer meshRenderer;
 		[SerializeField] Material material;
 		[SerializeField, Range(0, 128),] int layerCount = 10;
 		[SerializeField] Gradient gradient;
@@ -19,16 +18,18 @@ namespace Game.Gameplay
 		[SerializeField] float metallic;
 		[SerializeField] float gravityStrength;
 		[SerializeField] float gravityPower;
+		MeshRenderer meshRenderer;
+		MeshRenderer MeshRenderer => meshRenderer ??= GetComponent<MeshRenderer>();
 		void OnEnable() => Refresh();
-		void OnDisable() => meshRenderer.sharedMaterials = new Material[0];
+		void OnDisable() => MeshRenderer.sharedMaterials = new Material[0];
 		void OnBecameVisible()
 		{
-			var bounds = meshRenderer.bounds;
+			var bounds = MeshRenderer.bounds;
 			bounds = new(bounds.center, bounds.size + Vector3.one * fullLength * 2);
-			meshRenderer.bounds = bounds;
-			var localBounds = meshRenderer.localBounds;
+			MeshRenderer.bounds = bounds;
+			var localBounds = MeshRenderer.localBounds;
 			localBounds = new(localBounds.center, localBounds.size + Vector3.one * fullLength);
-			meshRenderer.localBounds = localBounds;
+			MeshRenderer.localBounds = localBounds;
 		}
 		void OnValidate()
 		{
@@ -39,7 +40,7 @@ namespace Game.Gameplay
 		{
 			if (!enabled) return;
 			var sharedMaterials = new Material[layerCount];
-			Array.Copy(meshRenderer.sharedMaterials, sharedMaterials, Mathf.Min(meshRenderer.sharedMaterials.Length, layerCount));
+			Array.Copy(MeshRenderer.sharedMaterials, sharedMaterials, Mathf.Min(MeshRenderer.sharedMaterials.Length, layerCount));
 			for (var i = 0; i < layerCount; i++)
 			{
 				Material material;
@@ -59,7 +60,7 @@ namespace Game.Gameplay
 				material.SetFloat("_GravityStrength", gravityStrength);
 				material.SetFloat("_GravityPower", gravityPower);
 			}
-			meshRenderer.sharedMaterials = sharedMaterials;
+			MeshRenderer.sharedMaterials = sharedMaterials;
 		}
 	}
 }
