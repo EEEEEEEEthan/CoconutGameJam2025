@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 4070.483, g: 3706.6646, b: 4098.9575, a: 1}
+  m_IndirectSpecularColor: {r: 4070.483, g: 3706.6567, b: 4098.9575, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -903,11 +903,11 @@ MonoBehaviour:
   - {fileID: 1523723103}
   targetArea:
     serializedVersion: 2
-    x: 0
-    y: 0
-    width: 0
-    height: 0
-  boxPrefab: {fileID: 0}
+    x: -0.19
+    y: -0.01
+    width: 0.41
+    height: 0.18
+  boxPrefab: {fileID: 1789592139}
   player: {fileID: 0}
   showTargetArea: 1
   autoStart: 1
