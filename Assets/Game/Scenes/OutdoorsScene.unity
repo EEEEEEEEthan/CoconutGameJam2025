@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 4065.3188, g: 3700.731, b: 4088.4497, a: 1}
+  m_IndirectSpecularColor: {r: 4065.3892, g: 3700.8872, b: 4088.5474, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -3662,7 +3662,7 @@ PrefabInstance:
     - target: {fileID: 5282412215275252973, guid: 38bc09452ef5c9e4587e64e594d78c08,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.01
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5282412215275252973, guid: 38bc09452ef5c9e4587e64e594d78c08,
         type: 3}
@@ -3711,6 +3711,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6998516137655203785, guid: 38bc09452ef5c9e4587e64e594d78c08,
         type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6998516137655203785, guid: 38bc09452ef5c9e4587e64e594d78c08,
+        type: 3}
       propertyPath: m_LocalPosition.z
       value: 0.925
       objectReference: {fileID: 0}
@@ -3727,7 +3732,7 @@ PrefabInstance:
     - target: {fileID: 9018373516258246553, guid: 38bc09452ef5c9e4587e64e594d78c08,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.0192
+      value: -0.0108
       objectReference: {fileID: 0}
     - target: {fileID: 9018373516258246553, guid: 38bc09452ef5c9e4587e64e594d78c08,
         type: 3}
@@ -4171,6 +4176,16 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -6678639011902101469, guid: 0012203b2cb5c75478b929172260fc3b,
+        type: 3}
+      propertyPath: m_StaticShadowCaster
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -6678639011902101469, guid: 0012203b2cb5c75478b929172260fc3b,
+        type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: cfe8054360229e2419f7b6e554ad6f50, type: 2}
     - target: {fileID: -6320813187331670327, guid: 0012203b2cb5c75478b929172260fc3b,
         type: 3}
       propertyPath: m_LocalScale.z
