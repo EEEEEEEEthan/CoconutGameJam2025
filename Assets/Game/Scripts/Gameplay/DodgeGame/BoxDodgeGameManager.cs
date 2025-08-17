@@ -158,6 +158,7 @@ return transform.TransformPoint(localPos);
         
 		void HandleGameWon()
 		{
+			if (!isGameActive) return;
 			Debug.Log("[BoxDodgeGameManager] 恭喜！成功完成躲避挑战！");
 			StopGame();
 			OnGameWon?.Invoke();

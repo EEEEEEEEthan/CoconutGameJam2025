@@ -41,7 +41,7 @@ namespace Game.Gameplay.DodgeGame
 		}
 		void Update()
 		{
-			if (!hasPassedTarget && transform.position.z > 0)
+			if (!hasPassedTarget && transform.position.z < 0)
 			{
 				hasPassedTarget = true;
 				OnBoxDodged?.Invoke(this);
@@ -102,7 +102,7 @@ namespace Game.Gameplay.DodgeGame
         
 		void OnTriggerEnter(Collider other)
 		{
-			if (((1 << other.gameObject.layer) & playerLayer) != 0)
+			if (other.GetComponentInParent<Player>())
 			{
 				OnBoxHitPlayer?.Invoke(this);
 				Destroy(gameObject);
