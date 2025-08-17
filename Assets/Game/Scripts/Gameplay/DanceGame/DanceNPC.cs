@@ -43,13 +43,17 @@ namespace Game.Gameplay.DanceGame
 			var noteIndex = 0;
 			while (noteIndex < noteDataList.Count && IsDancing)
 			{
-				var currentTime = Time.time - startTime;
-				var noteData = noteDataList[noteIndex];
-				if (currentTime >= noteData.time)
+				while (true)
 				{
-					ExecuteAction(noteData.key);
-					noteIndex++;
-					yield return new WaitForSeconds(actionDuration);
+					var currentTime = Time.time - startTime;
+					var noteData = noteDataList[noteIndex];
+					if (currentTime >= noteData.time)
+					{
+						ExecuteAction(noteData.key);
+						noteIndex++;
+						break;
+					}
+					yield return null;
 				}
 				yield return null;
 			}
