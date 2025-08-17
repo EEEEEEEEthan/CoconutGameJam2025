@@ -124,11 +124,12 @@ namespace Game.Gameplay.DodgeGame
 		}
         
 		Vector3 CalculateTargetPosition()
-		{
-			float randomX = Random.Range(targetArea.xMin, targetArea.xMax);
-			float randomY = Random.Range(targetArea.yMin, targetArea.yMax);
-			return new Vector3(randomX, randomY, 0f);
-		}
+{
+float randomX = Random.Range(targetArea.xMin, targetArea.xMax);
+float randomY = Random.Range(targetArea.yMin, targetArea.yMax);
+Vector3 localPos = new Vector3(randomX, randomY, 0f);
+return transform.TransformPoint(localPos);
+}
         
 		void HandleBoxHitPlayer(DodgeBox box)
 		{
@@ -167,12 +168,15 @@ namespace Game.Gameplay.DodgeGame
 		}
         
 		void OnDrawGizmos()
-		{
-			if (!showTargetArea) return;
-			Gizmos.color = Color.green;
-			Vector3 center = new Vector3(targetArea.center.x, targetArea.center.y, 0f);
-			Vector3 size = new Vector3(targetArea.width, targetArea.height, 0.1f);
-			Gizmos.DrawWireCube(center, size);
-		}
+{
+if (!showTargetArea) return;
+Gizmos.color = Color.green;
+Vector3 localCenter = new Vector3(targetArea.center.x, targetArea.center.y, 0f);
+Vector3 worldCenter = transform.TransformPoint(localCenter);
+Vector3 size = new Vector3(targetArea.width, targetArea.height, 0.1f);
+Gizmos.matrix = transform.localToWorldMatrix;
+Gizmos.DrawWireCube(localCenter, size);
+Gizmos.matrix = Matrix4x4.identity;
+}
 	}
 }
