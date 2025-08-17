@@ -5,6 +5,7 @@ namespace Game.ResourceManagement
 	{
 		#region autogen
 		public static readonly Loader<Material> furMaterialMat = new("FurMaterial", "dd46e5a62194b2047bd581d7d9335793");
+		public static readonly Loader<Material> grassMaterialMat = new("GrassMaterial", "8957a7a63df0c12478f76ea099acd66b");
 		public static readonly Loader<Texture2D> aPng = new("HandIcon/A", "d6251609163cff048b82ca5178c87d36");
 		public static readonly Loader<Texture2D> angryPng = new("HandIcon/angry", "a5e4c11a851624e4fbf1b2f7c2b01a74");
 		public static readonly Loader<Texture2D> hiPng = new("HandIcon/hi", "b4c89dee48e7c4240b041cde62e9ec27");

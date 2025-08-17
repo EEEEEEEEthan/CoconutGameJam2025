@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 4070.483, g: 3706.6567, b: 4098.9575, a: 1}
+  m_IndirectSpecularColor: {r: 4070.3774, g: 3706.6099, b: 4098.887, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -165,39 +165,7 @@ MeshRenderer:
   m_RayTracingAccelStructBuildFlags: 1
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  m_Materials: []
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -254,6 +222,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c74827fd20b4bd14fb2ccc7474244418, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  furMaterial: {fileID: 0}
   uvtype: 0
   layerCount: 32
   gradient:
@@ -991,39 +960,7 @@ MeshRenderer:
   m_RayTracingAccelStructBuildFlags: 1
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  m_Materials: []
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1065,6 +1002,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c74827fd20b4bd14fb2ccc7474244418, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  furMaterial: {fileID: 0}
   uvtype: 0
   layerCount: 32
   gradient:
@@ -1542,6 +1480,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c74827fd20b4bd14fb2ccc7474244418, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  furMaterial: {fileID: 2100000, guid: 8957a7a63df0c12478f76ea099acd66b, type: 2}
   uvtype: 4
   layerCount: 128
   gradient:
@@ -2586,39 +2525,7 @@ MeshRenderer:
   m_RayTracingAccelStructBuildFlags: 1
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  m_Materials: []
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2660,6 +2567,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c74827fd20b4bd14fb2ccc7474244418, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  furMaterial: {fileID: 0}
   uvtype: 0
   layerCount: 32
   gradient:
@@ -5087,6 +4995,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c74827fd20b4bd14fb2ccc7474244418, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  furMaterial: {fileID: 2100000, guid: 8957a7a63df0c12478f76ea099acd66b, type: 2}
   uvtype: 4
   layerCount: 128
   gradient:

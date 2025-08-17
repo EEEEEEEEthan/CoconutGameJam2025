@@ -15,6 +15,7 @@ namespace Game.Gameplay
 			WorldXy,
 			WorldXz,
 		}
+		[SerializeField] Material furMaterial;
 		[SerializeField] UVType uvtype;
 		[SerializeField, Range(0, 128),] int layerCount = 10;
 		[SerializeField] Gradient gradient = new()
@@ -81,15 +82,14 @@ namespace Game.Gameplay
 		{
 			if (!enabled) return;
 			var sharedMaterials = new Material[layerCount];
-			var baseMaterial = ResourceTable.furMaterialMat.Main;
 			Array.Copy(MeshRenderer.sharedMaterials, sharedMaterials, Mathf.Min(MeshRenderer.sharedMaterials.Length, layerCount));
 			for (var i = 0; i < layerCount; i++)
 			{
 				Material material;
-				if (sharedMaterials[i] && sharedMaterials[i].shader == baseMaterial.shader)
+				if (sharedMaterials[i] && sharedMaterials[i].shader == furMaterial.shader)
 					material = sharedMaterials[i];
 				else
-					material = sharedMaterials[i] = new(baseMaterial)
+					material = sharedMaterials[i] = new(furMaterial)
 					{
 						hideFlags = HideFlags.HideAndDontSave | HideFlags.HideInInspector,
 					};
