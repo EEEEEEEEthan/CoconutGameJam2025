@@ -45,10 +45,10 @@ namespace Game.Gameplay
 		public static readonly int s_walkRight = Animator.StringToHash("WalkRight");
 		public static readonly int s_standLeft = Animator.StringToHash("StandLeft");
 		public static readonly int s_standRight = Animator.StringToHash("StandRight");
-		static readonly int s_hi = Animator.StringToHash(nameof(EmotionCode.Hi));
-		static readonly int s_surpirse = Animator.StringToHash(nameof(EmotionCode.Surprise));
-		static readonly int s_shy = Animator.StringToHash(nameof(EmotionCode.Shy));
-		static readonly int s_angry = Animator.StringToHash(nameof(EmotionCode.Angry));
+		public static readonly int s_hi = Animator.StringToHash(nameof(EmotionCode.Hi));
+		public static readonly int s_surpirse = Animator.StringToHash(nameof(EmotionCode.Surprise));
+		public static readonly int s_shy = Animator.StringToHash(nameof(EmotionCode.Shy));
+		public static readonly int s_angry = Animator.StringToHash(nameof(EmotionCode.Angry));
 		[SerializeField] InputBlock inputBlock;
 		[SerializeField, ObjectReference,] HandIKInput handIKInput;
 		[SerializeField, ObjectReference("HandWithIK"),]

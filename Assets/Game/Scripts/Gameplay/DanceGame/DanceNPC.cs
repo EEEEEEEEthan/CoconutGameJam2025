@@ -50,15 +50,8 @@ namespace Game.Gameplay.DanceGame
 					ExecuteAction(noteData.key);
 					noteIndex++;
 					yield return new WaitForSeconds(actionDuration);
-					animator.SetBool(Player.s_walkLeft, false);
-					animator.SetBool(Player.s_walkRight, false);
-					animator.SetBool(Player.s_standLeft, false);
-					animator.SetBool(Player.s_standRight, false);
 				}
-				else
-				{
-					yield return null;
-				}
+				yield return null;
 			}
 			IsDancing = false;
 			Debug.Log("DanceNPC: 舞蹈完成");
@@ -68,41 +61,51 @@ namespace Game.Gameplay.DanceGame
 			switch (keyCode)
 			{
 				case KeyCode.Q:
+					animator.SetBool(Player.s_walkLeft, true);
+					animator.SetBool(Player.s_standLeft, false);
 					handIkInput.LeftLeg = LegPoseCode.LiftForward;
 					break;
 				case KeyCode.A:
+					animator.SetBool(Player.s_walkLeft, false);
+					animator.SetBool(Player.s_standLeft, true);
 					handIkInput.LeftLeg = LegPoseCode.LiftUp;
 					break;
 				case KeyCode.Z:
+					animator.SetBool(Player.s_walkLeft, false);
+					animator.SetBool(Player.s_standLeft, false);
 					handIkInput.LeftLeg = LegPoseCode.LiftBackward;
 					break;
 				case KeyCode.W:
 					handIkInput.RightLeg = LegPoseCode.LiftForward;
-					break;
-				case KeyCode.S:
-					handIkInput.RightLeg = LegPoseCode.LiftUp;
-					break;
-				case KeyCode.X:
-					handIkInput.RightLeg = LegPoseCode.LiftBackward;
-					break;
-				case KeyCode.Alpha1:
-					animator.SetBool(Player.s_walkLeft, true);
-					animator.SetBool(Player.s_standLeft, false);
-					break;
-				case KeyCode.Alpha2:
 					animator.SetBool(Player.s_walkRight, true);
 					animator.SetBool(Player.s_standRight, false);
 					break;
+				case KeyCode.S:
+					handIkInput.RightLeg = LegPoseCode.LiftUp;
+					animator.SetBool(Player.s_walkRight, false);
+					animator.SetBool(Player.s_standRight, true);
+					break;
+				case KeyCode.X:
+					handIkInput.RightLeg = LegPoseCode.LiftBackward;
+					animator.SetBool(Player.s_walkRight, false);
+					animator.SetBool(Player.s_standRight, false);
+					break;
+				case KeyCode.Alpha1:
+					animator.SetTrigger(Player.s_hi);
+					break;
+				case KeyCode.Alpha2:
+					animator.SetTrigger(Player.s_surpirse);
+					break;
 				case KeyCode.Alpha3:
-					animator.SetBool(Player.s_standLeft, true);
-					animator.SetBool(Player.s_walkLeft, false);
+					animator.SetTrigger(Player.s_shy);
 					break;
 				case KeyCode.Alpha4:
-					animator.SetBool(Player.s_standRight, true);
-					animator.SetBool(Player.s_walkRight, false);
+					animator.SetTrigger(Player.s_angry);
 					break;
 				default:
-					Debug.LogWarning($"DanceNPC: 未识别的按键 {keyCode}");
+					handIkInput.RightLeg = LegPoseCode.Idle;
+					animator.SetBool(Player.s_walkRight, false);
+					animator.SetBool(Player.s_standRight, false);
 					break;
 			}
 			Debug.Log($"DanceNPC: 执行动作 {keyCode}");
