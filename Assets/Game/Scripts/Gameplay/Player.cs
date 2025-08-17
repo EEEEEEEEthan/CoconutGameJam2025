@@ -1,5 +1,6 @@
 using System;
 using Game.FingerRigging;
+using Game.ResourceManagement;
 using Game.Utilities;
 using ReferenceHelper;
 using UnityEngine;
@@ -34,6 +35,9 @@ namespace Game.Gameplay
 	}
 	public class Player : GameBehaviour
 	{
+		[SerializeField] LayerMask airWallLayerMask = (int)LayerMaskCode.UserLayer8;
+		[SerializeField] float raycastDistance = 1.0f;
+		
 		public static class AnimatorHashes
 		{
 			public static readonly int walkLeft = Animator.StringToHash("WalkLeft");
@@ -75,19 +79,24 @@ namespace Game.Gameplay
 		{
 			if (isInSpecialAnim) return;
 			handIKInput.transform.position = handIKInput.transform.position.WithZ(0);
-			if (Input.GetKey(KeyCode.Q) && !inputBlock.leftForward)
+			
+			// 检测左右空气墙
+			bool hasLeftWall = Physics.Raycast(transform.position, Vector3.left, raycastDistance, airWallLayerMask);
+			bool hasRightWall = Physics.Raycast(transform.position, Vector3.right, raycastDistance, airWallLayerMask);
+			
+			if (Input.GetKey(KeyCode.Q) && !inputBlock.leftForward && !hasLeftWall)
 			{
 				handIKInput.LeftLeg = LegPoseCode.LiftForward;
 				animator.SetBool(AnimatorHashes.walkLeft, true);
 				animator.SetBool(AnimatorHashes.standLeft, false);
 			}
-			else if (Input.GetKey(KeyCode.A) && !inputBlock.leftUp)
+			else if (Input.GetKey(KeyCode.A) && !inputBlock.leftUp && !hasLeftWall)
 			{
 				handIKInput.LeftLeg = LegPoseCode.LiftUp;
 				animator.SetBool(AnimatorHashes.walkLeft, false);
 				animator.SetBool(AnimatorHashes.standLeft, true);
 			}
-			else if (Input.GetKey(KeyCode.Z) && !inputBlock.leftBackward)
+			else if (Input.GetKey(KeyCode.Z) && !inputBlock.leftBackward && !hasLeftWall)
 			{
 				handIKInput.LeftLeg = LegPoseCode.LiftBackward;
 				animator.SetBool(AnimatorHashes.walkLeft, false);
@@ -99,19 +108,19 @@ namespace Game.Gameplay
 				animator.SetBool(AnimatorHashes.walkLeft, false);
 				animator.SetBool(AnimatorHashes.standLeft, false);
 			}
-			if (Input.GetKey(KeyCode.W) && !inputBlock.rightForward)
+			if (Input.GetKey(KeyCode.W) && !inputBlock.rightForward && !hasRightWall)
 			{
 				handIKInput.RightLeg = LegPoseCode.LiftForward;
 				animator.SetBool(AnimatorHashes.walkRight, true);
 				animator.SetBool(AnimatorHashes.standRight, false);
 			}
-			else if (Input.GetKey(KeyCode.S) && !inputBlock.rightUp)
+			else if (Input.GetKey(KeyCode.S) && !inputBlock.rightUp && !hasRightWall)
 			{
 				handIKInput.RightLeg = LegPoseCode.LiftUp;
 				animator.SetBool(AnimatorHashes.walkRight, false);
 				animator.SetBool(AnimatorHashes.standRight, true);
 			}
-			else if (Input.GetKey(KeyCode.X) && !inputBlock.rightBackward)
+			else if (Input.GetKey(KeyCode.X) && !inputBlock.rightBackward && !hasRightWall)
 			{
 				handIKInput.RightLeg = LegPoseCode.LiftBackward;
 				animator.SetBool(AnimatorHashes.walkRight, false);
