@@ -14,6 +14,9 @@ namespace Game.Gameplay.DodgeGame
 		public GameObject boxPrefab;
 		[Header("玩家引用")]
 
+		[Header("空气墙")]
+		public GameObject airWallLeft;
+		public GameObject airWallRight;
 		[Header("调试设置")]
 		public bool showTargetArea = true;
 		public bool autoStart = true;
@@ -83,6 +86,14 @@ boxPrefab.SetActive(false);
 			currentDodgeCount = 0;
 			currentLauncherIndex = 0;
 			isGameActive = true;
+			if (airWallLeft != null)
+			{
+				airWallLeft.SetActive(true);
+			}
+			if (airWallRight != null)
+			{
+				airWallRight.SetActive(true);
+			}
 			OnDodgeCountChanged?.Invoke(currentDodgeCount, requiredDodgeCount);
 			launchCoroutine = StartCoroutine(LaunchBoxCoroutine());
 		}
@@ -161,6 +172,14 @@ return transform.TransformPoint(localPos);
 			if (!isGameActive) return;
 			Debug.Log("[BoxDodgeGameManager] 恭喜！成功完成躲避挑战！");
 			StopGame();
+			if (airWallLeft != null)
+			{
+				airWallLeft.SetActive(false);
+			}
+			if (airWallRight != null)
+			{
+				airWallRight.SetActive(false);
+			}
 			OnGameWon?.Invoke();
 			Debug.Log($"游戏胜利 - 成功躲避: {currentDodgeCount}/{requiredDodgeCount}");
 		}
