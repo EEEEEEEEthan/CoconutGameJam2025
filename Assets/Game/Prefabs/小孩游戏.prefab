@@ -513,7 +513,7 @@ MonoBehaviour:
   jump1: {fileID: 6087940135745730138}
   jump2: {fileID: 7324334354296569026}
   danceArea: {fileID: 5784746394350501922}
-  lookTarget2: {fileID: 0}
+  lookTarget2: {fileID: 7193912418730728835}
 --- !u!1 &6925925730418204018
 GameObject:
   m_ObjectHideFlags: 0
