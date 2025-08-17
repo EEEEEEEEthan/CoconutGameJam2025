@@ -9,9 +9,17 @@ namespace Game.Gameplay.GuardGame
 		[SerializeField] Animator guardAnimator;
 		[SerializeField] Transform playerResetPosition;
 		[SerializeField] Transform guardResetPosition;
+		[SerializeField] MeshRenderer badgeRenderer;
+		[SerializeField] Collider unlockCollider;
+		bool attacking;
+		bool guarding;
+		void Awake() => guarding = true;
 		void Update() => guardPosition.position = guardAnimator.transform.position.WithY(0);
 		public void Attack()
 		{
+			if (!guarding) return;
+			if (attacking) return;
+			attacking = true;
 			StopAllCoroutines();
 			StartCoroutine(attack());
 			IEnumerator attack()
@@ -25,10 +33,23 @@ namespace Game.Gameplay.GuardGame
 				yield return guardAnimator.transform.WaitJump(guardAnimator.transform.position + guardPosition.forward * 0.05f, 0.05f, 0.2f);
 				yield return new WaitForSeconds(0.7f);
 				GameRoot.CameraController.Shake(0.2f);
+				yield return new WaitForSeconds(0.5f);
+				attacking = false;
+				if (guardAnimator.transform.localPosition.z <= 0) guarding = false;
+				yield return new WaitForSeconds(1.5f);
+				guardAnimator.SetTrigger("Hi");
+				yield return new WaitForSeconds(0.8f);
+				yield return guardAnimator.transform.WaitJump(guardAnimator.transform.position + guardPosition.right * 0.08f, 0.05f, 0.3f);
+				yield return guardAnimator.transform.WaitJump(guardAnimator.transform.position + guardPosition.right * 0.08f, 0.05f, 0.3f);
+				yield return new WaitForSeconds(1.7f);
+				badgeRenderer.enabled = false;
+				unlockCollider.enabled = true;
 			}
 		}
 		public void Restart()
 		{
+			attacking = false;
+			guarding = true;
 			StopAllCoroutines();
 			StartCoroutine(restart());
 			IEnumerator restart()
