@@ -31,7 +31,6 @@ namespace Game.Gameplay.ChildGame
 		[SerializeField] Transform jump1;
 		[SerializeField] Transform jump2;
 		[SerializeField] PlayerDetector danceArea;
-		[SerializeField] Transform lookTarget2;
 		void Awake()
 		{
 			enabled = false;
@@ -60,7 +59,6 @@ namespace Game.Gameplay.ChildGame
 				yield return new WaitUntil(() => danceArea.PlayerInside);
 				foreach (var collider in GameRoot.GroundColliders) collider.enabled = false;
 				GameRoot.GameCanvas.Filmic(true);
-				GameRoot.CameraController.LookAt(lookTarget2, 14);
 				while (true)
 				{
 					yield return new WaitForSeconds(1);
