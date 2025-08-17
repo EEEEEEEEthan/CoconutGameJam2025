@@ -35,7 +35,7 @@ namespace Game.Gameplay
 	}
 	public class Player : GameBehaviour
 	{
-		[SerializeField] LayerMask airWallLayerMask = (int)LayerMaskCode.UserLayer8;
+		[SerializeField] LayerMask airWallLayerMask = (int)LayerMaskCode.AirWall;
 		[SerializeField] float raycastDistance = 1.0f;
 		
 		public static class AnimatorHashes
@@ -84,13 +84,13 @@ namespace Game.Gameplay
 			bool hasLeftWall = Physics.Raycast(transform.position, Vector3.left, raycastDistance, airWallLayerMask);
 			bool hasRightWall = Physics.Raycast(transform.position, Vector3.right, raycastDistance, airWallLayerMask);
 			
-			if (Input.GetKey(KeyCode.Q) && !inputBlock.leftForward && !hasLeftWall)
+			if (Input.GetKey(KeyCode.Q) && !inputBlock.leftForward && !hasRightWall)
 			{
 				handIKInput.LeftLeg = LegPoseCode.LiftForward;
 				animator.SetBool(AnimatorHashes.walkLeft, true);
 				animator.SetBool(AnimatorHashes.standLeft, false);
 			}
-			else if (Input.GetKey(KeyCode.A) && !inputBlock.leftUp && !hasLeftWall)
+			else if (Input.GetKey(KeyCode.A) && !inputBlock.leftUp)
 			{
 				handIKInput.LeftLeg = LegPoseCode.LiftUp;
 				animator.SetBool(AnimatorHashes.walkLeft, false);
@@ -114,13 +114,13 @@ namespace Game.Gameplay
 				animator.SetBool(AnimatorHashes.walkRight, true);
 				animator.SetBool(AnimatorHashes.standRight, false);
 			}
-			else if (Input.GetKey(KeyCode.S) && !inputBlock.rightUp && !hasRightWall)
+			else if (Input.GetKey(KeyCode.S) && !inputBlock.rightUp)
 			{
 				handIKInput.RightLeg = LegPoseCode.LiftUp;
 				animator.SetBool(AnimatorHashes.walkRight, false);
 				animator.SetBool(AnimatorHashes.standRight, true);
 			}
-			else if (Input.GetKey(KeyCode.X) && !inputBlock.rightBackward && !hasRightWall)
+			else if (Input.GetKey(KeyCode.X) && !inputBlock.rightBackward && !hasLeftWall)
 			{
 				handIKInput.RightLeg = LegPoseCode.LiftBackward;
 				animator.SetBool(AnimatorHashes.walkRight, false);

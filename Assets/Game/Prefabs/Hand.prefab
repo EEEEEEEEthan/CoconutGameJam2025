@@ -876,6 +876,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da9d6ae9cb3040c6a84ee5576a6c31dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  airWallLayerMask:
+    serializedVersion: 2
+    m_Bits: 256
+  raycastDistance: 0.1
   inputBlock:
     leftForward: 0
     leftUp: 0
