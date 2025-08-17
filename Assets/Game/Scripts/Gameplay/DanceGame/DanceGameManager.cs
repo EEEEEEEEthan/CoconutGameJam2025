@@ -25,6 +25,7 @@ namespace Game.Gameplay.DanceGame
 		void Update() => DetectInput();
 		void OnEnable()
 		{
+			GetComponent<AudioSource>().Play();
 			noteDetector.gameObject.SetActive(true);
 			gameStartTime = Time.time;
 			correctCount = 0;
