@@ -26,10 +26,14 @@ namespace Game.Gameplay.DodgeGame
 		public System.Action OnGameLost;
         
 		void Awake()
-		{
-			DodgeBox.OnBoxHitPlayer += HandleBoxHitPlayer;
-			DodgeBox.OnBoxDodged += HandleBoxDodged;
-		}
+{
+DodgeBox.OnBoxHitPlayer += HandleBoxHitPlayer;
+DodgeBox.OnBoxDodged += HandleBoxDodged;
+if (boxPrefab != null)
+{
+boxPrefab.SetActive(false);
+}
+}
 		void OnDestroy()
 		{
 			DodgeBox.OnBoxHitPlayer -= HandleBoxHitPlayer;
@@ -110,7 +114,8 @@ namespace Game.Gameplay.DodgeGame
 			Transform launcher = launcherPositions[currentLauncherIndex];
 			Vector3 targetPos = CalculateTargetPosition();
 			GameObject boxObj = Instantiate(boxPrefab, launcher.position, Quaternion.identity);
-			DodgeBox dodgeBox = boxObj.GetComponent<DodgeBox>();
+boxObj.SetActive(true);
+DodgeBox dodgeBox = boxObj.GetComponent<DodgeBox>();
 			if (dodgeBox != null)
 			{
 				dodgeBox.Initialize(launcher.position, targetPos, dodgeBox.speed);
