@@ -13,7 +13,10 @@ namespace Game.Gameplay.Hints
 		[SerializeField] AnimationCurve showCurve;
 		KeyCode key;
 		VelocityCalculator cameraControllerVelocityCalculator;
-		void Awake() => hook.transform.localPosition = new(0, 5, 0);
+		void Awake()
+		{
+			hook.transform.localPosition = new(0, 5, 0);
+		}
 		void Update()
 		{
 			cameraControllerVelocityCalculator = GameRoot.CameraController.VelocityCalculator;
