@@ -28,7 +28,7 @@ namespace Game.Gameplay
 		}
 		void Show(KeyCode key, GameObject target)
 		{
-			GameRoot.Player.Unlock(key);
+			GameRoot.Player.Unlock(key, false);
 			target.gameObject.SetActive(true);
 			StartCoroutine(Unlock(key, target));
 		}

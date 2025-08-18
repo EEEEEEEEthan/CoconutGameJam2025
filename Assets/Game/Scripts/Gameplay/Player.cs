@@ -186,7 +186,7 @@ namespace Game.Gameplay
 			}
 		}
 		void OnDrawGizmos() => Gizmos.DrawRay(transform.position, Vector3.right * 100);
-		public void Unlock(KeyCode key)
+		public void Unlock(KeyCode key, bool withAnimation)
 		{
 			var locked = Locked;
 			switch (key)
@@ -223,6 +223,8 @@ namespace Game.Gameplay
 					break;
 			}
 			Locked = locked;
+			if(withAnimation)
+				GameRoot.UiCamera.Hints[key].Show();
 		}
 		public void SetSpecialAnimEnd() => isInSpecialAnim = false;
 	}

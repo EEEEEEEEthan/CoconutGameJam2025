@@ -13,6 +13,7 @@ namespace Game.Gameplay.Hints
 		[SerializeField] AnimationCurve showCurve;
 		KeyCode key;
 		VelocityCalculator cameraControllerVelocityCalculator;
+		bool visible = false;
 		void Awake()
 		{
 			hook.transform.localPosition = new(0, 5, 0);
@@ -30,6 +31,8 @@ namespace Game.Gameplay.Hints
 		public void Initialize(KeyCode key) => this.key = key;
 		public void Show()
 		{
+			if (visible) return;
+			visible = true;
 			StartCoroutine(show());
 			IEnumerator show()
 			{
