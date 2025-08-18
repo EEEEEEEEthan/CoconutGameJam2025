@@ -14,7 +14,9 @@ namespace Game.Gameplay
 		[SerializeField, ObjectReference(nameof(Sunlight)),]
 		Sunlight sun;
 		[SerializeField] Collider[] groundColliders;
+		[SerializeField] UICamera uiCamera;
 		bool volumeProfileCopied;
+		public UICamera UiCamera => uiCamera;
 		public IReadOnlyList<Collider> GroundColliders => groundColliders;
 		public Sunlight Sunlight => sun;
 		public GameCanvas GameCanvas => gameCanvas;

@@ -891,6 +891,17 @@ MonoBehaviour:
     surprise: 0
     shy: 0
     angry: 0
+  locked:
+    leftForward: 0
+    leftUp: 0
+    leftBackward: 0
+    rightForward: 0
+    rightUp: 0
+    rightBackward: 0
+    greetings: 0
+    surprise: 0
+    shy: 0
+    angry: 0
   handIKInput: {fileID: 1858106007382618880}
   animator: {fileID: 2469827012165198104}
   cameraTarget: {fileID: 3100051313230109323}

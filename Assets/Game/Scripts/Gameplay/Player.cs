@@ -70,6 +70,7 @@ namespace Game.Gameplay
 		[SerializeField] LayerMask airWallLayerMask = (int)LayerMaskCode.AirWall;
 		[SerializeField] float raycastDistance = 1.0f;
 		[SerializeField] InputBlock inputBlock;
+		[SerializeField] InputBlock locked;
 		[SerializeField, ObjectReference,] HandIKInput handIKInput;
 		[SerializeField, ObjectReference("HandWithIK"),]
 		Animator animator;
@@ -87,7 +88,11 @@ namespace Game.Gameplay
 			get => inputBlock;
 			set => inputBlock = value;
 		}
-		public InputBlock Locked { get; set; }
+		public InputBlock Locked
+		{
+			get => locked;
+			set => locked = value;
+		}
 		public EmotionCode CurrentEmotion { get; private set; }
 		public event Action<EmotionCode> OnEmotionTriggered;
 		void Update()
@@ -217,6 +222,7 @@ namespace Game.Gameplay
 					locked.angry = false;
 					break;
 			}
+			Locked = locked;
 		}
 		public void SetSpecialAnimEnd() => isInSpecialAnim = false;
 	}

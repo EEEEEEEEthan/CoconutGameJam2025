@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Game.Gameplay.Hints;
 using Game.ResourceManagement;
 using Game.Utilities;
@@ -8,6 +9,8 @@ namespace Game.Gameplay
 	{
 		[SerializeField] Transform bar;
 		[SerializeField] float spacing;
+		readonly Dictionary<KeyCode, Hint> hints = new();
+		public IReadOnlyDictionary<KeyCode, Hint> Hints => hints;
 		void Awake()
 		{
 			var x = 0f;
@@ -29,6 +32,7 @@ namespace Game.Gameplay
 				var h = hint.GetComponent<Hint>();
 				h.Initialize(key);
 				h.enabled = true;
+				hints[key] = h;
 			}
 		}
 	}
