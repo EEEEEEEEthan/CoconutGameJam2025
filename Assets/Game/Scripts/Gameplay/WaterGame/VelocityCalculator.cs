@@ -5,10 +5,13 @@ namespace Game.Gameplay.WaterGame
 	{
 		Vector3 lastPosition;
 		public Vector3 Velocity { get; private set; }
+		public Vector3 Acceleration { get; private set; }
 		void Update()
 		{
-			Velocity = (transform.position - lastPosition) / Time.deltaTime;
+			var velocity = (transform.position - lastPosition) / Time.deltaTime;
 			lastPosition = transform.position;
+			Acceleration = (Velocity - velocity) / Time.deltaTime;
+			Velocity = velocity;
 		}
 	}
 }

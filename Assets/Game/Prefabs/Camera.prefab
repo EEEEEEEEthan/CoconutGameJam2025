@@ -50,6 +50,7 @@ MonoBehaviour:
   cinemachineCamera: {fileID: 1872582677351259133}
   linearMultiChannelPerlin: {fileID: 6169094116229673620}
   cinemachineFollow: {fileID: 1257226598573019100}
+  velocityCalculator: {fileID: 4040936339495074790}
 --- !u!1 &2969007505367021355
 GameObject:
   m_ObjectHideFlags: 0
@@ -63,6 +64,7 @@ GameObject:
   - component: {fileID: 1257226598573019100}
   - component: {fileID: 6169094116229673620}
   - component: {fileID: 5918430711732824087}
+  - component: {fileID: 4040936339495074790}
   m_Layer: 0
   m_Name: CinemachineCamera
   m_TagString: Untagged
@@ -179,6 +181,18 @@ MonoBehaviour:
   follow: {fileID: 1257226598573019100}
   minRange: {x: 0.1, y: 0.9}
   maxRange: {x: 1.3, y: 3}
+--- !u!114 &4040936339495074790
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2969007505367021355}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd74b0793bc3481c887ca74c8a8d5b3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7156463720877256298
 GameObject:
   m_ObjectHideFlags: 0

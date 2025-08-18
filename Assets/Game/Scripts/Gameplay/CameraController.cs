@@ -1,3 +1,4 @@
+using Game.Gameplay.WaterGame;
 using Game.Utilities;
 using Game.Utilities.Smoothing;
 using ReferenceHelper;
@@ -16,9 +17,12 @@ namespace Game.Gameplay
 		CinemachineBasicMultiChannelPerlin linearMultiChannelPerlin;
 		[SerializeField, ObjectReference("CinemachineCamera"),]
 		CinemachineFollow cinemachineFollow;
+		[SerializeField, ObjectReference("CinemachineCamera"),]
+		VelocityCalculator velocityCalculator;
 		readonly DampSmoothing fovSmoothing;
 		DampSmoothing shakeSmoothing;
 		float playerFov;
+		public VelocityCalculator VelocityCalculator => velocityCalculator;
 		CameraController() =>
 			fovSmoothing = new(0,
 				v =>

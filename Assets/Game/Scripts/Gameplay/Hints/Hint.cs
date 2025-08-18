@@ -1,21 +1,22 @@
+using Game.Gameplay.WaterGame;
 using UnityEngine;
 namespace Game.Gameplay.Hints
 {
 	public class Hint : GameBehaviour
 	{
 		[SerializeField] Rigidbody stuff;
-		Vector3 lastPosition;
-		Vector3 velocity;
-		Vector3 acceleration;
+		[SerializeField] float velocityMultiplier = 1f;
+		[SerializeField] float accelerationMultiplier = 1f;
+		VelocityCalculator cameraControllerVelocityCalculator;
 		void Update()
 		{
-			var currentPosition = transform.position;
-			var deltaPosition = currentPosition - lastPosition;
-			var currentVelocity = deltaPosition / Time.deltaTime;
-			var deltaVelocity = currentVelocity - velocity;
-			acceleration = deltaVelocity / Time.deltaTime;
-			velocity = currentVelocity;
-			stuff.AddForce(-acceleration * 0.1f, ForceMode.Acceleration);
+			cameraControllerVelocityCalculator = GameRoot.CameraController.VelocityCalculator;
+			var force = cameraControllerVelocityCalculator.Velocity * velocityMultiplier;
+			force += cameraControllerVelocityCalculator.Acceleration * accelerationMultiplier;
+			if (force.x != 0 || force.y != 0 || force.z != 0)
+				if (force.x != float.NaN && force.y != float.NaN && force.z != float.NaN)
+					if (!float.IsInfinity(force.x) && !float.IsInfinity(force.y) && !float.IsInfinity(force.z))
+						stuff.AddForce(force);
 		}
 	}
 }
