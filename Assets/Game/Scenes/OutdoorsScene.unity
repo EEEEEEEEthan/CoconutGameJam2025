@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 4065.3188, g: 3700.7856, b: 4088.4146, a: 1}
+  m_IndirectSpecularColor: {r: 4065.3267, g: 3700.77, b: 4088.3716, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2702,7 +2702,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bar: {fileID: 2083015305}
-  spacing: 0.25
+  spacing: 0.3
 --- !u!1 &1191552053 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6800398303002138120, guid: 0012203b2cb5c75478b929172260fc3b,
@@ -2772,7 +2772,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-  maxTriggerCount: 2147483647
+  maxTriggerCount: 1
   coolDownSeconds: 0.5
 --- !u!23 &1278554596
 MeshRenderer:
@@ -2854,7 +2854,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1278554593}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7a5adcd4894b4e77bf0b3316276115c8, type: 3}
   m_Name: 
