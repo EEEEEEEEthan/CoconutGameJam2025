@@ -181,6 +181,43 @@ namespace Game.Gameplay
 			}
 		}
 		void OnDrawGizmos() => Gizmos.DrawRay(transform.position, Vector3.right * 100);
+		public void Unlock(KeyCode key)
+		{
+			var locked = Locked;
+			switch (key)
+			{
+				case KeyCode.A:
+					locked.leftUp = false;
+					break;
+				case KeyCode.S:
+					locked.rightUp = false;
+					break;
+				case KeyCode.Q:
+					locked.leftForward = false;
+					break;
+				case KeyCode.W:
+					locked.rightForward = false;
+					break;
+				case KeyCode.Z:
+					locked.leftBackward = false;
+					break;
+				case KeyCode.X:
+					locked.rightBackward = false;
+					break;
+				case KeyCode.Alpha1:
+					locked.greetings = false;
+					break;
+				case KeyCode.Alpha2:
+					locked.surprise = false;
+					break;
+				case KeyCode.Alpha3:
+					locked.shy = false;
+					break;
+				case KeyCode.Alpha4:
+					locked.angry = false;
+					break;
+			}
+		}
 		public void SetSpecialAnimEnd() => isInSpecialAnim = false;
 	}
 }
