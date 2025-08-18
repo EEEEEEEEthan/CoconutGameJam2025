@@ -22,6 +22,20 @@ namespace Game.Gameplay
 			shy = true,
 			angry = true,
 		};
+		public static InputBlock operator |(InputBlock a, InputBlock b) =>
+			new()
+			{
+				leftForward = a.leftForward || b.leftForward,
+				leftUp = a.leftUp || b.leftUp,
+				leftBackward = a.leftBackward || b.leftBackward,
+				rightForward = a.rightForward || b.rightForward,
+				rightUp = a.rightUp || b.rightUp,
+				rightBackward = a.rightBackward || b.rightBackward,
+				greetings = a.greetings || b.greetings,
+				surprise = a.surprise || b.surprise,
+				shy = a.shy || b.shy,
+				angry = a.angry || b.angry,
+			};
 		public bool leftForward;
 		public bool leftUp;
 		public bool leftBackward;
@@ -35,9 +49,6 @@ namespace Game.Gameplay
 	}
 	public class Player : GameBehaviour
 	{
-		[SerializeField] LayerMask airWallLayerMask = (int)LayerMaskCode.AirWall;
-		[SerializeField] float raycastDistance = 1.0f;
-		
 		public static class AnimatorHashes
 		{
 			public static readonly int walkLeft = Animator.StringToHash("WalkLeft");
@@ -56,6 +67,8 @@ namespace Game.Gameplay
 			Shy,
 			Angry,
 		}
+		[SerializeField] LayerMask airWallLayerMask = (int)LayerMaskCode.AirWall;
+		[SerializeField] float raycastDistance = 1.0f;
 		[SerializeField] InputBlock inputBlock;
 		[SerializeField, ObjectReference,] HandIKInput handIKInput;
 		[SerializeField, ObjectReference("HandWithIK"),]
@@ -68,35 +81,36 @@ namespace Game.Gameplay
 		public Collider PlayerPositionTrigger => playerPositionTrigger;
 		public Transform CameraTarget => cameraTarget;
 		public HandIKInput HandIkInput => handIKInput;
+		public InputBlock Block => inputBlock | Locked;
 		public InputBlock InputBlock
 		{
 			get => inputBlock;
 			set => inputBlock = value;
 		}
+		public InputBlock Locked { get; set; }
 		public EmotionCode CurrentEmotion { get; private set; }
 		public event Action<EmotionCode> OnEmotionTriggered;
 		void Update()
 		{
 			if (isInSpecialAnim) return;
 			handIKInput.transform.position = handIKInput.transform.position.WithZ(0);
-			
+
 			// 检测左右空气墙
-			bool hasLeftWall = Physics.Raycast(transform.position, Vector3.left, raycastDistance, airWallLayerMask);
-			bool hasRightWall = Physics.Raycast(transform.position, Vector3.right, raycastDistance, airWallLayerMask);
-			
-			if (Input.GetKey(KeyCode.Q) && !inputBlock.leftForward && !hasRightWall)
+			var hasLeftWall = Physics.Raycast(transform.position, Vector3.left, raycastDistance, airWallLayerMask);
+			var hasRightWall = Physics.Raycast(transform.position, Vector3.right, raycastDistance, airWallLayerMask);
+			if (Input.GetKey(KeyCode.Q) && !Block.leftForward && !hasRightWall)
 			{
 				handIKInput.LeftLeg = LegPoseCode.LiftForward;
 				animator.SetBool(AnimatorHashes.walkLeft, true);
 				animator.SetBool(AnimatorHashes.standLeft, false);
 			}
-			else if (Input.GetKey(KeyCode.A) && !inputBlock.leftUp)
+			else if (Input.GetKey(KeyCode.A) && !Block.leftUp)
 			{
 				handIKInput.LeftLeg = LegPoseCode.LiftUp;
 				animator.SetBool(AnimatorHashes.walkLeft, false);
 				animator.SetBool(AnimatorHashes.standLeft, true);
 			}
-			else if (Input.GetKey(KeyCode.Z) && !inputBlock.leftBackward && !hasLeftWall)
+			else if (Input.GetKey(KeyCode.Z) && !Block.leftBackward && !hasLeftWall)
 			{
 				handIKInput.LeftLeg = LegPoseCode.LiftBackward;
 				animator.SetBool(AnimatorHashes.walkLeft, false);
@@ -108,19 +122,19 @@ namespace Game.Gameplay
 				animator.SetBool(AnimatorHashes.walkLeft, false);
 				animator.SetBool(AnimatorHashes.standLeft, false);
 			}
-			if (Input.GetKey(KeyCode.W) && !inputBlock.rightForward && !hasRightWall)
+			if (Input.GetKey(KeyCode.W) && !Block.rightForward && !hasRightWall)
 			{
 				handIKInput.RightLeg = LegPoseCode.LiftForward;
 				animator.SetBool(AnimatorHashes.walkRight, true);
 				animator.SetBool(AnimatorHashes.standRight, false);
 			}
-			else if (Input.GetKey(KeyCode.S) && !inputBlock.rightUp)
+			else if (Input.GetKey(KeyCode.S) && !Block.rightUp)
 			{
 				handIKInput.RightLeg = LegPoseCode.LiftUp;
 				animator.SetBool(AnimatorHashes.walkRight, false);
 				animator.SetBool(AnimatorHashes.standRight, true);
 			}
-			else if (Input.GetKey(KeyCode.X) && !inputBlock.rightBackward && !hasLeftWall)
+			else if (Input.GetKey(KeyCode.X) && !Block.rightBackward && !hasLeftWall)
 			{
 				handIKInput.RightLeg = LegPoseCode.LiftBackward;
 				animator.SetBool(AnimatorHashes.walkRight, false);
@@ -141,25 +155,25 @@ namespace Game.Gameplay
 			}
 			*/
 			if (isInSpecialAnim) return;
-			if (Input.GetKeyDown(KeyCode.Alpha1) && !inputBlock.greetings)
+			if (Input.GetKeyDown(KeyCode.Alpha1) && !Block.greetings)
 			{
 				animator.SetTrigger(AnimatorHashes.hi);
 				OnEmotionTriggered?.TryInvoke(CurrentEmotion = EmotionCode.Hi);
 				isInSpecialAnim = true;
 			}
-			if (Input.GetKeyDown(KeyCode.Alpha2) && !inputBlock.surprise)
+			if (Input.GetKeyDown(KeyCode.Alpha2) && !Block.surprise)
 			{
 				animator.SetTrigger(AnimatorHashes.surprise);
 				OnEmotionTriggered?.TryInvoke(CurrentEmotion = EmotionCode.Surprise);
 				isInSpecialAnim = true;
 			}
-			if (Input.GetKeyDown(KeyCode.Alpha3) && !inputBlock.shy)
+			if (Input.GetKeyDown(KeyCode.Alpha3) && !Block.shy)
 			{
 				animator.SetTrigger(AnimatorHashes.shy);
 				OnEmotionTriggered?.TryInvoke(CurrentEmotion = EmotionCode.Shy);
 				isInSpecialAnim = true;
 			}
-			if (Input.GetKeyDown(KeyCode.Alpha4) && !inputBlock.angry)
+			if (Input.GetKeyDown(KeyCode.Alpha4) && !Block.angry)
 			{
 				animator.SetTrigger(AnimatorHashes.angry);
 				OnEmotionTriggered?.TryInvoke(CurrentEmotion = EmotionCode.Angry);
