@@ -13,11 +13,8 @@ namespace Game.Gameplay.Hints
 		[SerializeField] AnimationCurve showCurve;
 		KeyCode key;
 		VelocityCalculator cameraControllerVelocityCalculator;
-		bool visible = false;
-		void Awake()
-		{
-			hook.transform.localPosition = new(0, 5, 0);
-		}
+		bool visible;
+		void Awake() => hook.transform.localPosition = new(0, 5, 0);
 		void Update()
 		{
 			cameraControllerVelocityCalculator = GameRoot.CameraController.VelocityCalculator;
@@ -37,7 +34,7 @@ namespace Game.Gameplay.Hints
 			IEnumerator show()
 			{
 				var startTime = Time.time;
-				var endTime = Time.time + 1;
+				var endTime = Time.time + 0.5f;
 				while (Time.time < endTime)
 				{
 					var t = (Time.time - startTime) / (endTime - startTime);
@@ -46,6 +43,22 @@ namespace Game.Gameplay.Hints
 					hook.transform.localPosition = new(0, y, 0);
 					yield return null;
 				}
+				hook.transform.localPosition = new(0, 0, 0);
+			}
+		}
+		public void Hide()
+		{
+			StartCoroutine(hide());
+			IEnumerator hide()
+			{
+				var velocity = Vector3.zero;
+				while (true)
+				{
+					hook.transform.localPosition = Vector3.SmoothDamp(hook.transform.localPosition, new(0, 10, 0), ref velocity, 1f);
+					if (hook.localPosition.y > 5) break;
+					yield return null;
+				}
+				gameObject.SetActive(false);
 			}
 		}
 	}

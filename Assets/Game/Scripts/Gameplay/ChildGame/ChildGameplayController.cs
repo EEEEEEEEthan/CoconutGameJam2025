@@ -207,6 +207,7 @@ namespace Game.Gameplay.ChildGame
 				foreach (var collider in GameRoot.GroundColliders) collider.enabled = true;
 				GameRoot.GameCanvas.Filmic(false);
 				GameRoot.CameraController.LookAtPlayer();
+				GameRoot.Player.Unlock(KeyCode.Alpha2, true);
 			}
 		}
 		void Emotion(EmotionCode code) => animator.SetTrigger(emotionHashes[(int)code]);

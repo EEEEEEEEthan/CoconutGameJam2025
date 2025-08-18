@@ -20,6 +20,7 @@ namespace Game.Gameplay
 			instantiateHint(ResourceTable.hintSPrefab.Main, KeyCode.S, x += spacing);
 			instantiateHint(ResourceTable.hintWPrefab.Main, KeyCode.W, x += spacing);
 			instantiateHint(ResourceTable.hintQPrefab.Main, KeyCode.Q, x += spacing);
+			x = 0;
 			instantiateHint(ResourceTable.hint1Prefab.Main, KeyCode.Alpha1, x += spacing);
 			instantiateHint(ResourceTable.hint2Prefab.Main, KeyCode.Alpha2, x += spacing);
 			instantiateHint(ResourceTable.hint3Prefab.Main, KeyCode.Alpha3, x += spacing);
@@ -34,6 +35,15 @@ namespace Game.Gameplay
 				h.enabled = true;
 				hints[key] = h;
 			}
+		}
+		public void HideBasic()
+		{
+			hints[KeyCode.Q].Hide();
+			hints[KeyCode.W].Hide();
+			hints[KeyCode.A].Hide();
+			hints[KeyCode.S].Hide();
+			hints[KeyCode.Z].Hide();
+			hints[KeyCode.X].Hide();
 		}
 	}
 }
