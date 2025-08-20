@@ -22,15 +22,16 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: "\u7EC7\u7269_\u6811\u53F6"
-  m_Shader: {fileID: -6465566751694194690, guid: 0112437d70152a64c800ce39ea0d3f98,
-    type: 3}
+  m_Shader: {fileID: 4800000, guid: 6e4ae4064600d784cac1e41a9e6f2e59, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
+  - _BENTNORMALMAP
   - _DISABLE_SSR_TRANSPARENT
-  m_InvalidKeywords:
   - _HEIGHTMAP
+  - _NORMALMAP
   - _NORMALMAP_TANGENT_SPACE
+  m_InvalidKeywords:
   - _NORMALMAP_TANGENT_SPACE0
   - _NORMALMAP_TANGENT_SPACE1
   - _NORMALMAP_TANGENT_SPACE2
@@ -76,7 +77,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BentNormalMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 249b551fb5da20745b4b64fc9c82935b, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BentNormalMap0:
@@ -121,7 +122,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _DetailMap:
         m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
+        m_Scale: {x: 0.1, y: 0.1}
         m_Offset: {x: 0, y: 0}
     - _DetailMap0:
         m_Texture: {fileID: 0}
@@ -188,7 +189,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MaskMap:
-        m_Texture: {fileID: 2800000, guid: 249b551fb5da20745b4b64fc9c82935b, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MaskMap0:
@@ -248,8 +249,8 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalTex:
-        m_Texture: {fileID: 2800000, guid: d106c6b6c42872f4f9d40c078a40e568, type: 3}
-        m_Scale: {x: 1, y: 1}
+        m_Texture: {fileID: 2800000, guid: 249b551fb5da20745b4b64fc9c82935b, type: 3}
+        m_Scale: {x: 2, y: 2}
         m_Offset: {x: 0, y: 0}
     - _SpecularColorMap:
         m_Texture: {fileID: 0}
@@ -350,7 +351,7 @@ Material:
     - _AORemapMax1: 1
     - _AORemapMax2: 1
     - _AORemapMax3: 1
-    - _AORemapMin: 0
+    - _AORemapMin: 1
     - _AORemapMin0: 0
     - _AORemapMin1: 0
     - _AORemapMin2: 0
@@ -385,17 +386,17 @@ Material:
     - _CullModeForward: 2
     - _Cutoff: 0.5
     - _DepthOffsetEnable: 0
-    - _DetailAlbedoScale: 1
+    - _DetailAlbedoScale: 0
     - _DetailAlbedoScale0: 1
     - _DetailAlbedoScale1: 1
     - _DetailAlbedoScale2: 1
     - _DetailAlbedoScale3: 1
-    - _DetailNormalScale: 1
+    - _DetailNormalScale: 0.06
     - _DetailNormalScale0: 1
     - _DetailNormalScale1: 1
     - _DetailNormalScale2: 1
     - _DetailNormalScale3: 1
-    - _DetailSmoothnessScale: 1
+    - _DetailSmoothnessScale: 0
     - _DetailSmoothnessScale0: 1
     - _DetailSmoothnessScale1: 1
     - _DetailSmoothnessScale2: 1
@@ -411,8 +412,8 @@ Material:
     - _DiffusionProfileHash2: 0
     - _DiffusionProfileHash3: 0
     - _DisplacementLockObjectScale: 0
-    - _DisplacementLockTilingScale: 1
-    - _DisplacementMode: 1
+    - _DisplacementLockTilingScale: 0
+    - _DisplacementMode: 0
     - _DoubleSidedEnable: 0
     - _DoubleSidedGIMode: 0
     - _DoubleSidedNormalMode: 2
@@ -505,7 +506,7 @@ Material:
     - _Metallic1: 0
     - _Metallic2: 0
     - _Metallic3: 0
-    - _MetallicRemapMax: 1
+    - _MetallicRemapMax: 0
     - _MetallicRemapMax0: 1
     - _MetallicRemapMax1: 1
     - _MetallicRemapMax2: 1
@@ -521,12 +522,12 @@ Material:
     - _NormalMapSpace2: 0
     - _NormalMapSpace3: 0
     - _NormalMapStrength: 2.68
-    - _NormalScale: 0.16
+    - _NormalScale: 0
     - _NormalScale0: 1
     - _NormalScale1: 1
     - _NormalScale2: 1
     - _NormalScale3: 1
-    - _NormalStrength: 1
+    - _NormalStrength: 0.38
     - _ObjectScaleAffectTile: 0
     - _ObjectSpaceUVMapping: 0
     - _ObjectSpaceUVMappingEmissive: 0
@@ -554,7 +555,7 @@ Material:
     - _Smoothness3: 0.5
     - _SmoothnessMax: 1
     - _SmoothnessMin: 0.362
-    - _SmoothnessRemapMax: 1
+    - _SmoothnessRemapMax: 0
     - _SmoothnessRemapMax0: 1
     - _SmoothnessRemapMax1: 1
     - _SmoothnessRemapMax2: 1
@@ -637,7 +638,7 @@ Material:
     - _ZWrite: 1
     - _useThreadMap: 1
     m_Colors:
-    - _BaseColor: {r: 1, g: 0, b: 0, a: 0}
+    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _BaseColor0: {r: 1, g: 1, b: 1, a: 1}
     - _BaseColor1: {r: 1, g: 1, b: 1, a: 1}
     - _BaseColor2: {r: 1, g: 1, b: 1, a: 1}
