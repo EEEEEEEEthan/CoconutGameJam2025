@@ -5,21 +5,32 @@ namespace Game.Gameplay.DodgeGame
 	public class BoxDodgeGameManager : GameBehaviour
 	{
 		[Header("游戏配置")] public int requiredDodgeCount = 10;
-		public float launchInterval = 1f;
-		[Header("发射系统")] public Transform[] launcherPositions;
+		public float launchInterval = 1f; // 每次成功发射后的间隔（不含动画前置延迟）
+		// 发射系统: 由 boy / girl 的 Animator 触发 Launch 动画，再延迟 0.3s 发射
 		public Rect targetArea;
 		public GameObject boxPrefab;
 		[Header("玩家引用")] [Header("空气墙")] public GameObject airWallLeft;
 		public GameObject airWallRight;
 		[Header("调试设置")] public bool showTargetArea = true;
 		public bool autoStart = true;
+		[SerializeField] Animator boy;
+		[SerializeField] Animator girl;
 		public System.Action<int, int> OnDodgeCountChanged;
 		public System.Action OnGameWon;
 		public System.Action OnGameLost;
 		int currentDodgeCount;
 		int currentLauncherIndex;
 		bool isGameActive;
+		bool startSequenceCompleted;
 		Coroutine launchCoroutine;
+		Coroutine gameFlowCoroutine;
+		[Header("动画触发参数")] [SerializeField] string launchTriggerName = "Launch";
+		[SerializeField] string jumpTriggerName = "Jump";
+		[SerializeField] string shyTriggerName = "Shy";
+		[Header("时间参数")] [SerializeField] float startRotateDuration = 0.5f;
+		[SerializeField] float endRotateDuration = 0.6f;
+		[SerializeField] float launchAnimDelay = 0.3f; // 与协程内部常量保持一致，可在 Inspector 调整
+		[SerializeField] float jumpToRotateDelay = 0.05f;
 		void Awake()
 		{
 			DodgeBox.OnBoxHitPlayer += HandleBoxHitPlayer;
@@ -62,10 +73,12 @@ namespace Game.Gameplay.DodgeGame
 			currentDodgeCount = 0;
 			currentLauncherIndex = 0;
 			isGameActive = true;
+			startSequenceCompleted = false;
 			if (airWallLeft != null) airWallLeft.SetActive(true);
 			if (airWallRight != null) airWallRight.SetActive(true);
 			OnDodgeCountChanged?.Invoke(currentDodgeCount, requiredDodgeCount);
-			launchCoroutine = StartCoroutine(LaunchBoxCoroutine());
+			if (gameFlowCoroutine != null) StopCoroutine(gameFlowCoroutine);
+			gameFlowCoroutine = StartCoroutine(GameFlowCoroutine());
 		}
 		public void StopGame()
 		{
@@ -75,6 +88,11 @@ namespace Game.Gameplay.DodgeGame
 			{
 				StopCoroutine(launchCoroutine);
 				launchCoroutine = null;
+			}
+			if (gameFlowCoroutine != null)
+			{
+				StopCoroutine(gameFlowCoroutine);
+				gameFlowCoroutine = null;
 			}
 			Debug.Log("[BoxDodgeGameManager] 游戏已停止");
 		}
@@ -87,9 +105,9 @@ namespace Game.Gameplay.DodgeGame
 		}
 		bool ValidateConfiguration()
 		{
-			if (launcherPositions == null || launcherPositions.Length == 0)
+			if (boy == null || girl == null)
 			{
-				Debug.LogError("[BoxDodgeGameManager] 发射器位置未配置");
+				Debug.LogError("[BoxDodgeGameManager] boy 或 girl Animator 未配置");
 				return false;
 			}
 			if (boxPrefab == null)
@@ -106,28 +124,95 @@ namespace Game.Gameplay.DodgeGame
 		}
 		IEnumerator LaunchBoxCoroutine()
 		{
+			// 循环：交替角色 -> 触发动画 -> 等待动画前置时间 -> 发射 -> 等待发射间隔
 			while (isGameActive)
 			{
-				LaunchBox();
+				var launcherAnimator = currentLauncherIndex == 0 ? boy : girl;
+				if (launcherAnimator != null)
+				{
+					launcherAnimator.SetTrigger(launchTriggerName);
+					yield return new WaitForSeconds(launchAnimDelay);
+					LaunchBox(launcherAnimator.transform, launcherAnimator == boy ? "Boy" : "Girl");
+				}
+				currentLauncherIndex = 1 - currentLauncherIndex; // 交替
 				yield return new WaitForSeconds(launchInterval);
 			}
 		}
-		void LaunchBox()
+		IEnumerator GameFlowCoroutine()
+		{
+			// 1. 开始序列（跳跃 + 朝向玩家）
+			yield return StartCoroutine(StartSequence());
+			startSequenceCompleted = true;
+			// 2. 进入发射循环
+			if (isGameActive)
+				launchCoroutine = StartCoroutine(LaunchBoxCoroutine());
+		}
+		IEnumerator StartSequence()
+		{
+			if (boy != null) boy.SetTrigger(jumpTriggerName);
+			if (girl != null) girl.SetTrigger(jumpTriggerName);
+			yield return new WaitForSeconds(jumpToRotateDelay);
+			if (GameRoot.Player == null) yield break;
+			var playerPos = GameRoot.Player.transform.position;
+			float t = 0f;
+			Quaternion boyStartRot = boy != null ? boy.transform.rotation : Quaternion.identity;
+			Quaternion girlStartRot = girl != null ? girl.transform.rotation : Quaternion.identity;
+			Quaternion boyTargetRot = boyStartRot;
+			Quaternion girlTargetRot = girlStartRot;
+			if (boy != null)
+			{
+				var dir = playerPos - boy.transform.position; dir.y = 0f; if (dir.sqrMagnitude > 0.0001f) boyTargetRot = Quaternion.LookRotation(dir.normalized, Vector3.up);
+			}
+			if (girl != null)
+			{
+				var dir = playerPos - girl.transform.position; dir.y = 0f; if (dir.sqrMagnitude > 0.0001f) girlTargetRot = Quaternion.LookRotation(dir.normalized, Vector3.up);
+			}
+			while (t < 1f && isGameActive)
+			{
+				t += Time.deltaTime / Mathf.Max(0.0001f, startRotateDuration);
+				if (boy != null) boy.transform.rotation = Quaternion.Slerp(boyStartRot, boyTargetRot, t);
+				if (girl != null) girl.transform.rotation = Quaternion.Slerp(girlStartRot, girlTargetRot, t);
+				yield return null;
+			}
+		}
+		IEnumerator EndSequence()
+		{
+			if (boy == null || girl == null) yield break;
+			var boyStartRot = boy.transform.rotation;
+			var girlStartRot = girl.transform.rotation;
+			var dirBoy = girl.transform.position - boy.transform.position; dirBoy.y = 0f;
+			var dirGirl = boy.transform.position - girl.transform.position; dirGirl.y = 0f;
+			if (dirBoy.sqrMagnitude < 0.0001f) dirBoy = boy.transform.forward;
+			if (dirGirl.sqrMagnitude < 0.0001f) dirGirl = girl.transform.forward;
+			var boyTargetRot = Quaternion.LookRotation(dirBoy.normalized, Vector3.up);
+			var girlTargetRot = Quaternion.LookRotation(dirGirl.normalized, Vector3.up);
+			float t = 0f;
+			while (t < 1f)
+			{
+				t += Time.deltaTime / Mathf.Max(0.0001f, endRotateDuration);
+				boy.transform.rotation = Quaternion.Slerp(boyStartRot, boyTargetRot, t);
+				girl.transform.rotation = Quaternion.Slerp(girlStartRot, girlTargetRot, t);
+				yield return null;
+			}
+			boy.SetTrigger(shyTriggerName);
+			girl.SetTrigger(shyTriggerName);
+			// 游戏胜利事件在完成结束序列后再触发
+			OnGameWon?.Invoke();
+		}
+		void LaunchBox(Transform launcherTransform, string launcherLabel)
 		{
 			if (!isGameActive) return;
-			var launcher = launcherPositions[currentLauncherIndex];
 			var targetPos = CalculateTargetPosition();
-			var boxObj = Instantiate(boxPrefab, launcher.position, Quaternion.identity);
+			var boxObj = Instantiate(boxPrefab, launcherTransform.position, Quaternion.identity);
 			boxObj.SetActive(true);
 			var dodgeBox = boxObj.GetComponent<DodgeBox>();
 			if (dodgeBox != null)
 			{
-				dodgeBox.Initialize(launcher.position, targetPos, dodgeBox.speed);
+				dodgeBox.Initialize(launcherTransform.position, targetPos, dodgeBox.speed);
 				if (GameRoot.Player != null && GameRoot.Player.PlayerPositionTrigger != null)
 					dodgeBox.playerLayer = 1 << GameRoot.Player.PlayerPositionTrigger.gameObject.layer;
 			}
-			currentLauncherIndex = (currentLauncherIndex + 1) % launcherPositions.Length;
-			Debug.Log($"[BoxDodgeGameManager] 发射Box，目标位置: {targetPos}");
+			Debug.Log($"[BoxDodgeGameManager] {launcherLabel} 发射 Box，目标位置: {targetPos}");
 		}
 		Vector3 CalculateTargetPosition()
 		{
@@ -157,10 +242,12 @@ namespace Game.Gameplay.DodgeGame
 		{
 			if (!isGameActive) return;
 			Debug.Log("[BoxDodgeGameManager] 恭喜！成功完成躲避挑战！");
+			// 停止发射循环
 			StopGame();
 			if (airWallLeft != null) airWallLeft.SetActive(false);
 			if (airWallRight != null) airWallRight.SetActive(false);
-			OnGameWon?.Invoke();
+			// 执行结束表现（朝向彼此 + Shy）
+			StartCoroutine(EndSequence());
 			Debug.Log($"游戏胜利 - 成功躲避: {currentDodgeCount}/{requiredDodgeCount}");
 		}
 	}

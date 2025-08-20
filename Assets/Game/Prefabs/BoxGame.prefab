@@ -5408,6 +5408,8 @@ MonoBehaviour:
   airWallRight: {fileID: 1285350892435826901}
   showTargetArea: 1
   autoStart: 1
+  boy: {fileID: 884373758689852500}
+  girl: {fileID: 3276590224252962982}
 --- !u!114 &4893568332161064667
 MonoBehaviour:
   m_ObjectHideFlags: 0
