@@ -75,6 +75,7 @@ namespace Game.Gameplay.DodgeGame
 				return;
 			}
 			Debug.Log("[BoxDodgeGameManager] 躲避Box游戏开始！目标：连续躲避 " + requiredDodgeCount + " 个Box");
+			GameRoot.GameCanvas.Filmic(true);
 			GameRoot.CameraController.LookAt(lookTarget, 15f, 0.2f);
 			currentDodgeCount = 0;
 			currentLauncherIndex = 0;
@@ -273,6 +274,8 @@ namespace Game.Gameplay.DodgeGame
 			StartCoroutine(EndSequence());
 			Debug.Log($"游戏胜利 - 成功躲避: {currentDodgeCount}/{requiredDodgeCount}");
 			GameRoot.CameraController.LookAtPlayer();
+			GameRoot.GameCanvas.Filmic(false);
+			GameRoot.Player.Unlock(KeyCode.Alpha3, true);
 		}
 	}
 }

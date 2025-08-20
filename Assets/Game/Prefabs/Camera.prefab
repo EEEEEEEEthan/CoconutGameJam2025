@@ -65,6 +65,7 @@ GameObject:
   - component: {fileID: 6169094116229673620}
   - component: {fileID: 5918430711732824087}
   - component: {fileID: 4040936339495074790}
+  - component: {fileID: 4230291331685569426}
   m_Layer: 0
   m_Name: CinemachineCamera
   m_TagString: Untagged
@@ -145,7 +146,7 @@ MonoBehaviour:
   FollowOffset: {x: 0, y: 0.1, z: -1}
   TrackerSettings:
     BindingMode: 4
-    PositionDamping: {x: 1, y: 1, z: 1}
+    PositionDamping: {x: 3, y: 10, z: 3}
     AngularDampingMode: 0
     RotationDamping: {x: 1, y: 1, z: 1}
     QuaternionDamping: 1
@@ -193,6 +194,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd74b0793bc3481c887ca74c8a8d5b3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4230291331685569426
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2969007505367021355}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f38bda98361e1de48a4ca2bd86ea3c17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TargetOffset: {x: 0, y: 0, z: 0}
+  Lookahead:
+    Enabled: 0
+    Time: 0
+    Smoothing: 0
+    IgnoreY: 0
+  Damping: {x: 3, y: 3}
+  Composition:
+    ScreenPosition: {x: 0, y: 0}
+    DeadZone:
+      Enabled: 0
+      Size: {x: 0.2, y: 0.2}
+    HardLimits:
+      Enabled: 0
+      Size: {x: 0.8, y: 0.8}
+      Offset: {x: 0, y: 0}
+  CenterOnActivate: 1
 --- !u!1 &7156463720877256298
 GameObject:
   m_ObjectHideFlags: 0
