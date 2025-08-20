@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 namespace Game.Gameplay.DodgeGame
@@ -24,13 +25,16 @@ namespace Game.Gameplay.DodgeGame
 		bool startSequenceCompleted;
 		Coroutine launchCoroutine;
 		Coroutine gameFlowCoroutine;
-		[Header("动画触发参数")] [SerializeField] string launchTriggerName = "Launch";
-		[SerializeField] string jumpTriggerName = "Jump";
+		[Header("动画触发参数")] [SerializeField] string launchTriggerName = "Launch"; // 跳跃改为物理位移，不再使用动画 Trigger
 		[SerializeField] string shyTriggerName = "Shy";
 		[Header("时间参数")] [SerializeField] float startRotateDuration = 0.5f;
 		[SerializeField] float endRotateDuration = 0.6f;
 		[SerializeField] float launchAnimDelay = 0.3f; // 与协程内部常量保持一致，可在 Inspector 调整
 		[SerializeField] float jumpToRotateDelay = 0.05f;
+		[Header("跳跃参数")] [SerializeField] float startJumpHeight = 0.08f;
+		[SerializeField] float startJumpDuration = 0.25f;
+		[SerializeField] float endJumpHeight = 0.08f;
+		[SerializeField] float endJumpDuration = 0.25f;
 		void Awake()
 		{
 			DodgeBox.OnBoxHitPlayer += HandleBoxHitPlayer;
@@ -149,8 +153,12 @@ namespace Game.Gameplay.DodgeGame
 		}
 		IEnumerator StartSequence()
 		{
-			if (boy != null) boy.SetTrigger(jumpTriggerName);
-			if (girl != null) girl.SetTrigger(jumpTriggerName);
+			// 同时原地小跳（使用 Transform 扩展 Jump）
+			bool boyDone = boy == null;
+			bool girlDone = girl == null;
+			if (boy != null) boy.transform.Jump(boy.transform.position, startJumpHeight, startJumpDuration, () => boyDone = true);
+			if (girl != null) girl.transform.Jump(girl.transform.position, startJumpHeight, startJumpDuration, () => girlDone = true);
+			while (!boyDone || !girlDone) yield return null;
 			yield return new WaitForSeconds(jumpToRotateDelay);
 			if (GameRoot.Player == null) yield break;
 			var playerPos = GameRoot.Player.transform.position;
@@ -178,16 +186,16 @@ namespace Game.Gameplay.DodgeGame
 		IEnumerator EndSequence()
 		{
 			if (boy == null || girl == null) yield break;
-			// 先同时跳一下
-			boy.SetTrigger(jumpTriggerName);
-			girl.SetTrigger(jumpTriggerName);
+			// 同时小跳
+			bool boyDone = false, girlDone = false;
+			boy.transform.Jump(boy.transform.position, endJumpHeight, endJumpDuration, () => boyDone = true);
+			girl.transform.Jump(girl.transform.position, endJumpHeight, endJumpDuration, () => girlDone = true);
+			while (!boyDone || !girlDone) yield return null;
 			yield return new WaitForSeconds(jumpToRotateDelay);
 			var boyStartRot = boy.transform.rotation;
 			var girlStartRot = girl.transform.rotation;
-			var dirBoy = girl.transform.position - boy.transform.position; dirBoy.y = 0f;
-			var dirGirl = boy.transform.position - girl.transform.position; dirGirl.y = 0f;
-			if (dirBoy.sqrMagnitude < 0.0001f) dirBoy = boy.transform.forward;
-			if (dirGirl.sqrMagnitude < 0.0001f) dirGirl = girl.transform.forward;
+			var dirBoy = girl.transform.position - boy.transform.position; dirBoy.y = 0f; if (dirBoy.sqrMagnitude < 0.0001f) dirBoy = boy.transform.forward;
+			var dirGirl = boy.transform.position - girl.transform.position; dirGirl.y = 0f; if (dirGirl.sqrMagnitude < 0.0001f) dirGirl = girl.transform.forward;
 			var boyTargetRot = Quaternion.LookRotation(dirBoy.normalized, Vector3.up);
 			var girlTargetRot = Quaternion.LookRotation(dirGirl.normalized, Vector3.up);
 			float t = 0f;
@@ -198,9 +206,11 @@ namespace Game.Gameplay.DodgeGame
 				girl.transform.rotation = Quaternion.Slerp(girlStartRot, girlTargetRot, t);
 				yield return null;
 			}
-			boy.SetTrigger(shyTriggerName);
-			girl.SetTrigger(shyTriggerName);
-			// 游戏胜利事件在完成结束序列后再触发
+			if (!string.IsNullOrEmpty(shyTriggerName))
+			{
+				boy.SetTrigger(shyTriggerName);
+				girl.SetTrigger(shyTriggerName);
+			}
 			OnGameWon?.Invoke();
 		}
 		void LaunchBox(Transform launcherTransform, string launcherLabel)
@@ -220,8 +230,8 @@ namespace Game.Gameplay.DodgeGame
 		}
 		Vector3 CalculateTargetPosition()
 		{
-			var randomX = Random.Range(targetArea.xMin, targetArea.xMax);
-			var randomY = Random.Range(targetArea.yMin, targetArea.yMax);
+			var randomX = UnityEngine.Random.Range(targetArea.xMin, targetArea.xMax);
+			var randomY = UnityEngine.Random.Range(targetArea.yMin, targetArea.yMax);
 			var localPos = new Vector3(randomX, randomY, 0f);
 			return transform.TransformPoint(localPos);
 		}
