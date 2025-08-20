@@ -178,6 +178,10 @@ namespace Game.Gameplay.DodgeGame
 		IEnumerator EndSequence()
 		{
 			if (boy == null || girl == null) yield break;
+			// 先同时跳一下
+			boy.SetTrigger(jumpTriggerName);
+			girl.SetTrigger(jumpTriggerName);
+			yield return new WaitForSeconds(jumpToRotateDelay);
 			var boyStartRot = boy.transform.rotation;
 			var girlStartRot = girl.transform.rotation;
 			var dirBoy = girl.transform.position - boy.transform.position; dirBoy.y = 0f;
