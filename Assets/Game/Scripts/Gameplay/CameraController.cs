@@ -21,15 +21,24 @@ namespace Game.Gameplay
 		VelocityCalculator velocityCalculator;
 		readonly DampSmoothing fovSmoothing;
 		DampSmoothing shakeSmoothing;
+		readonly DampSmoothing raiseSmoothing;
 		float playerFov;
 		public VelocityCalculator VelocityCalculator => velocityCalculator;
-		CameraController() =>
+		CameraController()
+		{
 			fovSmoothing = new(0,
 				v =>
 				{
 					Assert.IsNotNull(cinemachineCamera);
 					cinemachineCamera.Lens.FieldOfView = v;
 				});
+			raiseSmoothing = new(0,
+				v =>
+				{
+					Assert.IsNotNull(cinemachineFollow);
+					cinemachineFollow.FollowOffset = cinemachineFollow.FollowOffset.WithY(v);
+				});
+		}
 		void Awake()
 		{
 			playerFov = cinemachineCamera.Lens.FieldOfView;
@@ -40,19 +49,23 @@ namespace Game.Gameplay
 		public void LookAtPlayer()
 		{
 			cinemachineCamera.Target.TrackingTarget = GameRoot.Player.CameraTarget;
-			cinemachineFollow.FollowOffset = new(0, 0, -1);
+			raiseSmoothing.Set(0, 0.2f);
 			fovSmoothing.Set(playerFov, 0.5f);
 		}
-		public void LookAt(Transform target, float fov)
+		public void LookAt(Transform target, float fov, float raise = 0)
 		{
 			cinemachineCamera.Target.TrackingTarget = target;
-			cinemachineFollow.FollowOffset = new(0, 0, -1);
+			raiseSmoothing.Set(raise, 0.2f);
 			fovSmoothing.Set(fov, 0.5f);
 		}
 		public void Shake(float duration)
 		{
 			shakeSmoothing.Set(1, 0);
 			shakeSmoothing.Set(0, duration);
+		}
+		public void SmoothSetZAngle()
+		{
+			
 		}
 	}
 }

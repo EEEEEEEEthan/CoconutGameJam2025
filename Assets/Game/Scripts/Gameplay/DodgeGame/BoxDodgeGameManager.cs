@@ -16,15 +16,7 @@ namespace Game.Gameplay.DodgeGame
 		public bool autoStart = true;
 		[SerializeField] Animator boy;
 		[SerializeField] Animator girl;
-		public System.Action<int, int> OnDodgeCountChanged;
-		public System.Action OnGameWon;
-		public System.Action OnGameLost;
-		int currentDodgeCount;
-		int currentLauncherIndex;
-		bool isGameActive;
-		bool startSequenceCompleted;
-		Coroutine launchCoroutine;
-		Coroutine gameFlowCoroutine;
+		[SerializeField] Transform lookTarget;
 		[Header("动画触发参数")] [SerializeField] string launchTriggerName = "Launch"; // 跳跃改为物理位移，不再使用动画 Trigger
 		[SerializeField] string shyTriggerName = "Shy";
 		[Header("时间参数")] [SerializeField] float startRotateDuration = 0.5f;
@@ -35,6 +27,15 @@ namespace Game.Gameplay.DodgeGame
 		[SerializeField] float startJumpDuration = 0.25f;
 		[SerializeField] float endJumpHeight = 0.08f;
 		[SerializeField] float endJumpDuration = 0.25f;
+		public Action<int, int> OnDodgeCountChanged;
+		public Action OnGameWon;
+		public Action OnGameLost;
+		int currentDodgeCount;
+		int currentLauncherIndex;
+		bool isGameActive;
+		bool startSequenceCompleted;
+		Coroutine launchCoroutine;
+		Coroutine gameFlowCoroutine;
 		void Awake()
 		{
 			DodgeBox.OnBoxHitPlayer += HandleBoxHitPlayer;
@@ -74,6 +75,7 @@ namespace Game.Gameplay.DodgeGame
 				return;
 			}
 			Debug.Log("[BoxDodgeGameManager] 躲避Box游戏开始！目标：连续躲避 " + requiredDodgeCount + " 个Box");
+			GameRoot.CameraController.LookAt(lookTarget, 15f, 0.2f);
 			currentDodgeCount = 0;
 			currentLauncherIndex = 0;
 			isGameActive = true;
@@ -148,32 +150,35 @@ namespace Game.Gameplay.DodgeGame
 			yield return StartCoroutine(StartSequence());
 			startSequenceCompleted = true;
 			// 2. 进入发射循环
-			if (isGameActive)
-				launchCoroutine = StartCoroutine(LaunchBoxCoroutine());
+			if (isGameActive) launchCoroutine = StartCoroutine(LaunchBoxCoroutine());
 		}
 		IEnumerator StartSequence()
 		{
 			// 同时原地小跳（使用 Transform 扩展 Jump）
-			bool boyDone = boy == null;
-			bool girlDone = girl == null;
+			var boyDone = boy == null;
+			var girlDone = girl == null;
 			if (boy != null) boy.transform.Jump(boy.transform.position, startJumpHeight, startJumpDuration, () => boyDone = true);
 			if (girl != null) girl.transform.Jump(girl.transform.position, startJumpHeight, startJumpDuration, () => girlDone = true);
 			while (!boyDone || !girlDone) yield return null;
 			yield return new WaitForSeconds(jumpToRotateDelay);
 			if (GameRoot.Player == null) yield break;
 			var playerPos = GameRoot.Player.transform.position;
-			float t = 0f;
-			Quaternion boyStartRot = boy != null ? boy.transform.rotation : Quaternion.identity;
-			Quaternion girlStartRot = girl != null ? girl.transform.rotation : Quaternion.identity;
-			Quaternion boyTargetRot = boyStartRot;
-			Quaternion girlTargetRot = girlStartRot;
+			var t = 0f;
+			var boyStartRot = boy != null ? boy.transform.rotation : Quaternion.identity;
+			var girlStartRot = girl != null ? girl.transform.rotation : Quaternion.identity;
+			var boyTargetRot = boyStartRot;
+			var girlTargetRot = girlStartRot;
 			if (boy != null)
 			{
-				var dir = playerPos - boy.transform.position; dir.y = 0f; if (dir.sqrMagnitude > 0.0001f) boyTargetRot = Quaternion.LookRotation(dir.normalized, Vector3.up);
+				var dir = playerPos - boy.transform.position;
+				dir.y = 0f;
+				if (dir.sqrMagnitude > 0.0001f) boyTargetRot = Quaternion.LookRotation(dir.normalized, Vector3.up);
 			}
 			if (girl != null)
 			{
-				var dir = playerPos - girl.transform.position; dir.y = 0f; if (dir.sqrMagnitude > 0.0001f) girlTargetRot = Quaternion.LookRotation(dir.normalized, Vector3.up);
+				var dir = playerPos - girl.transform.position;
+				dir.y = 0f;
+				if (dir.sqrMagnitude > 0.0001f) girlTargetRot = Quaternion.LookRotation(dir.normalized, Vector3.up);
 			}
 			while (t < 1f && isGameActive)
 			{
@@ -194,11 +199,15 @@ namespace Game.Gameplay.DodgeGame
 			yield return new WaitForSeconds(jumpToRotateDelay);
 			var boyStartRot = boy.transform.rotation;
 			var girlStartRot = girl.transform.rotation;
-			var dirBoy = girl.transform.position - boy.transform.position; dirBoy.y = 0f; if (dirBoy.sqrMagnitude < 0.0001f) dirBoy = boy.transform.forward;
-			var dirGirl = boy.transform.position - girl.transform.position; dirGirl.y = 0f; if (dirGirl.sqrMagnitude < 0.0001f) dirGirl = girl.transform.forward;
+			var dirBoy = girl.transform.position - boy.transform.position;
+			dirBoy.y = 0f;
+			if (dirBoy.sqrMagnitude < 0.0001f) dirBoy = boy.transform.forward;
+			var dirGirl = boy.transform.position - girl.transform.position;
+			dirGirl.y = 0f;
+			if (dirGirl.sqrMagnitude < 0.0001f) dirGirl = girl.transform.forward;
 			var boyTargetRot = Quaternion.LookRotation(dirBoy.normalized, Vector3.up);
 			var girlTargetRot = Quaternion.LookRotation(dirGirl.normalized, Vector3.up);
-			float t = 0f;
+			var t = 0f;
 			while (t < 1f)
 			{
 				t += Time.deltaTime / Mathf.Max(0.0001f, endRotateDuration);
@@ -217,12 +226,12 @@ namespace Game.Gameplay.DodgeGame
 		{
 			if (!isGameActive) return;
 			var targetPos = CalculateTargetPosition();
-			var boxObj = Instantiate(boxPrefab, launcherTransform.position, Quaternion.identity);
+			var boxObj = Instantiate(boxPrefab, launcherTransform.position + Vector3.up * 0.1f, Quaternion.identity);
 			boxObj.SetActive(true);
 			var dodgeBox = boxObj.GetComponent<DodgeBox>();
 			if (dodgeBox != null)
 			{
-				dodgeBox.Initialize(launcherTransform.position, targetPos, dodgeBox.speed);
+				dodgeBox.Initialize(launcherTransform.position + Vector3.up * 0.1f, targetPos, dodgeBox.speed);
 				if (GameRoot.Player != null && GameRoot.Player.PlayerPositionTrigger != null)
 					dodgeBox.playerLayer = 1 << GameRoot.Player.PlayerPositionTrigger.gameObject.layer;
 			}
@@ -263,6 +272,7 @@ namespace Game.Gameplay.DodgeGame
 			// 执行结束表现（朝向彼此 + Shy）
 			StartCoroutine(EndSequence());
 			Debug.Log($"游戏胜利 - 成功躲避: {currentDodgeCount}/{requiredDodgeCount}");
+			GameRoot.CameraController.LookAtPlayer();
 		}
 	}
 }

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 4065.4126, g: 3700.8794, b: 4088.524, a: 1}
+  m_IndirectSpecularColor: {r: 4070.3774, g: 3706.6099, b: 4098.8755, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -119,6 +119,41 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &44411069 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2969007505367021355, guid: c3288a7c1712e014b8090b7277b6658f,
+    type: 3}
+  m_PrefabInstance: {fileID: 1564454350}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &44411076
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 44411069}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f38bda98361e1de48a4ca2bd86ea3c17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TargetOffset: {x: 0, y: 0, z: 0}
+  Lookahead:
+    Enabled: 0
+    Time: 0
+    Smoothing: 0
+    IgnoreY: 0
+  Damping: {x: 3, y: 3}
+  Composition:
+    ScreenPosition: {x: 0, y: 0}
+    DeadZone:
+      Enabled: 0
+      Size: {x: 0.2, y: 0.2}
+    HardLimits:
+      Enabled: 0
+      Size: {x: 0.8, y: 0.8}
+      Offset: {x: 0, y: 0}
+  CenterOnActivate: 1
 --- !u!1 &127687784
 GameObject:
   m_ObjectHideFlags: 0
@@ -2022,6 +2057,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2135327886}
     m_Modifications:
+    - target: {fileID: 1257226598573019100, guid: c3288a7c1712e014b8090b7277b6658f,
+        type: 3}
+      propertyPath: TrackerSettings.PositionDamping.x
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1257226598573019100, guid: c3288a7c1712e014b8090b7277b6658f,
+        type: 3}
+      propertyPath: TrackerSettings.PositionDamping.y
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1257226598573019100, guid: c3288a7c1712e014b8090b7277b6658f,
+        type: 3}
+      propertyPath: TrackerSettings.PositionDamping.z
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 1646777036127724907, guid: c3288a7c1712e014b8090b7277b6658f,
         type: 3}
       propertyPath: m_Name
@@ -2080,7 +2130,11 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2969007505367021355, guid: c3288a7c1712e014b8090b7277b6658f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 44411076}
   m_SourcePrefab: {fileID: 100100000, guid: c3288a7c1712e014b8090b7277b6658f, type: 3}
 --- !u!1 &1893623893
 GameObject:
@@ -2574,6 +2628,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2135327886}
     m_Modifications:
+    - target: {fileID: 1052174534505033581, guid: ee3eaec2084e8654aadf9728fdd75742,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 1052174534505033581, guid: ee3eaec2084e8654aadf9728fdd75742,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 1052174534505033581, guid: ee3eaec2084e8654aadf9728fdd75742,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 80
+      objectReference: {fileID: 0}
     - target: {fileID: 4696076224646268578, guid: ee3eaec2084e8654aadf9728fdd75742,
         type: 3}
       propertyPath: m_Name
