@@ -10,6 +10,7 @@ namespace Game.Gameplay.WaterGame
 		void OnCollisionExit(Collision other) => HandleSplash(other, false);
 		void HandleSplash(Collision other, bool isEnter)
 		{
+			
 			var velocity = other.relativeVelocity;
 			if (velocity == default)
 			{
