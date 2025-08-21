@@ -31,6 +31,7 @@ namespace Game.Gameplay.ChildGame
 		[SerializeField] Transform jump1;
 		[SerializeField] Transform jump2;
 		[SerializeField] PlayerDetector danceArea;
+		[SerializeField] Collider airCollider;
 		void Awake()
 		{
 			enabled = false;
@@ -208,6 +209,7 @@ namespace Game.Gameplay.ChildGame
 				GameRoot.GameCanvas.Filmic(false);
 				GameRoot.CameraController.LookAtPlayer();
 				GameRoot.Player.Unlock(KeyCode.Alpha2, true);
+				airCollider.enabled = false;
 			}
 		}
 		void Emotion(EmotionCode code) => animator.SetTrigger(emotionHashes[(int)code]);
