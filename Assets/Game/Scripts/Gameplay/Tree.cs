@@ -41,6 +41,11 @@ namespace Game.Gameplay
 				Debug.LogException(e);
 			}
 		}
+		public void ShakeIt()
+		{
+			if (shakeRoutine != null) StopCoroutine(shakeRoutine);
+			shakeRoutine = StartCoroutine(Shake());
+		}
 
 		IEnumerator Shake()
 		{
