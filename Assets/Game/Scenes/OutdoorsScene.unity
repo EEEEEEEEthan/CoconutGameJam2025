@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 1866.5413, g: 2112.9026, b: 3215.9575, a: 1}
+  m_IndirectSpecularColor: {r: 4056.103, g: 3045.1213, b: 3315.9263, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -20340,7 +20340,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1001 &277102450503071157
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -28098,6 +28098,46 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ChildGameplay
+      objectReference: {fileID: 0}
+    - target: {fileID: 8253348400307923423, guid: 51854f5282855ab4e8ceef559c60234e,
+        type: 3}
+      propertyPath: callback.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8253348400307923423, guid: 51854f5282855ab4e8ceef559c60234e,
+        type: 3}
+      propertyPath: callback.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8253348400307923423, guid: 51854f5282855ab4e8ceef559c60234e,
+        type: 3}
+      propertyPath: callback.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 2135327887}
+    - target: {fileID: 8253348400307923423, guid: 51854f5282855ab4e8ceef559c60234e,
+        type: 3}
+      propertyPath: callback.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8253348400307923423, guid: 51854f5282855ab4e8ceef559c60234e,
+        type: 3}
+      propertyPath: callback.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: CancelSketch
+      objectReference: {fileID: 0}
+    - target: {fileID: 8253348400307923423, guid: 51854f5282855ab4e8ceef559c60234e,
+        type: 3}
+      propertyPath: callback.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Game.Gameplay.GameRoot, Game.Gameplay
+      objectReference: {fileID: 0}
+    - target: {fileID: 8253348400307923423, guid: 51854f5282855ab4e8ceef559c60234e,
+        type: 3}
+      propertyPath: callback.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_BoolArgument
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8253348400307923423, guid: 51854f5282855ab4e8ceef559c60234e,
+        type: 3}
+      propertyPath: callback.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

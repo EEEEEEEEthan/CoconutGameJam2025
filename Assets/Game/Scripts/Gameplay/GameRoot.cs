@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using Game.Utilities.Smoothing;
 using ReferenceHelper;
+using SketchPostProcess;
 using UnityEngine;
 using UnityEngine.Rendering;
 namespace Game.Gameplay
@@ -34,6 +36,12 @@ namespace Game.Gameplay
 		}
 		public CameraController CameraController => cameraController;
 		public Player Player => player;
+		public void CancelSketch()
+		{
+			var volume = VolumeProfile.TryGet(typeof(SketchVolume), out VolumeComponent component) ? (SketchVolume)component : null;
+			var smooth = new DampSmoothing(1, v => volume.Weigth = v);
+			smooth.Set(0, 1f);
+		}
 	}
 	public class GameBehaviour : MonoBehaviour
 	{
