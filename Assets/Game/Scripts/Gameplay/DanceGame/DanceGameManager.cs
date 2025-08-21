@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using Game.Utilities;
 using Game.Utilities.UnityTools;
 using UnityEngine;
 namespace Game.Gameplay.DanceGame
@@ -16,6 +17,7 @@ namespace Game.Gameplay.DanceGame
 		[SerializeField] float unimportantMoveSpeed = 0.01f; // units per second to move left
 		[SerializeField] MeshRenderer backgroundMeshRenderer; // 背景网格渲染器
 		[SerializeField] string dissolvePropertyName = "_Dissolve"; // 材质溶解属性名
+		[SerializeField] ParticleSystem particle;
 		Coroutine dissolveCoroutine; // 当前溶解协程
 		static readonly int DissolveID = Shader.PropertyToID("_Dissolve");
 		readonly Vector3 targetPosition = Vector3.zero;
@@ -236,6 +238,7 @@ namespace Game.Gameplay.DanceGame
 		void TriggerCorrectEvent(Note3DModel note)
 		{
 			correctCount++;
+			particle.Instantiate(particle.transform.parent).Play();
 			Debug.Log($"Correct! Key: {note.noteData.key}, Score: {correctCount}");
 		}
 		void TriggerWrongEvent(KeyCode inputKey)
