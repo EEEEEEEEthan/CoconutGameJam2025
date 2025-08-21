@@ -277,6 +277,13 @@ namespace Game.Gameplay.DodgeGame
 			Debug.Log("[BoxDodgeGameManager] 恭喜！成功完成躲避挑战！");
 			// 停止发射循环
 			StopGame();
+			// 游戏结束瞬间：溶解场景中所有仍然存在的 Box
+			var boxes = UnityEngine.Object.FindObjectsByType<DodgeBox>(FindObjectsSortMode.None);
+			foreach (var b in boxes)
+			{
+				// 以未命中玩家的方式触发溶解（保持原始颜色）
+				b.StartDissolve(false);
+			}
 			if (airWallLeft != null) airWallLeft.SetActive(false);
 			if (airWallRight != null) airWallRight.SetActive(false);
 			// 执行结束表现（朝向彼此 + Shy）
