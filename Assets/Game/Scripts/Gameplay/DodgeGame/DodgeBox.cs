@@ -1,7 +1,6 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
-using Game.Gameplay; // Access GameRoot / Player
 namespace Game.Gameplay.DodgeGame
 {
 	public class DodgeBox : MonoBehaviour
@@ -147,46 +146,13 @@ namespace Game.Gameplay.DodgeGame
 		}
 		void Update()
 		{
-			// 判定是否已越过目标线（保持原有逻辑）
 			if (!hasPassedTarget && transform.position.z < 0)
 			{
 				hasPassedTarget = true;
 				OnBoxDodged?.Invoke(this);
 			}
-			// 每帧朝向玩家当前位置(向上偏移 0.1) 重新计算飞行方向，形成“追踪”效果
-			UpdateHomingDirection();
-			if (boxRigidbody == null)
-				transform.position += flyDirection * speed * Time.deltaTime;
-			else
-				boxRigidbody.velocity = flyDirection * speed;
+			if (boxRigidbody == null) transform.position += flyDirection * speed * Time.deltaTime;
 			UpdateFirstChildShake();
-		}
-
-		GameRoot cachedGameRoot;
-		Player cachedPlayer;
-		void UpdateHomingDirection()
-		{
-			if (isDissolving) return; // 溶解中不再更新
-			if (cachedPlayer == null)
-			{
-				if (cachedGameRoot == null)
-					cachedGameRoot = GetComponentInParent<GameRoot>();
-				if (cachedGameRoot != null)
-					cachedPlayer = cachedGameRoot.Player;
-				if (cachedPlayer == null)
-				{
-#if UNITY_2022_2_OR_NEWER
-					cachedPlayer = FindFirstObjectByType<Player>();
-#else
-					cachedPlayer = FindObjectOfType<Player>();
-#endif
-				}
-			}
-			if (cachedPlayer == null) return;
-			var targetPos = cachedPlayer.transform.position + Vector3.up * 0.1f;
-			var dir = targetPos - transform.position;
-			if (dir.sqrMagnitude > 0.0001f)
-				flyDirection = dir.normalized;
 		}
 
 		// 使用 PerlinNoise 对第一个子节点做局部抖动
@@ -219,7 +185,22 @@ namespace Game.Gameplay.DodgeGame
 		public void Initialize(Vector3 startPos, Vector3 targetPos, float flySpeed)
 		{
 			transform.position = startPos;
-			targetPosition = targetPos;
+			// 改为朝向玩家当前位置（向上偏移 0.1f），不再使用传入的随机目标点。
+			// 若未能找到玩家，则回退到传入的 targetPos（保持兼容）。
+			// Unity 2023+: 使用 FindFirstObjectByType；若不可用可回退到 (已弃用) 的旧 API（编译期符号区分）。
+#if UNITY_2023_1_OR_NEWER
+			var player = FindFirstObjectByType<Player>();
+#else
+			var player = FindObjectOfType<Player>();
+#endif
+			if (player != null)
+			{
+				targetPosition = player.transform.position + Vector3.up * 0.1f;
+			}
+			else
+			{
+				targetPosition = targetPos; // 兼容回退
+			}
 			speed = flySpeed;
 			hasPassedTarget = false;
 			isDissolving = false;
