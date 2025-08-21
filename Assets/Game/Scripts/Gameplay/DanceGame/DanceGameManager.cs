@@ -21,6 +21,7 @@ namespace Game.Gameplay.DanceGame
 		[SerializeField] MeshRenderer backgroundMeshRenderer; // 背景网格渲染器
 		[SerializeField] string dissolvePropertyName = "_Dissolve"; // 材质溶解属性名
 		[SerializeField] ParticleSystem particle;
+		[SerializeField] GameObject splashTrigger;
 		Coroutine dissolveCoroutine; // 当前溶解协程
 		static readonly int DissolveID = Shader.PropertyToID("_Dissolve");
 		readonly Vector3 targetPosition = Vector3.zero;
@@ -102,6 +103,7 @@ namespace Game.Gameplay.DanceGame
 				await MainThreadTimerManager.Await(10);
 				SmoothSetDissolve(1, 30f);
 				await MainThreadTimerManager.Await(10);
+				splashTrigger.SetActive(true);
 				foreach (var rigidobody in rigidbodies)
 				{
 					rigidobody.useGravity = false;

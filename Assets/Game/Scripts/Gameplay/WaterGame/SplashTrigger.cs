@@ -29,7 +29,8 @@ namespace Game.Gameplay.WaterGame
 				if (contactPoints.Count <= 0)
 				{
 					var point = other.collider.ClosestPoint(other.transform.position.WithY(transform.position.y));
-					var gameObject = Instantiate(prefab, point - direction * 0.01f, rotation);
+					var position = overrideSplashPrefab ? point : point - direction * 0.01f;
+					var gameObject = Instantiate(prefab, position, rotation);
 					var particleSystem = gameObject.GetComponent<ParticleSystem>();
 					var emission = particleSystem.emission;
 					emission.rateOverTime = speed.Remapped(0, 0.5f, 100, 1000).Clamped(100, 1000);
@@ -37,7 +38,8 @@ namespace Game.Gameplay.WaterGame
 				}
 				foreach (var point in contactPoints)
 				{
-					var gameObject = Instantiate(prefab, point.point - direction * 0.01f, rotation);
+					var position = overrideSplashPrefab ? point.point : point.point - direction * 0.01f;
+					var gameObject = Instantiate(prefab, position, rotation);
 					var particleSystem = gameObject.GetComponent<ParticleSystem>();
 					var emission = particleSystem.emission;
 					emission.rateOverTime = speed.Remapped(0, 0.5f, 100, 1000).Clamped(100, 1000);
