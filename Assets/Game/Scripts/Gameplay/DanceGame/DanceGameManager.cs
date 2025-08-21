@@ -12,6 +12,8 @@ namespace Game.Gameplay.DanceGame
 		[SerializeField] NoteDetector noteDetector;
 		[SerializeField] DanceNPC danceNPC;
 		[SerializeField] Rigidbody[] rigidbodies;
+		[SerializeField] Transform[] unimportant;
+		[SerializeField] float unimportantMoveSpeed = 0.01f; // units per second to move left
 		readonly Vector3 targetPosition = Vector3.zero;
 		readonly List<Note3DModel> activeNotes = new();
 		Action<(int correct, int wrong, int miss)> gameEndCallback;
@@ -34,6 +36,16 @@ namespace Game.Gameplay.DanceGame
 		void Update()
 		{
 			DetectInput();
+			// Move "unimportant" transforms left each frame after OnEnable at configured speed
+			if (unimportant != null)
+			{
+				var delta = Vector3.left * (unimportantMoveSpeed * Time.deltaTime);
+				for (int i = 0; i < unimportant.Length; i++)
+				{
+					var t = unimportant[i];
+					if (t != null) t.position += delta;
+				}
+			}
 			foreach (var rigidobody in rigidbodies)
 				if (!rigidobody.useGravity)
 					rigidobody.AddForce(Vector3.up * 0.001f);
