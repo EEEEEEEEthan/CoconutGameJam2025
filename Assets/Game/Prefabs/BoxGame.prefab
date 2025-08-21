@@ -9806,6 +9806,10 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   text: {fileID: 1580482411543976781}
+  enableFirstChildShake: 1
+  firstChildShakeRange: 0.003
+  firstChildShakeSpeed: 20
+  firstChildShakeAxes: {x: 1, y: 1, z: 0}
 --- !u!65 &6514528847561174327
 BoxCollider:
   m_ObjectHideFlags: 0

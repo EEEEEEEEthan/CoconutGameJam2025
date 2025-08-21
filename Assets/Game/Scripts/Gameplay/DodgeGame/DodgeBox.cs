@@ -24,6 +24,15 @@ namespace Game.Gameplay.DodgeGame
 		[SerializeField] float spawnScaleStartFactor = 0.2f; // 出生初始缩放比例（相对初始尺寸）
 		[SerializeField] AnimationCurve spawnScaleCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f); // 缩放插值曲线（0-1 输入 -> 0-1 输出）
 		[SerializeField] TMP_Text text;
+		// 子节点抖动配置（需求：第一个子节点快速抖动，使用 PerlinNoise 并 Remap 0..1 -> -range..range）
+		[SerializeField] bool enableFirstChildShake = true; // 是否启用
+		[SerializeField] float firstChildShakeRange = 0.05f; // 抖动幅度（世界单位 / 本地坐标单位）
+		[SerializeField] float firstChildShakeSpeed = 20f; // 噪声采样速度（越大越快）
+		[SerializeField] Vector3 firstChildShakeAxes = new Vector3(1f, 1f, 0f); // 哪些轴启用抖动（1 启用 0 关闭）
+		Transform firstChild; // 缓存第一个子节点
+		Vector3 firstChildInitialLocalPos; // 初始本地位置
+		float firstChildShakeTime; // 累积时间（实例独立）
+		Vector3 firstChildShakeSeed; // 噪声随机种子偏移（实例独立）
 		static readonly int ColorPropId = Shader.PropertyToID("_BaseColor"); // HDRP / URP Lit 常用
 		static readonly int LegacyColorPropId = Shader.PropertyToID("_Color"); // 备用
 		Coroutine spawnScaleCoroutine;
@@ -111,6 +120,14 @@ namespace Game.Gameplay.DodgeGame
 		void Awake()
 		{
 			meshRenderer = GetComponentInChildren<MeshRenderer>();
+			// 缓存第一个子节点（如果存在）
+			if (transform.childCount > 0)
+			{
+				firstChild = transform.GetChild(0);
+				firstChildInitialLocalPos = firstChild.localPosition;
+			}
+			// 为该实例生成随机种子，避免所有 Box 同步抖动
+			firstChildShakeSeed = new Vector3(Random.value * 10f, Random.value * 10f, Random.value * 10f);
 			if (meshRenderer != null)
 			{
 				// 生成运行时独立材质实例，避免修改共享资源
@@ -135,6 +152,26 @@ namespace Game.Gameplay.DodgeGame
 				OnBoxDodged?.Invoke(this);
 			}
 			if (boxRigidbody == null) transform.position += flyDirection * speed * Time.deltaTime;
+			UpdateFirstChildShake();
+		}
+
+		// 使用 PerlinNoise 对第一个子节点做局部抖动
+		void UpdateFirstChildShake()
+		{
+			if (!enableFirstChildShake || firstChild == null) return;
+			if (firstChildShakeRange <= 0f) return;
+			firstChildShakeTime += Time.deltaTime * firstChildShakeSpeed; // 每个实例独立推进
+			float t = firstChildShakeTime;
+			// Perlin 返回 0..1, Remap 到 -range..range
+			float Sample(float ox, float oy)
+			{
+				return (Mathf.PerlinNoise(ox, oy) * 2f - 1f) * firstChildShakeRange; // 0..1 -> -1..1 -> * range
+			}
+			// 使用不同偏移使 XYZ 不完全相关
+			float dx = firstChildShakeAxes.x != 0f ? Sample(firstChildShakeSeed.x + t, firstChildShakeSeed.x) : 0f;
+			float dy = firstChildShakeAxes.y != 0f ? Sample(firstChildShakeSeed.y, firstChildShakeSeed.y + t) : 0f;
+			float dz = firstChildShakeAxes.z != 0f ? Sample(firstChildShakeSeed.z + t, firstChildShakeSeed.z + t * 0.37f) : 0f;
+			firstChild.localPosition = firstChildInitialLocalPos + new Vector3(dx, dy, dz);
 		}
 		void OnTriggerEnter(Collider other)
 		{
