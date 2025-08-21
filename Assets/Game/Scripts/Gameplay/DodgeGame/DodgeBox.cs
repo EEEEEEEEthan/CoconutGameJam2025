@@ -99,7 +99,7 @@ namespace Game.Gameplay.DodgeGame
 		{
 			float t = 0f;
 			Vector3 startScale = transform.localScale;
-			Vector3 targetScale = initialScale * 1.1f;
+			Vector3 targetScale = initialScale * 1.3f;
 			bool hasDissolveProp = runtimeMaterial != null && runtimeMaterial.HasProperty(dissolveProperty);
 			while (t < dissolveDuration)
 			{
