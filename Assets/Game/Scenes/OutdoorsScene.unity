@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 4053.2505, g: 3041.6252, b: 3308.4224, a: 1}
+  m_IndirectSpecularColor: {r: 4053.266, g: 3041.594, b: 3308.3403, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -7065,7 +7065,7 @@ Transform:
   m_GameObject: {fileID: 1537966320}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0}
+  m_LocalPosition: {x: 0, y: 0, z: -0.004}
   m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -21343,6 +21343,7 @@ MonoBehaviour:
   levelTextAsset: {fileID: 4900000, guid: 55145f6225e17e546a0f635e531cb609, type: 3}
   noteDetector: {fileID: 5428690764360904583}
   danceNPC: {fileID: 4855047629885170061}
+  player: {fileID: 0}
   rigidbodies:
   - {fileID: 817044599}
   - {fileID: 1977344194}

@@ -4,6 +4,8 @@ using System.Text.RegularExpressions;
 using Game.Utilities;
 using Game.Utilities.UnityTools;
 using UnityEngine;
+using Game.Gameplay; // For Player
+using Game.FingerRigging; // For LegPoseCode
 namespace Game.Gameplay.DanceGame
 {
 	public class DanceGameManager : MonoBehaviour
@@ -12,6 +14,7 @@ namespace Game.Gameplay.DanceGame
 		[SerializeField] TextAsset levelTextAsset;
 		[SerializeField] NoteDetector noteDetector;
 		[SerializeField] DanceNPC danceNPC;
+		[SerializeField] Player player; // 用于监听玩家动作/表情的事件
 		[SerializeField] Rigidbody[] rigidbodies;
 		[SerializeField] Transform[] unimportant;
 		[SerializeField] float unimportantMoveSpeed = 0.01f; // units per second to move left
@@ -27,7 +30,7 @@ namespace Game.Gameplay.DanceGame
 		int wrongCount;
 		int missCount;
 		float gameStartTime;
-		async void Awake()
+		void Awake()
 		{
 			try
 			{
@@ -42,7 +45,7 @@ namespace Game.Gameplay.DanceGame
 		}
 		void Update()
 		{
-			DetectInput();
+			// 取消直接按键轮询，改为事件驱动（Player/HandIKInput）
 			// Move "unimportant" transforms left each frame after OnEnable at configured speed
 			if (unimportant != null)
 			{
@@ -63,6 +66,17 @@ namespace Game.Gameplay.DanceGame
 			{
 				GetComponent<AudioSource>().Play();
 				noteDetector.gameObject.SetActive(true);
+				// 确保 player 引用存在（若未在 Inspector 赋值，则尝试自动查找）
+				if (player == null)
+				{
+#if UNITY_2023_1_OR_NEWER
+					var root = UnityEngine.Object.FindFirstObjectByType<GameRoot>();
+#else
+					var root = UnityEngine.Object.FindObjectOfType<GameRoot>();
+#endif
+					player = root ? root.Player : null;
+				}
+				SubscribePlayerInputEvents(true);
 				gameStartTime = Time.time;
 				correctCount = 0;
 				wrongCount = 0;
@@ -104,6 +118,7 @@ namespace Game.Gameplay.DanceGame
 			NoteDetector.OnNoteEnter -= OnNoteEnterDetectionArea;
 			NoteDetector.OnNoteExit -= OnNoteExitDetectionArea;
 			if (danceNPC != null) danceNPC.StopDance();
+			SubscribePlayerInputEvents(false);
 		}
 		public void SetGameEndCallback(Action<(int correct, int wrong, int miss)> callback) => gameEndCallback = callback;
 		List<NoteData> Parse()
@@ -209,6 +224,67 @@ namespace Game.Gameplay.DanceGame
 			foreach (var key in keysToCheck)
 				if (Input.GetKeyDown(key))
 					ProcessInput(key);
+		}
+		/// <summary>
+		/// 订阅或取消订阅来自 Player 的输入事件（腿部动作/情绪触发）。
+		/// </summary>
+		/// <param name="subscribe">true=订阅; false=取消订阅</param>
+		void SubscribePlayerInputEvents(bool subscribe)
+		{
+			if (player == null) return;
+			var hand = player.HandIkInput;
+			if (hand == null) return;
+			if (subscribe)
+			{
+				hand.OnLeftLegChanged += OnLeftLegChanged;
+				hand.OnRightLegChanged += OnRightLegChanged;
+				player.OnEmotionTriggered += OnEmotionTriggered;
+			}
+			else
+			{
+				hand.OnLeftLegChanged -= OnLeftLegChanged;
+				hand.OnRightLegChanged -= OnRightLegChanged;
+				player.OnEmotionTriggered -= OnEmotionTriggered;
+			}
+		}
+		void OnLeftLegChanged()
+		{
+			// 将当前左腿姿态映射为对应按键
+			MapLegPoseToKey(true, player.HandIkInput.LeftLeg);
+		}
+		void OnRightLegChanged()
+		{
+			MapLegPoseToKey(false, player.HandIkInput.RightLeg);
+		}
+		void OnEmotionTriggered(Player.EmotionCode emotion)
+		{
+			var key = emotion switch
+			{
+				Player.EmotionCode.Hi => KeyCode.Alpha1,
+				Player.EmotionCode.Surprise => KeyCode.Alpha2,
+				Player.EmotionCode.Shy => KeyCode.Alpha3,
+				Player.EmotionCode.Angry => KeyCode.Alpha4,
+				_ => KeyCode.None,
+			};
+			if (key != KeyCode.None) ProcessInput(key);
+		}
+		void MapLegPoseToKey(bool isLeft, LegPoseCode pose)
+		{
+			KeyCode key = KeyCode.None;
+			switch (pose)
+			{
+				case LegPoseCode.LiftForward:
+					key = isLeft ? KeyCode.Q : KeyCode.W;
+					break;
+				case LegPoseCode.LiftUp:
+					key = isLeft ? KeyCode.A : KeyCode.S;
+					break;
+				case LegPoseCode.LiftBackward:
+					key = isLeft ? KeyCode.Z : KeyCode.X;
+					break;
+				// Idle 不触发
+			}
+			if (key != KeyCode.None) ProcessInput(key);
 		}
 		void ProcessInput(KeyCode inputKey)
 		{
