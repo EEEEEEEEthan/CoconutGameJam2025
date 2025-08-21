@@ -158,6 +158,7 @@ namespace Game.Gameplay.DodgeGame
 		IEnumerator StartSequence()
 		{
 			// 同时原地小跳（使用 Transform 扩展 Jump）
+			yield return new WaitForSeconds(0.8f);
 			var boyDone = boy == null;
 			var girlDone = girl == null;
 			if (boy != null) boy.transform.Jump(boy.transform.position, startJumpHeight, startJumpDuration, () => boyDone = true);
