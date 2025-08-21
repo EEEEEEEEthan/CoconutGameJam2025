@@ -3553,7 +3553,7 @@ Transform:
   m_GameObject: {fileID: 2806240719471470442}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0.076, y: -0.0108, z: 0.464}
+  m_LocalPosition: {x: -0.076, y: -0.0204, z: 0.464}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -3572,7 +3572,7 @@ Animator:
   m_Enabled: 1
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: b544c9cae12f5c5439e55fdcc06aa25c, type: 2}
-  m_CullingMode: 0
+  m_CullingMode: 2
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
@@ -5243,7 +5243,7 @@ Transform:
   m_GameObject: {fileID: 4519369903127262117}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0.034, y: -0.007, z: 0.469}
+  m_LocalPosition: {x: 0.034, y: -0.016600002, z: 0.469}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -5262,7 +5262,7 @@ Animator:
   m_Enabled: 1
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: b544c9cae12f5c5439e55fdcc06aa25c, type: 2}
-  m_CullingMode: 0
+  m_CullingMode: 2
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
@@ -9123,7 +9123,7 @@ GameObject:
   - component: {fileID: 1779693856648637606}
   - component: {fileID: 7974204808681860209}
   - component: {fileID: 3962963764036617582}
-  - component: {fileID: 5456630940214044623}
+  - component: {fileID: 3947996604607193520}
   m_Layer: 3
   m_Name: TriggerStartGame
   m_TagString: Untagged
@@ -9140,8 +9140,8 @@ Transform:
   m_GameObject: {fileID: 8010871760691882467}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.0462, y: 0, z: 0}
-  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
+  m_LocalPosition: {x: 0.031, y: 0, z: 0.001}
+  m_LocalScale: {x: 0.35, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5291646962875894002}
@@ -9219,7 +9219,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &5456630940214044623
+--- !u!114 &3947996604607193520
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -9228,7 +9228,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8010871760691882467}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 79bc48b5e00dd0c48bb639376e511c1e, type: 3}
+  m_Script: {fileID: 11500000, guid: 9c1ab3f677c8d2442bc832cc27b8bdc2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   callback:
@@ -9244,10 +9244,11 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 1
+          m_BoolArgument: 0
         m_CallState: 2
-  maxTriggerCount: 1
+  maxTriggerCount: 2147483647
   coolDownSeconds: 0.5
+  emotion: 0
 --- !u!1 &8020305610227741344
 GameObject:
   m_ObjectHideFlags: 0
