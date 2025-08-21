@@ -28,6 +28,7 @@ namespace Game.Gameplay.DodgeGame
 		[SerializeField] float startJumpDuration = 0.25f;
 		[SerializeField] float endJumpHeight = 0.08f;
 		[SerializeField] float endJumpDuration = 0.25f;
+		[SerializeField] Transform look2;
 		public Action<int, int> OnDodgeCountChanged;
 		public Action OnGameWon;
 		public Action OnGameLost;
@@ -193,6 +194,9 @@ namespace Game.Gameplay.DodgeGame
 		IEnumerator EndSequence()
 		{
 			if (boy == null || girl == null) yield break;
+			yield return new WaitForSeconds(1);
+			GameRoot.CameraController.LookAt(look2, 14f);
+			yield return new WaitForSeconds(1);
 			// 同时小跳
 			bool boyDone = false, girlDone = false;
 			boy.transform.Jump(boy.transform.position, endJumpHeight, endJumpDuration, () => boyDone = true);
@@ -222,6 +226,10 @@ namespace Game.Gameplay.DodgeGame
 				boy.SetTrigger(shyTriggerName);
 				girl.SetTrigger(shyTriggerName);
 			}
+			GameRoot.Player.Unlock(KeyCode.Alpha3, true);
+			GameRoot.GameCanvas.Filmic(false);
+			yield return new WaitForSeconds(1);
+			GameRoot.CameraController.LookAtPlayer();
 			OnGameWon?.Invoke();
 		}
 		void LaunchBox(Transform launcherTransform, string launcherLabel)
@@ -300,9 +308,6 @@ namespace Game.Gameplay.DodgeGame
 			// 执行结束表现（朝向彼此 + Shy）
 			StartCoroutine(EndSequence());
 			Debug.Log($"游戏胜利 - 成功躲避: {currentDodgeCount}/{requiredDodgeCount}");
-			GameRoot.CameraController.LookAtPlayer();
-			GameRoot.GameCanvas.Filmic(false);
-			GameRoot.Player.Unlock(KeyCode.Alpha3, true);
 		}
 	}
 }

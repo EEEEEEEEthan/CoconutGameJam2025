@@ -4959,6 +4959,37 @@ Transform:
   - {fileID: 7295076947669172845}
   m_Father: {fileID: 3294969976399936976}
   m_LocalEulerAnglesHint: {x: -89.98021, y: 0, z: 0}
+--- !u!1 &4237491199437885071
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2692868447128394080}
+  m_Layer: 0
+  m_Name: LookHere (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2692868447128394080
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4237491199437885071}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.007, y: 0.04, z: 0.428}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5291646962875894002}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4312381122321192577
 GameObject:
   m_ObjectHideFlags: 0
@@ -5500,6 +5531,7 @@ Transform:
   - {fileID: 8870986644208903606}
   - {fileID: 824031730291005839}
   - {fileID: 4211420376175891942}
+  - {fileID: 2692868447128394080}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5028809528600175186
@@ -5515,7 +5547,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   requiredDodgeCount: 10
-  launchInterval: 1
+  launchInterval: 0.75
   targetArea:
     serializedVersion: 2
     x: -0.15

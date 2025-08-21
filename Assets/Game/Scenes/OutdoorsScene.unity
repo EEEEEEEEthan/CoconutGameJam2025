@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 2261.9788, g: 2403.0784, b: 3499.8364, a: 1}
+  m_IndirectSpecularColor: {r: 5505.489, g: 3937.3872, b: 4065.891, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2380,10 +2380,19 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8742910801424567002, guid: ee3eaec2084e8654aadf9728fdd75742,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7266254908983876869, guid: ee3eaec2084e8654aadf9728fdd75742,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: ee3eaec2084e8654aadf9728fdd75742, type: 3}
 --- !u!1 &947695408
 GameObject:
@@ -5436,8 +5445,7 @@ PrefabInstance:
         type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: -6478536213147159724, guid: 0012203b2cb5c75478b929172260fc3b,
-        type: 3}
+      objectReference: {fileID: 2100000, guid: 8cc4d9cd194390e41a42b539345dd4e7, type: 2}
     - target: {fileID: 8087390058894415056, guid: d3f078975b7693a499b11b16b254ee89,
         type: 3}
       propertyPath: m_Name
@@ -11504,11 +11512,6 @@ PrefabInstance:
       propertyPath: callback.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
-    - target: {fileID: 6911119648781635361, guid: 51854f5282855ab4e8ceef559c60234e,
-        type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2100000, guid: 8cc4d9cd194390e41a42b539345dd4e7, type: 2}
     - target: {fileID: 7836665582834058128, guid: 51854f5282855ab4e8ceef559c60234e,
         type: 3}
       propertyPath: m_LocalScale.x
