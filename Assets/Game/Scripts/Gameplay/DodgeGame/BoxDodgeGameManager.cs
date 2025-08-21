@@ -23,6 +23,7 @@ namespace Game.Gameplay.DodgeGame
 		[SerializeField] float endRotateDuration = 0.6f;
 		[SerializeField] float launchAnimDelay = 0.3f; // 与协程内部常量保持一致，可在 Inspector 调整
 		[SerializeField] float jumpToRotateDelay = 0.05f;
+		[Header("受击反馈")] [SerializeField] float hitColorRecoverDuration = 1.2f; // 玩家被击中后从红色恢复到白色的时长
 		[Header("跳跃参数")] [SerializeField] float startJumpHeight = 0.08f;
 		[SerializeField] float startJumpDuration = 0.25f;
 		[SerializeField] float endJumpHeight = 0.08f;
@@ -248,6 +249,12 @@ namespace Game.Gameplay.DodgeGame
 		void HandleBoxHitPlayer(DodgeBox box)
 		{
 			if (currentDodgeCount >= requiredDodgeCount) return;
+			// 玩家受击颜色反馈：立刻变红 -> 平滑回到白色
+			if (GameRoot.Player != null)
+			{
+				var p = GameRoot.Player;
+				p.SmoothSetMaterialColor(Color.red, 0f, () => p.SmoothSetMaterialColor(Color.white, hitColorRecoverDuration));
+			}
 			Debug.Log("[BoxDodgeGameManager] 玩家被Box击中！游戏失败，重置计数");
 			currentDodgeCount = 0;
 			OnDodgeCountChanged?.Invoke(currentDodgeCount, requiredDodgeCount);
