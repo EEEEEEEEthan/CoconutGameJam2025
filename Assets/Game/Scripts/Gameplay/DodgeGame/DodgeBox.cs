@@ -28,6 +28,86 @@ namespace Game.Gameplay.DodgeGame
 		static readonly int LegacyColorPropId = Shader.PropertyToID("_Color"); // 备用
 		Coroutine spawnScaleCoroutine;
 		bool isSpawning;
+		// 仅愤怒 / 怒气 / 咬牙 / 不爽表情（半角 ASCII，无旋转侧脸）。
+		static readonly string[] Emoticons = new string[]
+		{
+			">_<",
+			">_<!",
+			">_<!!",
+			">_<!!!",
+			">_<#",
+			">_<##",
+			">_<###",
+			">_<!!!!",
+			">0<",
+			">0<!",
+			">0<!!",
+			">0<!!!",
+			">0<#",
+			">0<##",
+			">0<!!!!",
+			">.<",
+			">.<!!",
+			">.<#",
+			">o<",
+			">o<!!",
+			">o<#",
+			">O<",
+			">O<!!",
+			">O<#",
+			">^<",
+			">^<!!",
+			"<_<",
+			"<_<!!",
+			"<__<",
+			"<__<!!",
+			">__>",
+			">__>!!",
+			">_>",
+			">_>!",
+			"-_-",
+			"-_-!",
+			"-_-!!",
+			"-_-#",
+			"-_-##",
+			"=_=",
+			"=_=#",
+			"=_=!!",
+			"=__=",
+			"=__=!!",
+			"-__-",
+			"-__-#",
+			"-.-",
+			"-.-#",
+			"o_o#",
+			"O_O#",
+			"O_O!!",
+			"O_O!!!",
+			"x_x#",
+			"x_x!!",
+			"X_X#",
+			">_<%",
+			">_<%%",
+			">0<%",
+			">0<%%",
+			"<_<%",
+			"<_<##",
+			">_>#",
+			">_>##",
+			">^<##",
+			">.<##",
+			"GRR",
+			"GRR!",
+			"GRRR",
+			"GRRR!",
+			"RRR",
+		};
+		string GetRandomEmoticon()
+		{
+			if (Emoticons == null || Emoticons.Length == 0) return ":)";
+			int idx = UnityEngine.Random.Range(0, Emoticons.Length);
+			return Emoticons[idx];
+		}
 		void Awake()
 		{
 			meshRenderer = GetComponentInChildren<MeshRenderer>();
@@ -79,6 +159,7 @@ namespace Game.Gameplay.DodgeGame
 			// 设置出生初始缩放并播放动画
 			transform.localScale = initialScale * spawnScaleStartFactor;
 			spawnScaleCoroutine = StartCoroutine(SpawnScaleRoutine());
+			if (text != null) text.text = GetRandomEmoticon();
 		}
 
 		/// <summary>
