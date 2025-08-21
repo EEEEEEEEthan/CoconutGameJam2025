@@ -38,6 +38,8 @@ namespace Game.Gameplay.GuardGame
 				if (guardAnimator.transform.localPosition.z > 0) yield break;
 				guarding = false;
 				yield return new WaitForSeconds(1.5f);
+				GameRoot.GameCanvas.Filmic(true);
+				yield return new WaitForSeconds(0.5f);
 				guardAnimator.SetTrigger("Hi");
 				yield return new WaitForSeconds(0.8f);
 				yield return guardAnimator.transform.WaitJump(guardAnimator.transform.position + guardPosition.right * 0.08f, 0.05f, 0.3f);
@@ -45,6 +47,8 @@ namespace Game.Gameplay.GuardGame
 				yield return new WaitForSeconds(1.7f);
 				badgeRenderer.enabled = false;
 				unlockCollider.enabled = true;
+				GameRoot.GameCanvas.Filmic(false);
+				GameRoot.Player.Unlock(KeyCode.Alpha4, true);
 			}
 		}
 		public void Restart()
