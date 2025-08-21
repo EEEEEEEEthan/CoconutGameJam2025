@@ -906,6 +906,9 @@ MonoBehaviour:
   animator: {fileID: 2469827012165198104}
   cameraTarget: {fileID: 3100051313230109323}
   playerPositionTrigger: {fileID: 3114111872261162627}
+  skinnedMeshRenderer: {fileID: 7412771417583754733}
+  hitFlashColor: {r: 1, g: 0, b: 0, a: 1}
+  hitRecoverDuration: 0.8
 --- !u!54 &3449393323187953509
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3846,6 +3849,12 @@ Transform:
 --- !u!4 &6698205922048698953 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8963858674870567042, guid: a8f24dded6790fe499607db878798633,
+    type: 3}
+  m_PrefabInstance: {fileID: 2347161783440485067}
+  m_PrefabAsset: {fileID: 0}
+--- !u!137 &7412771417583754733 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -4157456459163486426, guid: a8f24dded6790fe499607db878798633,
     type: 3}
   m_PrefabInstance: {fileID: 2347161783440485067}
   m_PrefabAsset: {fileID: 0}
