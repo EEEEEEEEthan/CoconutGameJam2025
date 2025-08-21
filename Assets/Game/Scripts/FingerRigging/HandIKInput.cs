@@ -155,7 +155,7 @@ namespace Game.FingerRigging
 		{
 			var legSmoothing = finger == hand.Left ? leftLegSmoothing : rightLegSmoothing;
 			if (reset) goto RESET;
-			var hit = finger.Tip.position.GetTerrainHit();
+			var hit = finger.Tip.position.GetTerrainHit(0.1f);
 			if (hit.HasValue)
 			{
 				if (immediate)
