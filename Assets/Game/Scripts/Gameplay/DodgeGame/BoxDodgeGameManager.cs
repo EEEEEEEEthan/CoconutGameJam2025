@@ -255,6 +255,12 @@ namespace Game.Gameplay.DodgeGame
 				var p = GameRoot.Player;
 				p.SmoothSetMaterialColor(Color.red, 0f, () => p.SmoothSetMaterialColor(Color.white, hitColorRecoverDuration));
 			}
+			// 令命中玩家的 box 变红后溶解
+			if (box != null)
+			{
+				box.SetColor(Color.red);
+				box.StartDissolve();
+			}
 			// 屏幕震动
 			GameRoot.CameraController?.Shake(0.25f);
 			Debug.Log("[BoxDodgeGameManager] 玩家被Box击中！游戏失败，重置计数");
@@ -266,6 +272,12 @@ namespace Game.Gameplay.DodgeGame
 		void HandleBoxDodged(DodgeBox box)
 		{
 			if (currentDodgeCount >= requiredDodgeCount) return;
+			// 躲避成功：该 box 变蓝并溶解
+			if (box != null)
+			{
+				box.SetColor(Color.blue);
+				box.StartDissolve();
+			}
 			currentDodgeCount++;
 			Debug.Log($"[BoxDodgeGameManager] 成功躲避Box！当前进度: {currentDodgeCount}/{requiredDodgeCount}");
 			OnDodgeCountChanged?.Invoke(currentDodgeCount, requiredDodgeCount);
@@ -281,8 +293,8 @@ namespace Game.Gameplay.DodgeGame
 			var boxes = UnityEngine.Object.FindObjectsByType<DodgeBox>(FindObjectsSortMode.None);
 			foreach (var b in boxes)
 			{
-				// 以未命中玩家的方式触发溶解（保持原始颜色）
-				b.StartDissolve(false);
+				b.SetColor(Color.blue);
+				b.StartDissolve();
 			}
 			if (airWallLeft != null) airWallLeft.SetActive(false);
 			if (airWallRight != null) airWallRight.SetActive(false);

@@ -53,9 +53,9 @@ namespace Game.Gameplay.DodgeGame
 		{
 			if (!isDissolving && other.GetComponentInParent<Player>())
 			{
-				// 击中玩家：立即标记并播放消失动画
+				// 击中玩家：通知事件；颜色改变放到外部（GameManager）
 				OnBoxHitPlayer?.Invoke(this);
-				StartDissolve(hitPlayer: true);
+				StartDissolve();
 			}
 		}
 		public void Initialize(Vector3 startPos, Vector3 targetPos, float flySpeed)
@@ -71,10 +71,9 @@ namespace Game.Gameplay.DodgeGame
 		}
 
 		/// <summary>
-		/// 开始溶解动画（0.5s 内：缩放到 1.1，_Dissolve 从 0 -> 1；若击中玩家立即变红）
+		/// 开始溶解动画（0.5s 内：缩放到 1.1，_Dissolve 从 0 -> 1）颜色不在此处强制修改
 		/// </summary>
-		/// <param name="hitPlayer">是否是击中玩家触发</param>
-		public void StartDissolve(bool hitPlayer)
+		public void StartDissolve()
 		{
 			if (isDissolving) return;
 			isDissolving = true;
@@ -86,13 +85,17 @@ namespace Game.Gameplay.DodgeGame
 			}
 			var colliders = GetComponentsInChildren<Collider>();
 			foreach (var c in colliders) c.enabled = false;
-			if (hitPlayer && runtimeMaterial != null)
-			{
-				// 立即变红（尝试常用颜色属性）
-				if (runtimeMaterial.HasProperty(ColorPropId)) runtimeMaterial.SetColor(ColorPropId, Color.red);
-				if (runtimeMaterial.HasProperty(LegacyColorPropId)) runtimeMaterial.SetColor(LegacyColorPropId, Color.red);
-			}
 			StartCoroutine(DissolveRoutine());
+		}
+
+		/// <summary>
+		/// 外部设置颜色（命中/躲避等不同语义）
+		/// </summary>
+		public void SetColor(Color color)
+		{
+			if (runtimeMaterial == null) return;
+			if (runtimeMaterial.HasProperty(ColorPropId)) runtimeMaterial.SetColor(ColorPropId, color);
+			if (runtimeMaterial.HasProperty(LegacyColorPropId)) runtimeMaterial.SetColor(LegacyColorPropId, color);
 		}
 
 		IEnumerator DissolveRoutine()
