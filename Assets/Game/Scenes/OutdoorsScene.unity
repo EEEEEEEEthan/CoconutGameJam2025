@@ -9632,6 +9632,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 854320408}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &908146831
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 908146832}
+  m_Layer: 0
+  m_Name: LookHere
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &908146832
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 908146831}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1413157701435901202}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &910671238 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -6939987538847428134, guid: c2ad633fc3028624e8276ad6f9670406,
@@ -20248,6 +20279,7 @@ Transform:
   m_Children:
   - {fileID: 7438873123452369086}
   - {fileID: 7710440116359364918}
+  - {fileID: 908146832}
   m_Father: {fileID: 273971567}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1496530206534054981
@@ -26483,6 +26515,7 @@ MonoBehaviour:
   particle: {fileID: 1561113933}
   splashTrigger: {fileID: 854320408}
   finalParticle: {fileID: 87897456}
+  lookHere: {fileID: 908146832}
 --- !u!224 &7360915379602024972
 RectTransform:
   m_ObjectHideFlags: 0
