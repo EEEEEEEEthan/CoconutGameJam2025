@@ -1,4 +1,5 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 namespace Game.Gameplay.DodgeGame
 {
@@ -19,8 +20,13 @@ namespace Game.Gameplay.DodgeGame
 		Vector3 initialScale;
 		const float dissolveDuration = 0.5f; // 动画时长 0.5 秒
 		const string dissolveProperty = "_Dissolve"; // 溶解属性名
+		[Header("出现动画")] [SerializeField] float spawnScaleDuration = 0.5f; // 出生缩放时长
+		[SerializeField] float spawnScaleStartFactor = 0.2f; // 出生初始缩放比例（相对初始尺寸）
+		[SerializeField] TMP_Text text;
 		static readonly int ColorPropId = Shader.PropertyToID("_BaseColor"); // HDRP / URP Lit 常用
 		static readonly int LegacyColorPropId = Shader.PropertyToID("_Color"); // 备用
+		Coroutine spawnScaleCoroutine;
+		bool isSpawning;
 		void Awake()
 		{
 			meshRenderer = GetComponentInChildren<MeshRenderer>();
@@ -65,9 +71,13 @@ namespace Game.Gameplay.DodgeGame
 			speed = flySpeed;
 			hasPassedTarget = false;
 			isDissolving = false;
+			isSpawning = true;
+			if (spawnScaleCoroutine != null) StopCoroutine(spawnScaleCoroutine);
 			if (runtimeMaterial != null && runtimeMaterial.HasProperty(dissolveProperty))
 				runtimeMaterial.SetFloat(dissolveProperty, 0f);
-			transform.localScale = initialScale;
+			// 设置出生初始缩放并播放动画
+			transform.localScale = initialScale * spawnScaleStartFactor;
+			spawnScaleCoroutine = StartCoroutine(SpawnScaleRoutine());
 		}
 
 		/// <summary>
@@ -77,6 +87,12 @@ namespace Game.Gameplay.DodgeGame
 		{
 			if (isDissolving) return;
 			isDissolving = true;
+			// 如果仍在出生动画，停止它
+			if (isSpawning && spawnScaleCoroutine != null)
+			{
+				StopCoroutine(spawnScaleCoroutine);
+				isSpawning = false;
+			}
 			// 停止物理运动 & 禁用碰撞防止多次触发
 			if (boxRigidbody != null)
 			{
@@ -116,6 +132,24 @@ namespace Game.Gameplay.DodgeGame
 				yield return null;
 			}
 			Destroy(gameObject);
+		}
+
+		IEnumerator SpawnScaleRoutine()
+		{
+			float t = 0f;
+			Vector3 startScale = initialScale * spawnScaleStartFactor;
+			Vector3 targetScale = initialScale;
+			while (t < spawnScaleDuration)
+			{
+				// 若在生成阶段被触发溶解，则退出
+				if (isDissolving) yield break;
+				t += Time.deltaTime;
+				float normalized = Mathf.Clamp01(t / spawnScaleDuration);
+				transform.localScale = Vector3.Lerp(startScale, targetScale, normalized);
+				yield return null;
+			}
+			transform.localScale = targetScale;
+			isSpawning = false;
 		}
 	}
 }
