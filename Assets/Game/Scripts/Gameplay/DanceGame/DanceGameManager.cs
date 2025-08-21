@@ -7,9 +7,9 @@ namespace Game.Gameplay.DanceGame
 	public class DanceGameManager : MonoBehaviour
 	{
 		[SerializeField] Note3DModel note3DPrefab;
-	[SerializeField] TextAsset levelTextAsset;
-	[SerializeField] NoteDetector noteDetector;
-	[SerializeField] DanceNPC danceNPC;
+		[SerializeField] TextAsset levelTextAsset;
+		[SerializeField] NoteDetector noteDetector;
+		[SerializeField] DanceNPC danceNPC;
 		readonly Vector3 targetPosition = Vector3.zero;
 		readonly List<Note3DModel> activeNotes = new();
 		Action<(int correct, int wrong, int miss)> gameEndCallback;
@@ -42,23 +42,20 @@ namespace Game.Gameplay.DanceGame
 				return;
 			}
 			NoteDetector.OnNoteEnter += OnNoteEnterDetectionArea;
-		NoteDetector.OnNoteExit += OnNoteExitDetectionArea;
-		ParseAndGenerateNotes();
-		if (danceNPC != null)
-		{
-			var noteDataList = Parse();
-			danceNPC.Dance(noteDataList);
-		}
+			NoteDetector.OnNoteExit += OnNoteExitDetectionArea;
+			ParseAndGenerateNotes();
+			if (danceNPC != null)
+			{
+				var noteDataList = Parse();
+				danceNPC.Dance(noteDataList);
+			}
 		}
 		void OnDisable()
-	{
-		NoteDetector.OnNoteEnter -= OnNoteEnterDetectionArea;
-		NoteDetector.OnNoteExit -= OnNoteExitDetectionArea;
-		if (danceNPC != null)
 		{
-			danceNPC.StopDance();
+			NoteDetector.OnNoteEnter -= OnNoteEnterDetectionArea;
+			NoteDetector.OnNoteExit -= OnNoteExitDetectionArea;
+			if (danceNPC != null) danceNPC.StopDance();
 		}
-	}
 		public void SetGameEndCallback(Action<(int correct, int wrong, int miss)> callback) => gameEndCallback = callback;
 		List<NoteData> Parse()
 		{
@@ -74,7 +71,7 @@ namespace Game.Gameplay.DanceGame
 				{
 					var timeStr = match.Groups[1].Value;
 					var keyStr = match.Groups[2].Value;
-					if (TryParseTimeFormat(timeStr, out var time) && TryParseKeyCode(keyStr, out KeyCode keyCode))
+					if (TryParseTimeFormat(timeStr, out var time) && TryParseKeyCode(keyStr, out var keyCode))
 					{
 						var noteData = new NoteData
 						{
@@ -90,35 +87,56 @@ namespace Game.Gameplay.DanceGame
 				}
 			}
 			return noteDataList;
-	}
-	bool TryParseTimeFormat(string timeStr, out float totalSeconds)
-	{
-		totalSeconds = 0f;
-		var parts = timeStr.Split(':');
-		if (parts.Length != 2) return false;
-		if (!int.TryParse(parts[0], out var minutes)) return false;
-		if (!float.TryParse(parts[1], out var seconds)) return false;
-		totalSeconds = minutes * 60f + seconds;
-		return true;
-	}
-	bool TryParseKeyCode(string keyStr, out KeyCode keyCode)
-	{
-		keyCode = KeyCode.None;
-		switch (keyStr.ToUpper())
-		{
-			case "Q": keyCode = KeyCode.Q; return true;
-			case "W": keyCode = KeyCode.W; return true;
-			case "A": keyCode = KeyCode.A; return true;
-			case "S": keyCode = KeyCode.S; return true;
-			case "Z": keyCode = KeyCode.Z; return true;
-			case "X": keyCode = KeyCode.X; return true;
-			case "1": keyCode = KeyCode.Alpha1; return true;
-			case "2": keyCode = KeyCode.Alpha2; return true;
-			case "3": keyCode = KeyCode.Alpha3; return true;
-			case "4": keyCode = KeyCode.Alpha4; return true;
-			default: return false;
 		}
-	}
+		bool TryParseTimeFormat(string timeStr, out float totalSeconds)
+		{
+			totalSeconds = 0f;
+			var parts = timeStr.Split(':');
+			if (parts.Length != 2) return false;
+			if (!int.TryParse(parts[0], out var minutes)) return false;
+			if (!float.TryParse(parts[1], out var seconds)) return false;
+			totalSeconds = minutes * 60f + seconds;
+			return true;
+		}
+		bool TryParseKeyCode(string keyStr, out KeyCode keyCode)
+		{
+			keyCode = KeyCode.None;
+			switch (keyStr.ToUpper())
+			{
+				case "Q":
+					keyCode = KeyCode.Q;
+					return true;
+				case "W":
+					keyCode = KeyCode.W;
+					return true;
+				case "A":
+					keyCode = KeyCode.A;
+					return true;
+				case "S":
+					keyCode = KeyCode.S;
+					return true;
+				case "Z":
+					keyCode = KeyCode.Z;
+					return true;
+				case "X":
+					keyCode = KeyCode.X;
+					return true;
+				case "1":
+					keyCode = KeyCode.Alpha1;
+					return true;
+				case "2":
+					keyCode = KeyCode.Alpha2;
+					return true;
+				case "3":
+					keyCode = KeyCode.Alpha3;
+					return true;
+				case "4":
+					keyCode = KeyCode.Alpha4;
+					return true;
+				default:
+					return false;
+			}
+		}
 		void ParseAndGenerateNotes()
 		{
 			var noteDataList = Parse();
@@ -133,12 +151,12 @@ namespace Game.Gameplay.DanceGame
 			noteInstance.transform.localPosition = localStartPosition;
 			noteInstance.gameObject.name = $"Note_{noteData.key}";
 			noteInstance.Initialize(noteData, transform);
-
 			activeNotes.Add(noteInstance);
 		}
 		void DetectInput()
 		{
-			KeyCode[] keysToCheck = { KeyCode.Q, KeyCode.W, KeyCode.A, KeyCode.S, KeyCode.Z, KeyCode.X, KeyCode.Alpha1, KeyCode.Alpha2, KeyCode.Alpha3, KeyCode.Alpha4, };
+			KeyCode[] keysToCheck =
+				{ KeyCode.Q, KeyCode.W, KeyCode.A, KeyCode.S, KeyCode.Z, KeyCode.X, KeyCode.Alpha1, KeyCode.Alpha2, KeyCode.Alpha3, KeyCode.Alpha4, };
 			foreach (var key in keysToCheck)
 				if (Input.GetKeyDown(key))
 					ProcessInput(key);
@@ -162,7 +180,6 @@ namespace Game.Gameplay.DanceGame
 				TriggerWrongEvent(inputKey);
 			}
 		}
-
 		void RemoveNote(Note3DModel note, bool isHit)
 		{
 			activeNotes.Remove(note);

@@ -38,7 +38,7 @@ namespace Game.Gameplay
 			{
 				if (Input.GetKeyDown(key))
 				{
-					target.SetActive(false);
+					target.GetComponent<BackgroundHint>().Hide();
 					GameRoot.UiCamera.Hints[key].Show();
 					break;
 				}

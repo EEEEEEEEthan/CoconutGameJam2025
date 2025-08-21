@@ -9246,9 +9246,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  maxTriggerCount: 2147483647
+  maxTriggerCount: 1
   coolDownSeconds: 0.5
-  emotion: 0
+  emotion: 1
 --- !u!1 &8020305610227741344
 GameObject:
   m_ObjectHideFlags: 0

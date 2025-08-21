@@ -12,7 +12,7 @@ namespace Game.Gameplay
 	public class BackgroundHint : MonoBehaviour
 	{
 		[Header("Animation Settings")] [SerializeField]
-		private float offsetHeight = 0.5f; // 上升高度
+		private float offsetHeight = 1f; // 上升高度
 		[SerializeField] private float duration = 1f; // 动画时长
 		[SerializeField] private AnimationCurve curve = AnimationCurve.EaseInOut(0, 0, 1, 1); // 位移曲线
 
