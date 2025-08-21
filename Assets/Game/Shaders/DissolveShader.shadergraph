@@ -14,9 +14,6 @@
         },
         {
             "m_Id": "ff4f91f319d640d8b6e302c5c76eefd6"
-        },
-        {
-            "m_Id": "f50aadab1d234aacb0561629d34ba15f"
         }
     ],
     "m_Keywords": [],
@@ -1526,10 +1523,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -82.99996948242188,
-            "y": 486.0000305175781,
-            "width": 118.99996948242188,
-            "height": 33.999969482421878
+            "x": -242.0,
+            "y": -78.0,
+            "width": 119.0,
+            "height": 34.0
         }
     },
     "m_Slots": [
@@ -1978,9 +1975,6 @@
         },
         {
             "m_Id": "ff4f91f319d640d8b6e302c5c76eefd6"
-        },
-        {
-            "m_Id": "f50aadab1d234aacb0561629d34ba15f"
         }
     ]
 }
@@ -2270,34 +2264,6 @@
     "m_Value": 0.0,
     "m_DefaultValue": 0.0,
     "m_Labels": []
-}
-
-{
-    "m_SGVersion": 1,
-    "m_Type": "UnityEditor.ShaderGraph.Internal.Vector1ShaderProperty",
-    "m_ObjectId": "f50aadab1d234aacb0561629d34ba15f",
-    "m_Guid": {
-        "m_GuidSerialized": "1fa0ab54-4332-40a0-9190-ed8080756d4e"
-    },
-    "m_Name": "XOffsetMultiplier",
-    "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "XOffsetMultiplier",
-    "m_DefaultReferenceName": "_XOffsetMultiplier",
-    "m_OverrideReferenceName": "",
-    "m_GeneratePropertyBlock": true,
-    "m_UseCustomSlotLabel": false,
-    "m_CustomSlotLabel": "",
-    "m_DismissedVersion": 0,
-    "m_Precision": 0,
-    "overrideHLSLDeclaration": false,
-    "hlslDeclarationOverride": 0,
-    "m_Hidden": false,
-    "m_Value": 0.0,
-    "m_FloatType": 0,
-    "m_RangeValues": {
-        "x": 0.0,
-        "y": 1.0
-    }
 }
 
 {
