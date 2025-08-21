@@ -82,6 +82,8 @@ namespace Game.Gameplay
 		[SerializeField] SkinnedMeshRenderer skinnedMeshRenderer;
 		Coroutine _colorCoroutine; // 当前颜色渐变协程
 		int? _cachedColorPropertyId; // 缓存找到的颜色属性
+		Coroutine _dissolveCoroutine; // 当前溶解渐变协程
+		int? _cachedDissolvePropertyId; // 缓存溶解属性 ID
 		bool isInSpecialAnim;
 		public Collider PlayerPositionTrigger => playerPositionTrigger;
 		public Transform CameraTarget => cameraTarget;
@@ -164,6 +166,65 @@ namespace Game.Gameplay
 			mat.SetColor(colorPropId, target);
 			onComplete?.Invoke();
 			_colorCoroutine = null;
+		}
+		#endregion
+
+		#region Smooth Dissolve API
+		/// <summary>
+		/// 平滑设置材质溶解（默认属性名 _Dissolve）。若材质无该属性则忽略。
+		/// </summary>
+		/// <param name="target">目标溶解值（一般 0-1 之间）</param>
+		/// <param name="duration">时长(秒)，<=0 立即设置</param>
+		/// <param name="onComplete">完成回调</param>
+		/// <param name="propertyName">自定义属性名（可选，默认 _Dissolve）</param>
+		public void SmoothSetDissolve(float target, float duration, Action onComplete = null, string propertyName = "_Dissolve")
+		{
+			if (skinnedMeshRenderer == null) return;
+			var mat = skinnedMeshRenderer.sharedMaterial;
+			if (mat == null) return;
+			int propId = ResolveDissolveProperty(mat, propertyName);
+			if (propId < 0) return; // 无属性
+			target = Mathf.Clamp01(target);
+			if (duration <= 0f)
+			{
+				mat.SetFloat(propId, target);
+				onComplete?.Invoke();
+				return;
+			}
+			if (_dissolveCoroutine != null) StopCoroutine(_dissolveCoroutine);
+			_dissolveCoroutine = StartCoroutine(SmoothSetDissolveRoutine(mat, propId, target, duration, onComplete));
+		}
+
+		int ResolveDissolveProperty(Material mat, string explicitName)
+		{
+			if (!string.IsNullOrEmpty(explicitName))
+				return mat.HasProperty(explicitName) ? Shader.PropertyToID(explicitName) : -1;
+			if (_cachedDissolvePropertyId.HasValue) return _cachedDissolvePropertyId.Value;
+			string[] candidates = { "_Dissolve", "_DissolveAmount", "_Fade" };
+			foreach (var c in candidates)
+			{
+				if (mat.HasProperty(c))
+				{
+					_cachedDissolvePropertyId = Shader.PropertyToID(c);
+					return _cachedDissolvePropertyId.Value;
+				}
+			}
+			return -1;
+		}
+
+		IEnumerator SmoothSetDissolveRoutine(Material mat, int propId, float target, float duration, Action onComplete)
+		{
+			float start = mat.GetFloat(propId);
+			float t = 0f;
+			while (t < 1f)
+			{
+				t += Time.deltaTime / duration;
+				mat.SetFloat(propId, Mathf.Lerp(start, target, Mathf.Clamp01(t)));
+				yield return null;
+			}
+			mat.SetFloat(propId, target);
+			onComplete?.Invoke();
+			_dissolveCoroutine = null;
 		}
 		#endregion
 		public EmotionCode CurrentEmotion { get; private set; }
