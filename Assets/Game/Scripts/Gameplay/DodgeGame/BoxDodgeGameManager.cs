@@ -275,7 +275,7 @@ namespace Game.Gameplay.DodgeGame
 			// 躲避成功：该 box 变蓝并溶解
 			if (box != null)
 			{
-				box.SetColor(Color.blue);
+				box.SetColor(new Color(0.5f, 0.7f, 1f));
 				box.StartDissolve();
 			}
 			currentDodgeCount++;
@@ -293,7 +293,6 @@ namespace Game.Gameplay.DodgeGame
 			var boxes = UnityEngine.Object.FindObjectsByType<DodgeBox>(FindObjectsSortMode.None);
 			foreach (var b in boxes)
 			{
-				b.SetColor(Color.blue);
 				b.StartDissolve();
 			}
 			if (airWallLeft != null) airWallLeft.SetActive(false);
