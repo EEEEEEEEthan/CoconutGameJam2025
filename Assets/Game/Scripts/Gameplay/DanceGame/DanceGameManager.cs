@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using Game.Utilities.UnityTools;
 using UnityEngine;
 namespace Game.Gameplay.DanceGame
 {
@@ -10,6 +11,7 @@ namespace Game.Gameplay.DanceGame
 		[SerializeField] TextAsset levelTextAsset;
 		[SerializeField] NoteDetector noteDetector;
 		[SerializeField] DanceNPC danceNPC;
+		[SerializeField] Rigidbody[] rigidbodies;
 		readonly Vector3 targetPosition = Vector3.zero;
 		readonly List<Note3DModel> activeNotes = new();
 		Action<(int correct, int wrong, int miss)> gameEndCallback;
@@ -17,37 +19,63 @@ namespace Game.Gameplay.DanceGame
 		int wrongCount;
 		int missCount;
 		float gameStartTime;
-		void Awake()
+		async void Awake()
 		{
-			noteDetector.gameObject.SetActive(false);
-			note3DPrefab.gameObject.SetActive(false);
+			try
+			{
+				noteDetector.gameObject.SetActive(false);
+				note3DPrefab.gameObject.SetActive(false);
+			}
+			catch (Exception e)
+			{
+				Debug.LogException(e);
+			}
 		}
-		void Update() => DetectInput();
-		void OnEnable()
+		void Update()
 		{
-			GetComponent<AudioSource>().Play();
-			noteDetector.gameObject.SetActive(true);
-			gameStartTime = Time.time;
-			correctCount = 0;
-			wrongCount = 0;
-			missCount = 0;
-			if (levelTextAsset == null)
+			DetectInput();
+			foreach (var rigidobody in rigidbodies)
+				if (!rigidobody.useGravity)
+					rigidobody.AddForce(Vector3.up * 0.001f);
+		}
+		async void OnEnable()
+		{
+			try
 			{
-				Debug.LogError("Level text asset is not assigned!");
-				return;
+				GetComponent<AudioSource>().Play();
+				noteDetector.gameObject.SetActive(true);
+				gameStartTime = Time.time;
+				correctCount = 0;
+				wrongCount = 0;
+				missCount = 0;
+				if (levelTextAsset == null)
+				{
+					Debug.LogError("Level text asset is not assigned!");
+					return;
+				}
+				if (note3DPrefab == null)
+				{
+					Debug.LogError("Note3D prefab is not assigned!");
+					return;
+				}
+				NoteDetector.OnNoteEnter += OnNoteEnterDetectionArea;
+				NoteDetector.OnNoteExit += OnNoteExitDetectionArea;
+				ParseAndGenerateNotes();
+				if (danceNPC != null)
+				{
+					var noteDataList = Parse();
+					danceNPC.Dance(noteDataList);
+				}
+				await MainThreadTimerManager.Await(20);
+				foreach (var rigidobody in rigidbodies)
+				{
+					rigidobody.useGravity = false;
+					await MainThreadTimerManager.Await(1);
+				}
 			}
-			if (note3DPrefab == null)
+			catch (Exception e)
 			{
-				Debug.LogError("Note3D prefab is not assigned!");
-				return;
-			}
-			NoteDetector.OnNoteEnter += OnNoteEnterDetectionArea;
-			NoteDetector.OnNoteExit += OnNoteExitDetectionArea;
-			ParseAndGenerateNotes();
-			if (danceNPC != null)
-			{
-				var noteDataList = Parse();
-				danceNPC.Dance(noteDataList);
+				Debug.LogException(e);
 			}
 		}
 		void OnDisable()
