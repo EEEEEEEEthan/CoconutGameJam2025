@@ -80,6 +80,8 @@ namespace Game.Gameplay
 		[SerializeField, ObjectReference("PlayerPosition"),]
 		Collider playerPositionTrigger;
 		[SerializeField] SkinnedMeshRenderer skinnedMeshRenderer;
+		[SerializeField] Color hitFlashColor = Color.red; // 命中闪光颜色
+		[SerializeField, Min(0f)] float hitRecoverDuration = 0.8f; // 退回白色时间
 		Coroutine _colorCoroutine; // 当前颜色渐变协程
 		int? _cachedColorPropertyId; // 缓存找到的颜色属性
 		bool isInSpecialAnim;
@@ -166,6 +168,21 @@ namespace Game.Gameplay
 			_colorCoroutine = null;
 		}
 		#endregion
+
+		/// <summary>
+		/// 命中反馈：立即变红，然后平滑回到白色。
+		/// </summary>
+		/// <param name="flashColor">可选自定义闪光颜色</param>
+		/// <param name="recoverDuration">可选自定义恢复时长</param>
+		public void PlayHitFlash(Color? flashColor = null, float? recoverDuration = null)
+		{
+			var flash = flashColor ?? hitFlashColor;
+			var duration = recoverDuration ?? hitRecoverDuration;
+			// 先立即设为闪光色
+			SmoothSetMaterialColor(flash, 0f);
+			// 再渐变回白色
+			SmoothSetMaterialColor(Color.white, duration);
+		}
 		public EmotionCode CurrentEmotion { get; private set; }
 		public event Action<EmotionCode> OnEmotionTriggered;
 		void Update()
