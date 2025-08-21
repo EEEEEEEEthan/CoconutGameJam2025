@@ -195,8 +195,10 @@ namespace Game.Gameplay.DodgeGame
 		{
 			if (boy == null || girl == null) yield break;
 			yield return new WaitForSeconds(1);
-			GameRoot.CameraController.LookAt(look2, 14f);
-			yield return new WaitForSeconds(1);
+			GameRoot.CameraController.LookAt(look2, 13f);
+			yield return new WaitForSeconds(0.5f);
+			GameRoot.Player.SmoothSetDissolve(1, 0.2f);
+			yield return new WaitForSeconds(0.5f);
 			// 同时小跳
 			bool boyDone = false, girlDone = false;
 			boy.transform.Jump(boy.transform.position, endJumpHeight, endJumpDuration, () => boyDone = true);
@@ -229,6 +231,7 @@ namespace Game.Gameplay.DodgeGame
 			GameRoot.Player.Unlock(KeyCode.Alpha3, true);
 			GameRoot.GameCanvas.Filmic(false);
 			yield return new WaitForSeconds(1);
+			GameRoot.Player.SmoothSetDissolve(0, 0.2f);
 			GameRoot.CameraController.LookAtPlayer();
 			OnGameWon?.Invoke();
 		}

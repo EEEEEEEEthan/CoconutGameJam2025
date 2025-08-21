@@ -357,8 +357,14 @@ namespace Game.Gameplay
 					break;
 			}
 			Locked = locked;
-			if(withAnimation)
-				GameRoot.UiCamera.Hints[key].Show();
+			try
+			{
+				if (withAnimation) GameRoot.UiCamera.Hints[key].Show();
+			}
+			catch (Exception e)
+			{
+				Debug.LogException(e);
+			}
 		}
 		public void SetSpecialAnimEnd() => isInSpecialAnim = false;
 	}
