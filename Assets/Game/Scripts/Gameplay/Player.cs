@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using Game.FingerRigging;
 using Game.ResourceManagement;
 using Game.Utilities;
@@ -79,6 +80,8 @@ namespace Game.Gameplay
 		[SerializeField, ObjectReference("PlayerPosition"),]
 		Collider playerPositionTrigger;
 		[SerializeField] SkinnedMeshRenderer skinnedMeshRenderer;
+		Coroutine _colorCoroutine; // 当前颜色渐变协程
+		int? _cachedColorPropertyId; // 缓存找到的颜色属性
 		bool isInSpecialAnim;
 		public Collider PlayerPositionTrigger => playerPositionTrigger;
 		public Transform CameraTarget => cameraTarget;
@@ -98,6 +101,71 @@ namespace Game.Gameplay
 		{
 			skinnedMeshRenderer.sharedMaterial = new(skinnedMeshRenderer.sharedMaterial);
 		}
+
+		#region Smooth Material Color API
+		/// <summary>
+		/// 平滑设置角色材质颜色。默认尝试 _BaseColor (URP/HDRP) -> _Color (标准/旧材质)。
+		/// </summary>
+		/// <param name="target">目标颜色</param>
+		/// <param name="duration">渐变时长(秒)。<=0 将立即设置。</param>
+		/// <param name="onComplete">完成回调</param>
+		/// <param name="propertyName">指定颜色属性(可选)。为空则自动匹配。</param>
+		public void SmoothSetMaterialColor(Color target, float duration, Action onComplete = null, string propertyName = null)
+		{
+			if (skinnedMeshRenderer == null) return;
+			Material mat = skinnedMeshRenderer.sharedMaterial;
+			if (mat == null) return;
+
+			// 确定颜色属性 ID
+			int colorPropId = ResolveColorProperty(mat, propertyName);
+			if (colorPropId < 0) return; // 找不到属性
+
+			if (duration <= 0f)
+			{
+				mat.SetColor(colorPropId, target);
+				onComplete?.Invoke();
+				return;
+			}
+
+			if (_colorCoroutine != null) StopCoroutine(_colorCoroutine);
+			_colorCoroutine = StartCoroutine(SmoothSetMaterialColorRoutine(mat, colorPropId, target, duration, onComplete));
+		}
+
+		int ResolveColorProperty(Material mat, string explicitName)
+		{
+			if (explicitName != null)
+				return mat.HasProperty(explicitName) ? Shader.PropertyToID(explicitName) : -1;
+
+			if (_cachedColorPropertyId.HasValue)
+				return _cachedColorPropertyId.Value;
+
+			string[] candidates = { "_BaseColor", "_Color", "_Tint", "_MainColor" };
+			foreach (var c in candidates)
+			{
+				if (mat.HasProperty(c))
+				{
+					_cachedColorPropertyId = Shader.PropertyToID(c);
+					return _cachedColorPropertyId.Value;
+				}
+			}
+			return -1;
+		}
+
+		IEnumerator SmoothSetMaterialColorRoutine(Material mat, int colorPropId, Color target, float duration, Action onComplete)
+		{
+			Color start = mat.GetColor(colorPropId);
+			float t = 0f;
+			while (t < 1f)
+			{
+				t += Time.deltaTime / duration;
+				mat.SetColor(colorPropId, Color.LerpUnclamped(start, target, Mathf.Clamp01(t)));
+				yield return null;
+			}
+			mat.SetColor(colorPropId, target);
+			onComplete?.Invoke();
+			_colorCoroutine = null;
+		}
+		#endregion
 		public EmotionCode CurrentEmotion { get; private set; }
 		public event Action<EmotionCode> OnEmotionTriggered;
 		void Update()
