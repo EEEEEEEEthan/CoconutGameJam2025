@@ -26,6 +26,7 @@ namespace Game.Gameplay.Hints
 			originalSharedMaterial = sprite != null ? sprite.sharedMaterial : null;
 			hook.transform.localPosition = new(0, 5, 0);
 		}
+		/*
 		void Update()
 		{
 			cameraControllerVelocityCalculator = GameRoot.CameraController.VelocityCalculator;
@@ -36,6 +37,7 @@ namespace Game.Gameplay.Hints
 					if (!float.IsInfinity(force.x) && !float.IsInfinity(force.y) && !float.IsInfinity(force.z))
 						stuff.AddForce(force);
 		}
+		*/
 		public void Initialize(KeyCode key) => this.key = key;
 		public void Show()
 		{

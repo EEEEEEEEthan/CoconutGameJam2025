@@ -351,8 +351,8 @@ Rigidbody:
   m_GameObject: {fileID: 6720965651756078913}
   serializedVersion: 4
   m_Mass: 1
-  m_Drag: 0.1
-  m_AngularDrag: 0.1
+  m_Drag: 1
+  m_AngularDrag: 1
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -407,7 +407,7 @@ CharacterJoint:
   m_SwingAxis: {x: 0, y: 0, z: 1}
   m_TwistLimitSpring:
     spring: 0
-    damper: 1
+    damper: 0
   m_LowTwistLimit:
     limit: -10
     bounciness: 0
@@ -418,7 +418,7 @@ CharacterJoint:
     contactDistance: 0
   m_SwingLimitSpring:
     spring: 0
-    damper: 1
+    damper: 0
   m_Swing1Limit:
     limit: 45
     bounciness: 0
