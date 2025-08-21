@@ -6,11 +6,11 @@ namespace Game.Gameplay.WaterGame
 {
 	public class SplashTrigger : GameBehaviour
 	{
+		[SerializeField] GameObject overrideSplashPrefab;
 		void OnCollisionEnter(Collision other) => HandleSplash(other, true);
 		void OnCollisionExit(Collision other) => HandleSplash(other, false);
 		void HandleSplash(Collision other, bool isEnter)
 		{
-			
 			var velocity = other.relativeVelocity;
 			if (velocity == default)
 			{
@@ -24,10 +24,12 @@ namespace Game.Gameplay.WaterGame
 				other.GetContacts(contactPoints);
 				var direction = isEnter ? Vector3.Reflect(velocity.normalized, Vector3.up) : velocity.normalized;
 				var speed = velocity.magnitude;
+				var rotation = overrideSplashPrefab ? Quaternion.identity : Quaternion.LookRotation(direction);
+				var prefab = overrideSplashPrefab ? overrideSplashPrefab : ResourceTable.splashPrefab.Main;
 				if (contactPoints.Count <= 0)
 				{
 					var point = other.collider.ClosestPoint(other.transform.position.WithY(transform.position.y));
-					var gameObject = Instantiate(ResourceTable.splashPrefab.Main, point - direction * 0.01f, Quaternion.LookRotation(direction));
+					var gameObject = Instantiate(prefab, point - direction * 0.01f, rotation);
 					var particleSystem = gameObject.GetComponent<ParticleSystem>();
 					var emission = particleSystem.emission;
 					emission.rateOverTime = speed.Remapped(0, 0.5f, 100, 1000).Clamped(100, 1000);
@@ -35,7 +37,7 @@ namespace Game.Gameplay.WaterGame
 				}
 				foreach (var point in contactPoints)
 				{
-					var gameObject = Instantiate(ResourceTable.splashPrefab.Main, point.point - direction * 0.01f, Quaternion.LookRotation(direction));
+					var gameObject = Instantiate(prefab, point.point - direction * 0.01f, rotation);
 					var particleSystem = gameObject.GetComponent<ParticleSystem>();
 					var emission = particleSystem.emission;
 					emission.rateOverTime = speed.Remapped(0, 0.5f, 100, 1000).Clamped(100, 1000);
