@@ -78,6 +78,7 @@ namespace Game.Gameplay
 		Transform cameraTarget;
 		[SerializeField, ObjectReference("PlayerPosition"),]
 		Collider playerPositionTrigger;
+		[SerializeField] SkinnedMeshRenderer skinnedMeshRenderer;
 		bool isInSpecialAnim;
 		public Collider PlayerPositionTrigger => playerPositionTrigger;
 		public Transform CameraTarget => cameraTarget;
@@ -92,6 +93,10 @@ namespace Game.Gameplay
 		{
 			get => locked;
 			set => locked = value;
+		}
+		void Awake()
+		{
+			skinnedMeshRenderer.sharedMaterial = new(skinnedMeshRenderer.sharedMaterial);
 		}
 		public EmotionCode CurrentEmotion { get; private set; }
 		public event Action<EmotionCode> OnEmotionTriggered;

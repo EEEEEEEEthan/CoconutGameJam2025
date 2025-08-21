@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 5505.4263, g: 3937.3872, b: 4065.938, a: 1}
+  m_IndirectSpecularColor: {r: 5505.473, g: 3937.3716, b: 4065.8364, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -7077,6 +7077,11 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: -0.001
       objectReference: {fileID: 0}
+    - target: {fileID: -2907235518691272399, guid: 0012203b2cb5c75478b929172260fc3b,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.0029
+      objectReference: {fileID: 0}
     - target: {fileID: -2884639134055194704, guid: 0012203b2cb5c75478b929172260fc3b,
         type: 3}
       propertyPath: m_IsActive
@@ -11352,6 +11357,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: ChildGameplay
       objectReference: {fileID: 0}
+    - target: {fileID: 6911119648781635361, guid: 51854f5282855ab4e8ceef559c60234e,
+        type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 8cc4d9cd194390e41a42b539345dd4e7, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
