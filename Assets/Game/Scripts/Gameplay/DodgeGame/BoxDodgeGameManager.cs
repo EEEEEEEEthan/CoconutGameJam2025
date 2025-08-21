@@ -255,6 +255,8 @@ namespace Game.Gameplay.DodgeGame
 				var p = GameRoot.Player;
 				p.SmoothSetMaterialColor(Color.red, 0f, () => p.SmoothSetMaterialColor(Color.white, hitColorRecoverDuration));
 			}
+			// 屏幕震动
+			GameRoot.CameraController?.Shake(0.25f);
 			Debug.Log("[BoxDodgeGameManager] 玩家被Box击中！游戏失败，重置计数");
 			currentDodgeCount = 0;
 			OnDodgeCountChanged?.Invoke(currentDodgeCount, requiredDodgeCount);
