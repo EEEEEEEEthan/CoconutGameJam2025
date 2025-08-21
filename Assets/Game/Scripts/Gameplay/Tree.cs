@@ -8,8 +8,8 @@ namespace Game.Gameplay
 	{
 		[SerializeField] float greetRadius = 0.2f; // 范围
 		[Header("Shake Settings")] 
-		[SerializeField] float shakeDuration = 0.5f; // 持续时间
-		[SerializeField] float shakeAngle = 2f; // 最大角度 ±2°
+		[SerializeField] float shakeDuration = 1; // 持续时间
+		[SerializeField] float shakeAngle = 3f; // 最大角度 ±2°
 		[SerializeField] int shakeCycles = 8; // 震动循环次数（越大越快）
 
 		Coroutine shakeRoutine;
