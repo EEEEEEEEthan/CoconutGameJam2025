@@ -86,7 +86,7 @@ namespace Game.Gameplay.DanceGame
 		{
 			switch (keyCode)
 			{
-				case KeyCode.X:
+				case KeyCode.W:
 					animator.SetBool(Player.AnimatorHashes.walkLeft, true);
 					animator.SetBool(Player.AnimatorHashes.standLeft, false);
 					handIkInput.LeftLeg = LegPoseCode.LiftForward;
@@ -98,13 +98,13 @@ namespace Game.Gameplay.DanceGame
 					handIkInput.LeftLeg = LegPoseCode.LiftUp;
 					handIkInput.RightLeg = LegPoseCode.Idle;
 					break;
-				case KeyCode.W:
+				case KeyCode.X:
 					animator.SetBool(Player.AnimatorHashes.walkLeft, false);
 					animator.SetBool(Player.AnimatorHashes.standLeft, false);
 					handIkInput.LeftLeg = LegPoseCode.LiftBackward;
 					handIkInput.RightLeg = LegPoseCode.Idle;
 					break;
-				case KeyCode.Q:
+				case KeyCode.Z:
 					animator.SetBool(Player.AnimatorHashes.walkRight, true);
 					animator.SetBool(Player.AnimatorHashes.standRight, false);
 					handIkInput.LeftLeg = LegPoseCode.Idle;
@@ -116,7 +116,7 @@ namespace Game.Gameplay.DanceGame
 					handIkInput.LeftLeg = LegPoseCode.Idle;
 					handIkInput.RightLeg = LegPoseCode.LiftUp;
 					break;
-				case KeyCode.Z:
+				case KeyCode.Q:
 					animator.SetBool(Player.AnimatorHashes.walkRight, false);
 					animator.SetBool(Player.AnimatorHashes.standRight, false);
 					handIkInput.LeftLeg = LegPoseCode.Idle;
