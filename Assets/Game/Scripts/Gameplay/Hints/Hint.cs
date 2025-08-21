@@ -71,7 +71,7 @@ namespace Game.Gameplay.Hints
 				colorBlinkCoroutine = null;
 			}
 			SetMaterialColor(Color.white);
-			StartCoroutine(hide());
+			if (isActiveAndEnabled) StartCoroutine(hide());
 			IEnumerator hide()
 			{
 				var velocity = Vector3.zero;
@@ -103,7 +103,7 @@ namespace Game.Gameplay.Hints
 		{
 			if (materialCloned || sprite == null) return;
 			// 克隆 sharedMaterial 避免影响别的对象
-			sprite.sharedMaterial = new Material(sprite.sharedMaterial);
+			sprite.sharedMaterial = new(sprite.sharedMaterial);
 			materialCloned = true;
 		}
 		void SetMaterialColor(Color c)
@@ -111,8 +111,7 @@ namespace Game.Gameplay.Hints
 			if (sprite == null) return;
 			EnsureMaterialInstance();
 			// 修改实例材质的颜色 (如果 shader 使用 _Color)
-			if (sprite.sharedMaterial.HasProperty("_Color"))
-				sprite.sharedMaterial.color = c;
+			if (sprite.sharedMaterial.HasProperty("_Color")) sprite.sharedMaterial.color = c;
 		}
 	}
 }
