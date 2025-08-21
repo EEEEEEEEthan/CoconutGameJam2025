@@ -22,6 +22,7 @@ namespace Game.Gameplay.DodgeGame
 		const string dissolveProperty = "_Dissolve"; // 溶解属性名
 		[Header("出现动画")] [SerializeField] float spawnScaleDuration = 0.5f; // 出生缩放时长
 		[SerializeField] float spawnScaleStartFactor = 0.2f; // 出生初始缩放比例（相对初始尺寸）
+		[SerializeField] AnimationCurve spawnScaleCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f); // 缩放插值曲线（0-1 输入 -> 0-1 输出）
 		[SerializeField] TMP_Text text;
 		static readonly int ColorPropId = Shader.PropertyToID("_BaseColor"); // HDRP / URP Lit 常用
 		static readonly int LegacyColorPropId = Shader.PropertyToID("_Color"); // 备用
@@ -144,8 +145,9 @@ namespace Game.Gameplay.DodgeGame
 				// 若在生成阶段被触发溶解，则退出
 				if (isDissolving) yield break;
 				t += Time.deltaTime;
-				float normalized = Mathf.Clamp01(t / spawnScaleDuration);
-				transform.localScale = Vector3.Lerp(startScale, targetScale, normalized);
+				float linear = Mathf.Clamp01(t / spawnScaleDuration);
+				float curveValue = spawnScaleCurve != null ? Mathf.Clamp01(spawnScaleCurve.Evaluate(linear)) : linear;
+				transform.localScale = Vector3.LerpUnclamped(startScale, targetScale, curveValue);
 				yield return null;
 			}
 			transform.localScale = targetScale;
