@@ -5536,6 +5536,7 @@ MonoBehaviour:
   endRotateDuration: 0.6
   launchAnimDelay: 0.3
   jumpToRotateDelay: 0.05
+  hitColorRecoverDuration: 0.3
   startJumpHeight: 0.08
   startJumpDuration: 0.25
   endJumpHeight: 0.08

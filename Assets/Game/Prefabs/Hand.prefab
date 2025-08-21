@@ -907,8 +907,6 @@ MonoBehaviour:
   cameraTarget: {fileID: 3100051313230109323}
   playerPositionTrigger: {fileID: 3114111872261162627}
   skinnedMeshRenderer: {fileID: 7412771417583754733}
-  hitFlashColor: {r: 1, g: 0, b: 0, a: 1}
-  hitRecoverDuration: 0.8
 --- !u!54 &3449393323187953509
 Rigidbody:
   m_ObjectHideFlags: 0
