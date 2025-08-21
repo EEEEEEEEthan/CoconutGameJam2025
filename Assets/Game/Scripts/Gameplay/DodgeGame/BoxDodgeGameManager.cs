@@ -245,7 +245,7 @@ namespace Game.Gameplay.DodgeGame
 			var dodgeBox = boxObj.GetComponent<DodgeBox>();
 			if (dodgeBox != null)
 			{
-				dodgeBox.Initialize(launcherTransform.position + Vector3.up * 0.1f, targetPos, dodgeBox.speed);
+				dodgeBox.Initialize(launcherTransform.position + Vector3.up * 0.1f, dodgeBox.speed);
 				if (GameRoot.Player != null && GameRoot.Player.PlayerPositionTrigger != null)
 					dodgeBox.playerLayer = 1 << GameRoot.Player.PlayerPositionTrigger.gameObject.layer;
 			}
