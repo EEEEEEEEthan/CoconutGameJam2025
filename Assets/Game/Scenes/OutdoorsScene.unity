@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 1802.0159, g: 1994.012, b: 2930.2502, a: 1}
+  m_IndirectSpecularColor: {r: 4053.2192, g: 3041.5862, b: 3308.352, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -19732,7 +19732,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meshRenderer: {fileID: 564670979938018214}
-  highlightColor: {r: 1, g: 0, b: 0, a: 1}
   boardPrefab: {fileID: 0}
 --- !u!224 &5455143803544861238
 RectTransform:
@@ -21406,7 +21405,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0.01}
-  m_LocalScale: {x: 0.08, y: 0.08, z: 0.08}
+  m_LocalScale: {x: 0.07, y: 0.07, z: 0.07}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1561113931}
