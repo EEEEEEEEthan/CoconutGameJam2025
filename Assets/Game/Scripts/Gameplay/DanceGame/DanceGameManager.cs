@@ -66,6 +66,8 @@ namespace Game.Gameplay.DanceGame
 		{
 			try
 			{
+				// 开局隐藏所有提示
+				HideAllHintsAtStart();
 				GetComponent<AudioSource>().Play();
 				noteDetector.gameObject.SetActive(true);
 				// 确保 player 引用存在（若未在 Inspector 赋值，则尝试自动查找）
@@ -139,12 +141,12 @@ namespace Game.Gameplay.DanceGame
 				{
 					var timeStr = match.Groups[1].Value;
 					var keyStr = match.Groups[2].Value;
-					if (TryParseTimeFormat(timeStr, out var time) && TryParseKeyCode(keyStr, out var keyCode))
+					if (TryParseTimeFormat(timeStr, out var time) && TryParseKeyCode(keyStr, out var key))
 					{
 						var noteData = new NoteData
 						{
 							time = time,
-							key = keyCode,
+							key = key,
 						};
 						noteDataList.Add(noteData);
 					}
@@ -166,40 +168,40 @@ namespace Game.Gameplay.DanceGame
 			totalSeconds = minutes * 60f + seconds;
 			return true;
 		}
-		bool TryParseKeyCode(string keyStr, out KeyCode keyCode)
+		bool TryParseKeyCode(string keyStr, out KeyCode key)
 		{
-			keyCode = KeyCode.None;
+			key = KeyCode.None;
 			switch (keyStr.ToUpper())
 			{
 				case "Q":
-					keyCode = KeyCode.Q;
+					key = KeyCode.Q;
 					return true;
 				case "W":
-					keyCode = KeyCode.W;
+					key = KeyCode.W;
 					return true;
 				case "A":
-					keyCode = KeyCode.A;
+					key = KeyCode.A;
 					return true;
 				case "S":
-					keyCode = KeyCode.S;
+					key = KeyCode.S;
 					return true;
 				case "Z":
-					keyCode = KeyCode.Z;
+					key = KeyCode.Z;
 					return true;
 				case "X":
-					keyCode = KeyCode.X;
+					key = KeyCode.X;
 					return true;
 				case "1":
-					keyCode = KeyCode.Alpha1;
+					key = KeyCode.Alpha1;
 					return true;
 				case "2":
-					keyCode = KeyCode.Alpha2;
+					key = KeyCode.Alpha2;
 					return true;
 				case "3":
-					keyCode = KeyCode.Alpha3;
+					key = KeyCode.Alpha3;
 					return true;
 				case "4":
-					keyCode = KeyCode.Alpha4;
+					key = KeyCode.Alpha4;
 					return true;
 				default:
 					return false;
@@ -349,7 +351,7 @@ namespace Game.Gameplay.DanceGame
 		}
 		/// <summary>
 		/// 平滑设置背景材质的 _Dissolve 参数。
-		/// 如果 duration <= 0 则立即设置。
+		/// 如果 duration 小于等于 0 则立即设置。
 		/// </summary>
 		/// <param name="targetValue">目标值 (通常 0~1)</param>
 		/// <param name="duration">过渡时长（秒）</param>
@@ -387,5 +389,38 @@ namespace Game.Gameplay.DanceGame
 			mat.SetFloat(propId, target);
 			dissolveCoroutine = null;
 		}
-	}
+		void HideAllHintsAtStart()
+	{
+		try
+		{
+#if UNITY_2023_1_OR_NEWER
+			var root = UnityEngine.Object.FindFirstObjectByType<GameRoot>();
+#else
+			var root = UnityEngine.Object.FindObjectOfType<GameRoot>();
+#endif
+			if (root != null && root.UiCamera != null)
+			{
+				// 隐藏所有 UI 提示（包含 Q/W/A/S/Z/X 以及 1/2/3/4 等）
+				var dict = root.UiCamera.Hints;
+				if (dict != null)
+					foreach (var kv in dict)
+						if (kv.Value != null)
+							kv.Value.Hide();
+			}
+			// 隐藏场景中的背景提示（如果有）
+#if UNITY_2023_1_OR_NEWER
+			var bgHints = UnityEngine.Object.FindObjectsByType<BackgroundHint>(FindObjectsSortMode.None);
+#else
+			var bgHints = UnityEngine.Object.FindObjectsOfType<BackgroundHint>();
+#endif
+			foreach (var h in bgHints)
+				if (h != null && h.isActiveAndEnabled)
+					h.Hide();
+		}
+		catch (Exception e)
+		{
+			Debug.LogException(e);
+		}
+}
+}
 }
