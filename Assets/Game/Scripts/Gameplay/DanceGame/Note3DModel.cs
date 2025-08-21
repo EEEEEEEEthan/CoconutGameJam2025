@@ -33,12 +33,16 @@ namespace Game.Gameplay.DanceGame
 			gameStartTime = Time.time;
 			var texture = noteData.key switch
 			{
-				KeyCode.A => ResourceTable.aPng.Main,
-				KeyCode.S => ResourceTable.sPng.Main,
-				KeyCode.W => ResourceTable.wPng.Main,
-				KeyCode.Q => ResourceTable.qPng.Main,
-				KeyCode.X => ResourceTable.xPng.Main,
-				KeyCode.Z => ResourceTable.zPng.Main,
+				KeyCode.A => ResourceTable.aPng1.Main,
+				KeyCode.S => ResourceTable.sPng1.Main,
+				KeyCode.W => ResourceTable.wPng1.Main,
+				KeyCode.Q => ResourceTable.qPng1.Main,
+				KeyCode.X => ResourceTable.xPng1.Main,
+				KeyCode.Z => ResourceTable.zPng1.Main,
+				KeyCode.Alpha1 => ResourceTable.hiPng1.Main,
+				KeyCode.Alpha2 => ResourceTable.surprisePng1.Main,
+				KeyCode.Alpha3 => ResourceTable.shyPng1.Main,
+				KeyCode.Alpha4 => ResourceTable.angryPng1.Main,
 				_ => null,
 			};
 			if (texture != null)

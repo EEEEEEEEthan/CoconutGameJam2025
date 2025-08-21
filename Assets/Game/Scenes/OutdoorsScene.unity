@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 4056.103, g: 3045.1213, b: 3315.942, a: 1}
+  m_IndirectSpecularColor: {r: 4053.2036, g: 3041.5862, b: 3308.4028, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -7631,6 +7631,12 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 450307689}
   m_PrefabAsset: {fileID: 0}
+--- !u!23 &1630064415 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 6335128493492075330, guid: c2ad633fc3028624e8276ad6f9670406,
+    type: 3}
+  m_PrefabInstance: {fileID: 450307689}
+  m_PrefabAsset: {fileID: 0}
 --- !u!64 &1630064417
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -8559,8 +8565,8 @@ Transform:
   m_GameObject: {fileID: 1805998069}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: -0.0416}
-  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
+  m_LocalPosition: {x: 0, y: 0.0158, z: 0.0768}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 0.01}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 788155594}
@@ -16351,6 +16357,8 @@ MonoBehaviour:
   unimportant:
   - {fileID: 338625823}
   unimportantMoveSpeed: 0.01
+  backgroundMeshRenderer: {fileID: 1630064415}
+  dissolvePropertyName: _Dissolve
 --- !u!224 &7360915379602024972
 RectTransform:
   m_ObjectHideFlags: 0

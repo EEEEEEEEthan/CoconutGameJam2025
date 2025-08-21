@@ -15,6 +15,9 @@ namespace Game.Gameplay.DanceGame
 		[SerializeField] Transform[] unimportant;
 		[SerializeField] float unimportantMoveSpeed = 0.01f; // units per second to move left
 		[SerializeField] MeshRenderer backgroundMeshRenderer; // 背景网格渲染器
+		[SerializeField] string dissolvePropertyName = "_Dissolve"; // 材质溶解属性名
+		Coroutine dissolveCoroutine; // 当前溶解协程
+		static readonly int DissolveID = Shader.PropertyToID("_Dissolve");
 		readonly Vector3 targetPosition = Vector3.zero;
 		readonly List<Note3DModel> activeNotes = new();
 		Action<(int correct, int wrong, int miss)> gameEndCallback;
@@ -80,7 +83,9 @@ namespace Game.Gameplay.DanceGame
 					var noteDataList = Parse();
 					danceNPC.Dance(noteDataList);
 				}
-				await MainThreadTimerManager.Await(20);
+				await MainThreadTimerManager.Await(10);
+				SmoothSetDissolve(1, 30f);
+				await MainThreadTimerManager.Await(10);
 				foreach (var rigidobody in rigidbodies)
 				{
 					rigidobody.useGravity = false;
@@ -258,6 +263,46 @@ namespace Game.Gameplay.DanceGame
 		{
 			Debug.Log($"Game End! Correct: {correctCount}, Wrong: {wrongCount}, Miss: {missCount}");
 			gameEndCallback?.Invoke((correctCount, wrongCount, missCount));
+		}
+		/// <summary>
+		/// 平滑设置背景材质的 _Dissolve 参数。
+		/// 如果 duration <= 0 则立即设置。
+		/// </summary>
+		/// <param name="targetValue">目标值 (通常 0~1)</param>
+		/// <param name="duration">过渡时长（秒）</param>
+		public void SmoothSetDissolve(float targetValue, float duration)
+		{
+			if (backgroundMeshRenderer == null) return;
+			var mat = backgroundMeshRenderer.material; // 实例材质
+			if (mat == null) return;
+			// 兼容自定义属性名
+			var propId = dissolvePropertyName == "_Dissolve" ? DissolveID : Shader.PropertyToID(dissolvePropertyName);
+			if (!mat.HasProperty(propId))
+			{
+				Debug.LogWarning($"材质上不存在属性 {dissolvePropertyName}");
+				return;
+			}
+			if (dissolveCoroutine != null) StopCoroutine(dissolveCoroutine);
+			if (duration <= 0f)
+			{
+				mat.SetFloat(propId, targetValue);
+				return;
+			}
+			dissolveCoroutine = StartCoroutine(DissolveRoutine(mat, propId, targetValue, duration));
+		}
+		System.Collections.IEnumerator DissolveRoutine(Material mat, int propId, float target, float duration)
+		{
+			float start = mat.GetFloat(propId);
+			float elapsed = 0f;
+			while (elapsed < duration)
+			{
+				elapsed += Time.deltaTime;
+				float t = Mathf.Clamp01(elapsed / duration);
+				mat.SetFloat(propId, Mathf.Lerp(start, target, t));
+				yield return null;
+			}
+			mat.SetFloat(propId, target);
+			dissolveCoroutine = null;
 		}
 	}
 }
