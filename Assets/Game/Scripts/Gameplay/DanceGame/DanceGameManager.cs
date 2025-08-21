@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Game.FingerRigging;
 using Game.Utilities;
+using Game.Utilities.Smoothing;
 using Game.Utilities.UnityTools;
 using UnityEngine;
 // For Player
@@ -26,6 +27,7 @@ namespace Game.Gameplay.DanceGame
 		[SerializeField] GameObject splashTrigger;
 		[SerializeField] ParticleSystem finalParticle;
 		[SerializeField] Transform lookHere;
+		[SerializeField] GameObject endScreen;
 		readonly Vector3 targetPosition = Vector3.zero;
 		readonly List<Note3DModel> activeNotes = new();
 		Coroutine dissolveCoroutine; // 当前溶解协程
@@ -70,6 +72,7 @@ namespace Game.Gameplay.DanceGame
 		{
 			try
 			{
+				PlayEndScreen();
 				lookHere.transform.position = (GameRoot.Player.transform.position + danceNPC.transform.position) * 0.5f + Vector3.up * 0.1f;
 				GameRoot.CameraController.LookAt(lookHere, 15f);
 				// 开局隐藏所有提示
@@ -158,6 +161,22 @@ namespace Game.Gameplay.DanceGame
 				return;
 			}
 			dissolveCoroutine = StartCoroutine(DissolveRoutine(mat, propId, targetValue, duration));
+		}
+		async void PlayEndScreen()
+		{
+			try
+			{
+				await MainThreadTimerManager.Await(60 + 39);
+				endScreen.SetActive(true);
+				var canvasGroup = endScreen.GetComponent<CanvasGroup>();
+				canvasGroup.alpha = 0;
+				var smooth = new DampSmoothing(0, v => canvasGroup.alpha = v);
+				smooth.Set(1, 1f);
+			}
+			catch (Exception e)
+			{
+				Debug.LogException(e);
+			}
 		}
 		List<NoteData> Parse()
 		{
