@@ -55,9 +55,7 @@ namespace Game.Gameplay
 				float p = Mathf.Clamp01(elapsed / duration);
 				// 衰减 (1-p)，正弦往返震动
 				float angle = maxAngle * (1f - p) * Mathf.Sin(p * cycles * Mathf.PI * 2f);
-				Vector3 e = startRot.eulerAngles;
-				e.z = startRot.eulerAngles.z + angle;
-				transform.localRotation = Quaternion.Euler(e);
+				transform.localEulerAngles = new Vector3(0, 0, angle);
 				yield return null;
 			}
 			transform.localRotation = startRot; // 复位
