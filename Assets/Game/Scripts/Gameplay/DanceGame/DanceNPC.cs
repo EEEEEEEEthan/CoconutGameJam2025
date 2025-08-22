@@ -25,6 +25,8 @@ namespace Game.Gameplay.DanceGame
 			handIkInput.RightLeg = LegPoseCode.LiftUp;
 			yield return new WaitForSeconds(0.5f);
 			handIkInput.RightLeg = LegPoseCode.Idle;
+			yield return new WaitForSeconds(0.5f);
+			handIkInput.SetWeight(0, 0);
 		}
 		void Update() => transform.position = transform.position.WithZ(0);
 		void OnDisable() => StopDance();
@@ -42,6 +44,8 @@ namespace Game.Gameplay.DanceGame
 				return;
 			}
 			danceCoroutine = StartCoroutine(DanceCoroutine(noteDataList));
+			handIkInput.SetWeight(1, 1);
+			animator.SetTrigger("Stand");
 		}
 		public void StopDance()
 		{
