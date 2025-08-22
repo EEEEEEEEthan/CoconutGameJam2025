@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 namespace Game.Gameplay.DodgeGame
 {
-	public class DodgeBox : MonoBehaviour
+	public class DodgeBox : GameBehaviour
 	{
 		const float dissolveDuration = 0.5f; // 动画时长 0.5 秒
 		const string dissolveProperty = "_Dissolve"; // 溶解属性名
@@ -162,7 +162,7 @@ namespace Game.Gameplay.DodgeGame
 			// 改为朝向玩家当前位置（向上偏移 0.1f），不再使用传入的随机目标点。
 			// 若未能找到玩家，则回退到传入的 targetPos（保持兼容）。
 			// Unity 2023+: 使用 FindFirstObjectByType；若不可用可回退到 (已弃用) 的旧 API（编译期符号区分）。
-			var player = FindFirstObjectByType<Player>();
+			var player = GameRoot.Player;
 			targetPosition = player.transform.position + Vector3.up * 0.05f;
 			speed = flySpeed;
 			hasPassedTarget = false;
