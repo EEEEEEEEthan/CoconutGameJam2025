@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Text;
 using System.Text.RegularExpressions;
 using Game.FingerRigging;
 using Game.Utilities;
@@ -14,7 +16,6 @@ namespace Game.Gameplay.DanceGame
 	{
 		static readonly int DissolveID = Shader.PropertyToID("_Dissolve");
 		[SerializeField] Note3DModel note3DPrefab;
-		[SerializeField] TextAsset levelTextAsset;
 		[SerializeField] NoteDetector noteDetector;
 		[SerializeField] DanceNPC danceNPC;
 		[SerializeField] Player player; // 用于监听玩家动作/表情的事件
@@ -41,6 +42,9 @@ namespace Game.Gameplay.DanceGame
 		int wrongCount;
 		int missCount;
 		float gameStartTime;
+		// 运行目录下谱面文件名
+		const string ScoreFileName = "乐谱.txt";
+
 		void Awake()
 		{
 			try
@@ -101,9 +105,10 @@ namespace Game.Gameplay.DanceGame
 				correctCount = 0;
 				wrongCount = 0;
 				missCount = 0;
-				if (levelTextAsset == null)
+				// 确认谱面文件存在
+				if (!TryGetScoreFilePath(out var scorePath) || !File.Exists(scorePath))
 				{
-					Debug.LogError("Level text asset is not assigned!");
+					Debug.LogError($"谱面文件未找到: {scorePath}");
 					return;
 				}
 				if (note3DPrefab == null)
@@ -141,8 +146,6 @@ namespace Game.Gameplay.DanceGame
 			NoteDetector.OnNoteExit -= OnNoteExitDetectionArea;
 			if (danceNPC != null) danceNPC.StopDance();
 			SubscribePlayerInputEvents(false);
-			// 退出时淡入全局BGM
-			GameRoot.FadeInBGM(1.2f);
 		}
 		public void SetGameEndCallback(Action<(int correct, int wrong, int miss)> callback) => gameEndCallback = callback;
 		/// <summary>
@@ -190,7 +193,13 @@ namespace Game.Gameplay.DanceGame
 		List<NoteData> Parse()
 		{
 			var noteDataList = new List<NoteData>();
-			var lines = levelTextAsset.text.Split('\n');
+			var text = LoadScoreText();
+			if (string.IsNullOrWhiteSpace(text))
+			{
+				Debug.LogError("谱面内容为空或加载失败。");
+				return noteDataList;
+			}
+			var lines = text.Split(new[] { "\r\n", "\n", "\r" }, StringSplitOptions.None);
 			var notePattern = new Regex(@"\[([0-9]{2}:[0-9]{2}\.[0-9]{2})\]([A-Za-z0-9]+)");
 			foreach (var line in lines)
 			{
@@ -217,6 +226,40 @@ namespace Game.Gameplay.DanceGame
 				}
 			}
 			return noteDataList;
+		}
+
+		// 加载运行目录下的谱面文本
+		string LoadScoreText()
+		{
+			try
+			{
+				if (TryGetScoreFilePath(out var path) && File.Exists(path))
+				{
+					return File.ReadAllText(path, Encoding.UTF8);
+				}
+				Debug.LogError($"未找到谱面文件: {path}");
+			}
+			catch (Exception e)
+			{
+				Debug.LogException(e);
+			}
+			return null;
+		}
+
+		// 获取运行目录下谱面文件的完整路径（Editor: 工程根目录；Player: 可执行文件同目录）
+		bool TryGetScoreFilePath(out string fullPath)
+		{
+			try
+			{
+				var runDir = Path.GetDirectoryName(Application.dataPath);
+				fullPath = Path.Combine(runDir ?? string.Empty, ScoreFileName);
+				return !string.IsNullOrEmpty(runDir);
+			}
+			catch
+			{
+				fullPath = null;
+				return false;
+			}
 		}
 		bool TryParseTimeFormat(string timeStr, out float totalSeconds)
 		{
@@ -412,8 +455,6 @@ namespace Game.Gameplay.DanceGame
 		{
 			Debug.Log($"Game End! Correct: {correctCount}, Wrong: {wrongCount}, Miss: {missCount}");
 			gameEndCallback?.Invoke((correctCount, wrongCount, missCount));
-			// 游戏结束也尝试淡入BGM（防止某些情况下未触发OnDisable）
-			GameRoot.FadeInBGM(1.2f);
 		}
 		System.Collections.IEnumerator DissolveRoutine(Material mat, int propId, float target, float duration)
 		{

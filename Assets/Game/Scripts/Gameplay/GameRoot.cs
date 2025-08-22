@@ -45,7 +45,6 @@ namespace Game.Gameplay
 		public CameraController CameraController => cameraController;
 		public Player Player => player;
 		public void FadeOutBGM(float duration) => FadeBGMTo(0f, duration);
-		public void FadeInBGM(float duration) => FadeBGMTo(bgmDefaultVolume, duration);
 		void FadeBGMTo(float targetVolume, float duration)
 		{
 			if (bgm == null) return;
