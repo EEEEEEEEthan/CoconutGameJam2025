@@ -77,6 +77,8 @@ namespace Game.Gameplay.DanceGame
 		{
 			try
 			{
+				// 淡出全局BGM
+				GameRoot.FadeOutBGM(1.2f);
 				PlayEndScreen();
 				lookHere.transform.position = (GameRoot.Player.transform.position + danceNPC.transform.position) * 0.5f + Vector3.up * 0.1f;
 				GameRoot.CameraController.LookAt(lookHere, 15f);
@@ -139,6 +141,8 @@ namespace Game.Gameplay.DanceGame
 			NoteDetector.OnNoteExit -= OnNoteExitDetectionArea;
 			if (danceNPC != null) danceNPC.StopDance();
 			SubscribePlayerInputEvents(false);
+			// 退出时淡入全局BGM
+			GameRoot.FadeInBGM(1.2f);
 		}
 		public void SetGameEndCallback(Action<(int correct, int wrong, int miss)> callback) => gameEndCallback = callback;
 		/// <summary>
@@ -408,6 +412,8 @@ namespace Game.Gameplay.DanceGame
 		{
 			Debug.Log($"Game End! Correct: {correctCount}, Wrong: {wrongCount}, Miss: {missCount}");
 			gameEndCallback?.Invoke((correctCount, wrongCount, missCount));
+			// 游戏结束也尝试淡入BGM（防止某些情况下未触发OnDisable）
+			GameRoot.FadeInBGM(1.2f);
 		}
 		System.Collections.IEnumerator DissolveRoutine(Material mat, int propId, float target, float duration)
 		{

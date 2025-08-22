@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections;
 using Game.Utilities.Smoothing;
 using ReferenceHelper;
 using SketchPostProcess;
@@ -18,11 +19,17 @@ namespace Game.Gameplay
 		[SerializeField] Collider[] groundColliders;
 		[SerializeField] UICamera uiCamera;
 		[SerializeField] AudioSource bgm;
+		Coroutine bgmFadeCoroutine;
+		float bgmDefaultVolume = 1f;
 		bool volumeProfileCopied;
 		public UICamera UiCamera => uiCamera;
 		public IReadOnlyList<Collider> GroundColliders => groundColliders;
 		public Sunlight Sunlight => sun;
 		public GameCanvas GameCanvas => gameCanvas;
+		void Awake()
+		{
+			if (bgm != null) bgmDefaultVolume = bgm.volume;
+		}
 		public VolumeProfile VolumeProfile
 		{
 			get
@@ -37,6 +44,40 @@ namespace Game.Gameplay
 		}
 		public CameraController CameraController => cameraController;
 		public Player Player => player;
+		public void FadeOutBGM(float duration) => FadeBGMTo(0f, duration);
+		public void FadeInBGM(float duration) => FadeBGMTo(bgmDefaultVolume, duration);
+		void FadeBGMTo(float targetVolume, float duration)
+		{
+			if (bgm == null) return;
+			if (bgmFadeCoroutine != null) StopCoroutine(bgmFadeCoroutine);
+			bgmFadeCoroutine = StartCoroutine(FadeBGMToCoroutine(targetVolume, duration));
+		}
+		IEnumerator FadeBGMToCoroutine(float target, float duration)
+		{
+			if (bgm == null) yield break;
+			var start = bgm.volume;
+			if (Mathf.Approximately(start, target))
+			{
+				bgmFadeCoroutine = null;
+				yield break;
+			}
+			if (duration <= 0f)
+			{
+				bgm.volume = target;
+				bgmFadeCoroutine = null;
+				yield break;
+			}
+			var elapsed = 0f;
+			while (elapsed < duration)
+			{
+				elapsed += Time.deltaTime;
+				var t = Mathf.Clamp01(elapsed / duration);
+				bgm.volume = Mathf.Lerp(start, target, t);
+				yield return null;
+			}
+			bgm.volume = target;
+			bgmFadeCoroutine = null;
+		}
 		public void CancelSketch()
 		{
 			var volume = VolumeProfile.TryGet(typeof(SketchVolume), out VolumeComponent component) ? (SketchVolume)component : null;
