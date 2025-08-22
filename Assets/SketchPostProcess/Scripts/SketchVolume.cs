@@ -7,7 +7,6 @@ namespace SketchPostProcess
 	[Serializable, VolumeComponentMenu("Post-processing/Custom/SketchVolume"),]
 	public sealed class SketchVolume : CustomPostProcessVolumeComponent, IPostProcessComponent
 	{
-		const string shaderName = "Shader Graphs/SketchShader";
 		static readonly int MainTex = Shader.PropertyToID("_MainTex");
 		static readonly int Color0 = Shader.PropertyToID("_Color0");
 		static readonly int Color1 = Shader.PropertyToID("_Color1");
@@ -54,11 +53,7 @@ namespace SketchPostProcess
 		public override void Setup()
 		{
 			base.Setup();
-			if (Shader.Find(shaderName) != null)
-				material = new(Shader.Find(shaderName));
-			else
-				Debug.LogError(
-					$"Unable to find shader '{shaderName}'. Post Process Volume SketchVolume is unable to load.");
+			material = new(Resources.Load<Material>("SketchMaterial"));
 		}
 		public override void Render(CommandBuffer cmd, HDCamera camera, RTHandle source, RTHandle destination)
 		{

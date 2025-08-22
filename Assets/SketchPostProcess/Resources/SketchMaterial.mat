@@ -1,0 +1,63 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SketchMaterial
+  m_Shader: {fileID: -6465566751694194690, guid: e7911c9569a33b343b8f5f337d4c9344,
+    type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_cea0fb7952a5418da9f53a747a8c8ace_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: a9ab09f1e7d930648a1a0239e9bf37f0, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _BlurStrength: 5
+    - _TimeScale: 5
+    - _Weight: 1
+    m_Colors:
+    - _Color0: {r: 0, g: 0, b: 0, a: 1}
+    - _Color1: {r: 0, g: 0, b: 0, a: 1}
+    - _Color2: {r: 0, g: 0, b: 0, a: 1}
+    - _Color3: {r: 0, g: 0, b: 0, a: 1}
+    - _MinMaxScaleDensity0: {r: 0.20063287, g: 0.49367085, b: 4.2, a: 0}
+    - _MinMaxScaleDensity1: {r: 0, g: 0.6329113, b: 8, a: 2}
+    - _MinMaxScaleDensity2: {r: 0.42990506, g: 0.75949365, b: 12, a: 4}
+    - _MinMaxScaleDensity3: {r: 0.17721519, g: 0.39193037, b: 17.2, a: 8}
+    - _Seeds: {r: 1, g: 2, b: 3, a: 4}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1

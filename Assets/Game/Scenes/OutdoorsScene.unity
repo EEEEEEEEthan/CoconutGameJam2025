@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 4056.103, g: 3045.1213, b: 3315.9263, a: 1}
+  m_IndirectSpecularColor: {r: 1802.012, g: 1994.0042, b: 2930.2463, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -26743,6 +26743,10 @@ MonoBehaviour:
   finalParticle: {fileID: 87897456}
   lookHere: {fileID: 908146832}
   endScreen: {fileID: 1516515863}
+  correctPulseScale: 1.1
+  correctPulseUpTime: 0.08
+  correctPulseDownTime: 0.18
+  correctFlashDuration: 0.35
 --- !u!224 &7360915379602024972
 RectTransform:
   m_ObjectHideFlags: 0
