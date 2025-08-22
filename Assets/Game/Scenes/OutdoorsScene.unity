@@ -27404,8 +27404,8 @@ MonoBehaviour:
   lookHere: {fileID: 908146832}
   endScreen: {fileID: 1516515863}
   correctPulseScale: 1.1
-  correctPulseUpTime: 0.08
-  correctPulseDownTime: 0.18
+  correctPulseUpTime: 0.06
+  correctPulseDownTime: 0.1
   correctFlashDuration: 0.35
 --- !u!224 &7360915379602024972
 RectTransform:
