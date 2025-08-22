@@ -240,7 +240,7 @@ namespace Game.Gameplay.DodgeGame
 		{
 			if (!isGameActive) return;
 			var targetPos = CalculateTargetPosition();
-			var boxObj = Instantiate(boxPrefab, launcherTransform.position + Vector3.up * 0.1f, Quaternion.identity);
+			var boxObj = Instantiate(boxPrefab, launcherTransform.position + Vector3.up * 0.1f, Quaternion.identity, GameRoot.transform);
 			boxObj.SetActive(true);
 			var dodgeBox = boxObj.GetComponent<DodgeBox>();
 			if (dodgeBox != null)
