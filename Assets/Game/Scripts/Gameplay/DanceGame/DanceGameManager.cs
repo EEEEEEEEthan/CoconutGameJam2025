@@ -28,9 +28,14 @@ namespace Game.Gameplay.DanceGame
 		[SerializeField] ParticleSystem finalParticle;
 		[SerializeField] Transform lookHere;
 		[SerializeField] GameObject endScreen;
+		[SerializeField] float correctPulseScale = 1.1f; // 正确输入时放大比例
+		[SerializeField] float correctPulseUpTime = 0.08f; // 放大时长
+		[SerializeField] float correctPulseDownTime = 0.18f; // 回落时长
+		[SerializeField] float correctFlashDuration = 0.35f; // 颜色从高亮回到原色的时长
 		readonly Vector3 targetPosition = Vector3.zero;
 		readonly List<Note3DModel> activeNotes = new();
 		Coroutine dissolveCoroutine; // 当前溶解协程
+		Coroutine noteDetectorScaleCoroutine; // NoteDetector 缩放协程
 		Action<(int correct, int wrong, int miss)> gameEndCallback;
 		int correctCount;
 		int wrongCount;
@@ -368,6 +373,15 @@ namespace Game.Gameplay.DanceGame
 			correctCount++;
 			particle.Instantiate(particle.transform.parent).Play();
 			Debug.Log($"Correct! Key: {note.noteData.key}, Score: {correctCount}");
+			// 视觉反馈：检测器缩放脉冲 + 颜色闪烁恢复
+			if (noteDetector != null)
+			{
+				// 颜色：从红色(1,0.2,0.3)平滑回原色
+				noteDetector.SmoothFromColorToOriginal(new Color(1f, 0.2f, 0.3f), correctFlashDuration);
+				// 缩放：放大到1.1再回落
+				if (noteDetectorScaleCoroutine != null) StopCoroutine(noteDetectorScaleCoroutine);
+				noteDetectorScaleCoroutine = StartCoroutine(PulseNoteDetectorScale(correctPulseScale, correctPulseUpTime, correctPulseDownTime));
+			}
 		}
 		void TriggerWrongEvent(KeyCode inputKey)
 		{
@@ -408,6 +422,48 @@ namespace Game.Gameplay.DanceGame
 			}
 			mat.SetFloat(propId, target);
 			dissolveCoroutine = null;
+		}
+		System.Collections.IEnumerator PulseNoteDetectorScale(float peakScale, float upTime, float downTime)
+		{
+			if (noteDetector == null) yield break;
+			var t = noteDetector.transform;
+			var start = t.localScale;
+			var peak = start * peakScale;
+			// Up
+			if (upTime <= 0f)
+			{
+				t.localScale = peak;
+			}
+			else
+			{
+				float e = 0f;
+				while (e < upTime)
+				{
+					e += Time.deltaTime;
+					float p = Mathf.Clamp01(e / upTime);
+					t.localScale = Vector3.Lerp(start, peak, p);
+					yield return null;
+				}
+				t.localScale = peak;
+			}
+			// Down
+			if (downTime <= 0f)
+			{
+				t.localScale = start;
+			}
+			else
+			{
+				float e2 = 0f;
+				while (e2 < downTime)
+				{
+					e2 += Time.deltaTime;
+					float p2 = Mathf.Clamp01(e2 / downTime);
+					t.localScale = Vector3.Lerp(peak, start, p2);
+					yield return null;
+				}
+				t.localScale = start;
+			}
+			noteDetectorScaleCoroutine = null;
 		}
 		void HideAllHintsAtStart()
 		{

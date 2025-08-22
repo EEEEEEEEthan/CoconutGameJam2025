@@ -12,9 +12,6 @@ namespace Game.Gameplay.DanceGame
 		[SerializeField] MeshRenderer boardPrefab;
 		readonly List<Note3DModel> notesInArea = new();
 		Color originalColor;
-		Vector3 originalScale;
-		Vector3 scaleVelocity;
-		[SerializeField] float scaleSmoothTime = 0.15f;
 	Coroutine colorRoutine;
 		void Awake()
 		{
@@ -22,8 +19,6 @@ namespace Game.Gameplay.DanceGame
 			if (col != null) col.isTrigger = true;
 			meshRenderer.sharedMaterial = new(meshRenderer.sharedMaterial);
 			originalColor = meshRenderer.sharedMaterial.color;
-			// 记录初始缩放
-			originalScale = transform.localScale;
 		}
 		void Update()
 		{
@@ -33,9 +28,6 @@ namespace Game.Gameplay.DanceGame
 					notesInArea.RemoveAt(i);
 					Debug.Log("Note destroyed, manually triggered exit logic", this);
 				}
-
-			// 将当前缩放平滑回初始缩放
-			transform.localScale = Vector3.SmoothDamp(transform.localScale, originalScale, ref scaleVelocity, scaleSmoothTime);
 		}
 		void OnTriggerEnter(Collider other)
 		{
@@ -60,13 +52,6 @@ namespace Game.Gameplay.DanceGame
 			}
 		}
 		public bool IsNoteInArea(Note3DModel note) => notesInArea.Contains(note);
-
-		// 对外暴露的缩放接口：设置为统一缩放
-		public float Scale
-		{
-			get => transform.localScale.x;
-			set => transform.localScale = Vector3.one * value;
-		}
 
 
 		// 单一API：先立即变为指定颜色，再平滑过渡回初始颜色
