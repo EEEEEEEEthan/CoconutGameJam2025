@@ -17,6 +17,7 @@ namespace Game.Gameplay
 		Sunlight sun;
 		[SerializeField] Collider[] groundColliders;
 		[SerializeField] UICamera uiCamera;
+		[SerializeField] AudioSource bgm;
 		bool volumeProfileCopied;
 		public UICamera UiCamera => uiCamera;
 		public IReadOnlyList<Collider> GroundColliders => groundColliders;
